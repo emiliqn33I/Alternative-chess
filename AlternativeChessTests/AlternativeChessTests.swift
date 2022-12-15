@@ -8,29 +8,87 @@
 import XCTest
 @testable import AlternativeChess
 
-final class AlternativeChessTests: XCTestCase {
+class ChessBoardViewController: UIViewController {
+    
+    // Aproach 1 - where UIVieController's view is of our type
+//    override func loadView() {
+//        view = ChessBoardView()
+//    }
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    // Approach 2 - where UIVieController's view subview is of our type
+    override func viewDidLoad() {
+        let chessBoardView = ChessBoardView()
+        view.addSubview(chessBoardView)
     }
+}
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+struct Square {
+    enum Color {
+        case white
+        case black
     }
+    let color: Color
+}
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+class ChessBoardView: UIView {
+    private static let squaresInRow = 8
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    let squares: [[Square]] = {
+        var board: [[Square]] = []
+        for row in 0 ..< ChessBoardView.squaresInRow {
+            board.append([])
+            for column in 0 ..< ChessBoardView.squaresInRow {
+                let squareColor: Square.Color = (row + column).isMultiple(of: 2) ? .black : .white
+                board[row].append(Square(color: squareColor))
+            }
         }
+        return board
+    }()
+
+    override func draw(_ rect: CGRect) {
+        // TODO: draw squares in rect
+    }
+}
+
+final class AlternativeChessTests: XCTestCase {
+    func test_ChessBoardViewControllerContainsChessView() {
+        // Given the app is launched
+        // When the user navigates to the chess board view
+        let chessBoardViewController = ChessBoardViewController()
+        chessBoardViewController.loadViewIfNeeded()
+        
+        // Then the chess board view is visible
+        let chessBoardView = chessBoardViewController.view.subviews.first
+        XCTAssertNotNil(chessBoardView)
+        XCTAssertTrue(chessBoardView!.isKind(of: ChessBoardView.self))
     }
 
+    func test_ChessBoardContains8x8Squares() {
+        // Given the chess board view is visible
+        let chessBoardViewController = ChessBoardViewController()
+        chessBoardViewController.loadViewIfNeeded()
+        guard let chessBoardView: ChessBoardView = chessBoardViewController.view.subviews.first as? ChessBoardView else {
+            XCTFail()
+            return
+        }
+
+        // Then the chess board contains a grid of 8x8 (64) squares
+        let squares = chessBoardView.squares
+        XCTAssert(squares.count == 8)
+        let _ = squares.map { XCTAssert($0.count == 8) }
+        
+        // And the squares should alternate beteen white and black
+        // TODO:
+        
+        // And the bottom left square is white
+        let bottomLeftSquare = squares[7][0]
+        XCTAssert(bottomLeftSquare.color == .white)
+
+        // And the bottom right square is black
+        let bottomRightSquare = squares[7][7]
+        XCTAssert(bottomRightSquare.color == .black)
+    }
+
+//    func test_ChessBoardFillsInMaximumAvailableSpace() {
+//    }
 }
