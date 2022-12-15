@@ -14,19 +14,10 @@
 		90A8CFDA294BB40300229742 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90A8CFD9294BB40300229742 /* Assets.xcassets */; };
 		90A8CFDD294BB40300229742 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A8CFDB294BB40300229742 /* LaunchScreen.storyboard */; };
 		90A8CFE8294BB40300229742 /* AlternativeChessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFE7294BB40300229742 /* AlternativeChessTests.swift */; };
-		90A8CFF2294BB40400229742 /* AlternativeChessUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFF1294BB40400229742 /* AlternativeChessUITests.swift */; };
-		90A8CFF4294BB40400229742 /* AlternativeChessUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFF3294BB40400229742 /* AlternativeChessUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		90A8CFE4294BB40300229742 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90A8CFC5294BB40100229742 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 90A8CFCC294BB40100229742;
-			remoteInfo = AlternativeChess;
-		};
-		90A8CFEE294BB40300229742 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 90A8CFC5294BB40100229742 /* Project object */;
 			proxyType = 1;
@@ -46,9 +37,6 @@
 		90A8CFDE294BB40300229742 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90A8CFE3294BB40300229742 /* AlternativeChessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlternativeChessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A8CFE7294BB40300229742 /* AlternativeChessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeChessTests.swift; sourceTree = "<group>"; };
-		90A8CFED294BB40300229742 /* AlternativeChessUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlternativeChessUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		90A8CFF1294BB40400229742 /* AlternativeChessUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeChessUITests.swift; sourceTree = "<group>"; };
-		90A8CFF3294BB40400229742 /* AlternativeChessUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeChessUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,13 +54,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		90A8CFEA294BB40300229742 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -81,7 +62,6 @@
 			children = (
 				90A8CFCF294BB40100229742 /* AlternativeChess */,
 				90A8CFE6294BB40300229742 /* AlternativeChessTests */,
-				90A8CFF0294BB40300229742 /* AlternativeChessUITests */,
 				90A8CFCE294BB40100229742 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,7 +71,6 @@
 			children = (
 				90A8CFCD294BB40100229742 /* AlternativeChess.app */,
 				90A8CFE3294BB40300229742 /* AlternativeChessTests.xctest */,
-				90A8CFED294BB40300229742 /* AlternativeChessUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,15 +95,6 @@
 				90A8CFE7294BB40300229742 /* AlternativeChessTests.swift */,
 			);
 			path = AlternativeChessTests;
-			sourceTree = "<group>";
-		};
-		90A8CFF0294BB40300229742 /* AlternativeChessUITests */ = {
-			isa = PBXGroup;
-			children = (
-				90A8CFF1294BB40400229742 /* AlternativeChessUITests.swift */,
-				90A8CFF3294BB40400229742 /* AlternativeChessUITestsLaunchTests.swift */,
-			);
-			path = AlternativeChessUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,24 +135,6 @@
 			productReference = 90A8CFE3294BB40300229742 /* AlternativeChessTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		90A8CFEC294BB40300229742 /* AlternativeChessUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 90A8CFFD294BB40400229742 /* Build configuration list for PBXNativeTarget "AlternativeChessUITests" */;
-			buildPhases = (
-				90A8CFE9294BB40300229742 /* Sources */,
-				90A8CFEA294BB40300229742 /* Frameworks */,
-				90A8CFEB294BB40300229742 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				90A8CFEF294BB40300229742 /* PBXTargetDependency */,
-			);
-			name = AlternativeChessUITests;
-			productName = AlternativeChessUITests;
-			productReference = 90A8CFED294BB40300229742 /* AlternativeChessUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -197,10 +149,6 @@
 						CreatedOnToolsVersion = 14.0.1;
 					};
 					90A8CFE2294BB40300229742 = {
-						CreatedOnToolsVersion = 14.0.1;
-						TestTargetID = 90A8CFCC294BB40100229742;
-					};
-					90A8CFEC294BB40300229742 = {
 						CreatedOnToolsVersion = 14.0.1;
 						TestTargetID = 90A8CFCC294BB40100229742;
 					};
@@ -221,7 +169,6 @@
 			targets = (
 				90A8CFCC294BB40100229742 /* AlternativeChess */,
 				90A8CFE2294BB40300229742 /* AlternativeChessTests */,
-				90A8CFEC294BB40300229742 /* AlternativeChessUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -238,13 +185,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		90A8CFE1294BB40300229742 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		90A8CFEB294BB40300229742 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -272,15 +212,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		90A8CFE9294BB40300229742 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				90A8CFF2294BB40400229742 /* AlternativeChessUITests.swift in Sources */,
-				90A8CFF4294BB40400229742 /* AlternativeChessUITestsLaunchTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -288,11 +219,6 @@
 			isa = PBXTargetDependency;
 			target = 90A8CFCC294BB40100229742 /* AlternativeChess */;
 			targetProxy = 90A8CFE4294BB40300229742 /* PBXContainerItemProxy */;
-		};
-		90A8CFEF294BB40300229742 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 90A8CFCC294BB40100229742 /* AlternativeChess */;
-			targetProxy = 90A8CFEE294BB40300229742 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -526,42 +452,6 @@
 			};
 			name = Release;
 		};
-		90A8CFFE294BB40400229742 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA73KXA2KR;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.petarbelokonski.AlternativeChessUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AlternativeChess;
-			};
-			name = Debug;
-		};
-		90A8CFFF294BB40400229742 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA73KXA2KR;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.petarbelokonski.AlternativeChessUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AlternativeChess;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -588,15 +478,6 @@
 			buildConfigurations = (
 				90A8CFFB294BB40400229742 /* Debug */,
 				90A8CFFC294BB40400229742 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		90A8CFFD294BB40400229742 /* Build configuration list for PBXNativeTarget "AlternativeChessUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				90A8CFFE294BB40400229742 /* Debug */,
-				90A8CFFF294BB40400229742 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
