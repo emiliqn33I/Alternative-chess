@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		90A8CFD1294BB40100229742 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFD0294BB40100229742 /* AppDelegate.swift */; };
 		90A8CFD3294BB40100229742 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFD2294BB40100229742 /* SceneDelegate.swift */; };
-		90A8CFD5294BB40100229742 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFD4294BB40100229742 /* ViewController.swift */; };
+		90A8CFD5294BB40100229742 /* ChessBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */; };
 		90A8CFD8294BB40100229742 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A8CFD6294BB40100229742 /* Main.storyboard */; };
 		90A8CFDA294BB40300229742 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90A8CFD9294BB40300229742 /* Assets.xcassets */; };
 		90A8CFDD294BB40300229742 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A8CFDB294BB40300229742 /* LaunchScreen.storyboard */; };
@@ -30,7 +30,7 @@
 		90A8CFCD294BB40100229742 /* AlternativeChess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlternativeChess.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A8CFD0294BB40100229742 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90A8CFD2294BB40100229742 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		90A8CFD4294BB40100229742 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessBoardViewController.swift; sourceTree = "<group>"; };
 		90A8CFD7294BB40100229742 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90A8CFD9294BB40300229742 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		90A8CFDC294BB40300229742 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -80,7 +80,7 @@
 			children = (
 				90A8CFD0294BB40100229742 /* AppDelegate.swift */,
 				90A8CFD2294BB40100229742 /* SceneDelegate.swift */,
-				90A8CFD4294BB40100229742 /* ViewController.swift */,
+				90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */,
 				90A8CFD6294BB40100229742 /* Main.storyboard */,
 				90A8CFD9294BB40300229742 /* Assets.xcassets */,
 				90A8CFDB294BB40300229742 /* LaunchScreen.storyboard */,
@@ -198,7 +198,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90A8CFD5294BB40100229742 /* ViewController.swift in Sources */,
+				90A8CFD5294BB40100229742 /* ChessBoardViewController.swift in Sources */,
 				90A8CFD1294BB40100229742 /* AppDelegate.swift in Sources */,
 				90A8CFD3294BB40100229742 /* SceneDelegate.swift in Sources */,
 			);

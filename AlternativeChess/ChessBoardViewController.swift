@@ -48,11 +48,3 @@ class ChessBoardView: UIView {
         // TODO: draw squares in rect
     }
 }
-
-class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-}
