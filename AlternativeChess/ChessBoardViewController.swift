@@ -8,17 +8,6 @@
 import UIKit
 
 class ChessBoardViewController: UIViewController {
-    
-    // Aproach 1 - where UIVieController's view is of our type
-//    override func loadView() {
-//        view = ChessBoardView()
-//    }
-
-    // Approach 2 - where UIVieController's view subview is of our type
-    override func viewDidLoad() {
-        let chessBoardView = ChessBoardView()
-        view.addSubview(chessBoardView)
-    }
 }
 
 struct Square {
@@ -45,6 +34,6 @@ class ChessBoardView: UIView {
     }()
 
     override func draw(_ rect: CGRect) {
-        // TODO: draw squares in rect
+        // TODO: draw CGRect based on square in rect
     }
 }
