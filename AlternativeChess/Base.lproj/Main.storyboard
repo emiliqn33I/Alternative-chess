@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,19 +17,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hwb-xD-1BH" customClass="ChessBoardView" customModule="AlternativeChess" customModuleProvider="target">
-                                <rect key="frame" x="45" y="278.66666666666669" width="300" height="300.00000000000006"/>
+                                <rect key="frame" x="20" y="67" width="350" height="350"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="hwb-xD-1BH" secondAttribute="height" multiplier="1:1" id="EkH-wm-TWr"/>
-                                    <constraint firstAttribute="height" constant="300" id="xHi-wD-gK0"/>
+                                    <constraint firstAttribute="width" secondItem="hwb-xD-1BH" secondAttribute="height" multiplier="1:1" id="X6c-WS-ZNX"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemPinkColor"/>
                         <constraints>
-                            <constraint firstItem="hwb-xD-1BH" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="27e-M9-tIR"/>
-                            <constraint firstItem="hwb-xD-1BH" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="BjF-XX-dWc"/>
+                            <constraint firstItem="hwb-xD-1BH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="PZZ-69-yiI"/>
+                            <constraint firstItem="hwb-xD-1BH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="kMX-C2-Egi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hwb-xD-1BH" secondAttribute="trailing" constant="20" id="rpa-Sh-40b"/>
                         </constraints>
                     </view>
                 </viewController>
