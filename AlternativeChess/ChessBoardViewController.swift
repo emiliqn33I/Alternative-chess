@@ -32,10 +32,9 @@ class ChessBoardView: UIView {
 
     override init(frame: CGRect) {
          super.init(frame: frame)
-
      }
 
-     required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
          super.init(coder: coder)
      }
     
@@ -57,16 +56,14 @@ class ChessBoardView: UIView {
         for(_, item) in squares.enumerated() {
             var counter = 0
             for square in item {
+                 let path = UIBezierPath(rect: CGRect(x: CGFloat(counter) * side, y: CGFloat(row) * side, width: side, height: side))
                  if (square.color == .white) {
-                     let path = UIBezierPath(rect: CGRect(x: CGFloat(counter) * side, y: CGFloat(row) * side, width: side, height: side))
                      let blackColor = UIColor.white
                      blackColor.setStroke()
                      UIColor.white.setFill()
                      path.fill()
                      squares[row][counter].sideOfSquare = Double(side)
-                 }
-                 else {
-                     let path = UIBezierPath(rect: CGRect(x: CGFloat(counter) * side, y: CGFloat(row) * side, width: side, height: side))
+                 }else {
                      let blackColor = UIColor.black
                      blackColor.setStroke()
                      UIColor.black.setFill()
