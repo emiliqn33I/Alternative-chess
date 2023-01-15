@@ -18,29 +18,27 @@ final class AlternativeChessTests: XCTestCase {
         // Then the chess board view is visible
         let chessBoardView = chessBoardViewController.board
         XCTAssertNotNil(chessBoardView)
-        XCTAssertTrue(chessBoardView.isKind(of:ChessBoardView.self))
+        XCTAssertTrue(chessBoardView.isKind(of: ChessBoardView.self))
     }
 
     func test_ChessBoardContains8x8Squares() {
         // Given the chess board view is visible
         let chessBoardViewController = ChessBoardViewController()
         chessBoardViewController.loadViewIfNeeded()
-        if chessBoardViewController.board.isKind(of:ChessBoardView.self) != true {
+        if chessBoardViewController.board.isKind(of: ChessBoardView.self) != true {
             XCTFail()
             return
         }
-
-        // Then the chess board contains a grid of 8x8 (64) squares
+        
         let squares = chessBoardViewController.board.squares
         XCTAssert(squares.count == 8)
         let _ = squares.map { XCTAssert($0.count == 8) }
         
         // And the squares should alternate beteen white and black
-        // TODO:
         var row = 0
         var flagRow = 10
         for(_, item) in squares.enumerated() {
-            // This is checking if the start of every row have repeated colour.
+            // This is checking if the start of every row has repeated colour.
             let testLastSquareRowSameBlack = ((squares[row][0].color == .black) && flagRow == 0)
             let testLastSquareRowSameWhite = ((squares[row][0].color == .white) && flagRow == 1)
             if (testLastSquareRowSameBlack || testLastSquareRowSameWhite) {
