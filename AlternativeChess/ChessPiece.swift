@@ -68,7 +68,7 @@ struct Piece {
         var name: Int { return rawValue.name }
     }
     enum File: IntWithString {
-        case A = "0,A" // One value communicates with the user(1) and the other with the array of pieces(7),
+        case A = "0,A" // One value communicates with the user(A) and the other with the array of pieces(0),
         case B = "1,B"
         case C = "2,C"
         case D = "3,D"
