@@ -114,7 +114,6 @@ final class AlternativeChessTests: XCTestCase {
         
         let _ = piecesOnThe2ndRank.map {
             XCTAssertTrue($0.type == .pawn)
-            
         }
         var piecesOnThe7ndRank = [Piece]()
         piecesOnThe7ndRank = allpieces[6]
@@ -122,7 +121,6 @@ final class AlternativeChessTests: XCTestCase {
         
         let _ = piecesOnThe7ndRank.map {
             XCTAssertTrue($0.type == .pawn)
-            
         }
     }
     
