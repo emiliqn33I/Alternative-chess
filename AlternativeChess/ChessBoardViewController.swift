@@ -84,6 +84,9 @@ class ChessBoardView: UIView {
                     case .pawn :
                         let pieceImage = UIImage(named: "w_pawn")
                         pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
+                    case .rook:
+                        let pieceImage = UIImage(named: "w_rook")
+                        pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
                     case .none:
                         print("case not handed")
                     }
@@ -92,6 +95,10 @@ class ChessBoardView: UIView {
                     case .pawn :
                         let pieceImage = UIImage(named: "b_pawn")
                         pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
+                    case .rook:
+                        let pieceImage = UIImage(named: "b_rook")
+                        pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
+
                     case .none:
                         print("case not handed")
                     }
