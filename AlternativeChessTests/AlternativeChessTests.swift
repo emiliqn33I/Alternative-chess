@@ -155,7 +155,7 @@ final class AlternativeChessTests: XCTestCase {
             let validMovesF3 = chessEngine.possibleMoves(piece: F3Pawn)
             XCTAssert((validMovesF3[0] == ("E", 2)) && (validMovesF3[1] == ("G", 2)))
         }
-    
+    //Testing rooks
     func testRookMoves() {
         //   Given the user is on the board screen
         var chessEngine = ChessEngine()
