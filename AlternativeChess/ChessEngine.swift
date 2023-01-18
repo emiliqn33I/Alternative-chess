@@ -11,14 +11,14 @@ struct ChessEngine {
     var pieces = [[Piece]]()
     mutating func initialiseGame() {
         pieces = [
-            [Piece(type: .none, colour: .none, file: .A, rank: .eighth),
+            [Piece(type: .rook, colour: .black, file: .A, rank: .eighth),
              Piece(type: .none, colour: .none, file: .B, rank: .eighth),
              Piece(type: .none, colour: .none, file: .C, rank: .eighth),
              Piece(type: .none, colour: .none, file: .D, rank: .eighth),
              Piece(type: .none, colour: .none, file: .E, rank: .eighth),
              Piece(type: .none, colour: .none, file: .F, rank: .eighth),
              Piece(type: .none, colour: .none, file: .G, rank: .eighth),
-             Piece(type: .none, colour: .none, file: .H, rank: .eighth)],// 8 rank
+             Piece(type: .rook, colour: .black, file: .H, rank: .eighth)],// 8 rank
             [Piece(type: .pawn, colour: .black, file: .A, rank: .seventh),
              Piece(type: .pawn, colour: .black, file: .B, rank: .seventh),
              Piece(type: .pawn, colour: .black, file: .C, rank: .seventh),
@@ -44,7 +44,7 @@ struct ChessEngine {
              Piece(type: .none, colour: .none, file: .G, rank: .fifth),
              Piece(type: .none, colour: .none, file: .H, rank: .fifth)],// 5 rank
             [Piece(type: .none, colour: .none, file: .A, rank: .fourth),
-             Piece(type: .pawn, colour: .white, file: .B, rank: .fourth),
+             Piece(type: .none, colour: .none, file: .B, rank: .fourth),
              Piece(type: .none, colour: .none, file: .C, rank: .fourth),
              Piece(type: .none, colour: .none, file: .D, rank: .fourth),
              Piece(type: .none, colour: .none, file: .E, rank: .fourth),
@@ -52,11 +52,11 @@ struct ChessEngine {
              Piece(type: .none, colour: .none, file: .G, rank: .fourth),
              Piece(type: .none, colour: .none, file: .H, rank: .fourth)],// 4 rank
             [Piece(type: .none, colour: .none, file: .A, rank: .third),
-             Piece(type: .pawn, colour: .white, file: .B, rank: .third),
+             Piece(type: .none, colour: .none, file: .B, rank: .third),
              Piece(type: .none, colour: .none, file: .C, rank: .third),
              Piece(type: .none, colour: .none, file: .D, rank: .third),
              Piece(type: .none, colour: .none, file: .E, rank: .third),
-             Piece(type: .pawn, colour: .black, file: .F, rank: .third),
+             Piece(type: .none, colour: .none, file: .F, rank: .third),
              Piece(type: .none, colour: .none, file: .G, rank: .third),
              Piece(type: .none, colour: .none, file: .H, rank: .third)],// 3 rank
             [Piece(type: .pawn, colour: .white, file: .A, rank: .second),
@@ -67,14 +67,14 @@ struct ChessEngine {
              Piece(type: .pawn, colour: .white, file: .F, rank: .second),
              Piece(type: .pawn, colour: .white, file: .G, rank: .second),
              Piece(type: .pawn, colour: .white, file: .H, rank: .second)],// 2 rank
-            [Piece(type: .none, colour: .none, file: .A, rank: .first),
+            [Piece(type: .rook, colour: .white, file: .A, rank: .first),
              Piece(type: .none, colour: .none, file: .B, rank: .first),
              Piece(type: .none, colour: .none, file: .C, rank: .first),
              Piece(type: .none, colour: .none, file: .D, rank: .first),
              Piece(type: .none, colour: .none, file: .E, rank: .first),
              Piece(type: .none, colour: .none, file: .F, rank: .first),
              Piece(type: .none, colour: .none, file: .G, rank: .first),
-             Piece(type: .none, colour: .none, file: .H, rank: .first)]//1 rank
+             Piece(type: .rook, colour: .white, file: .H, rank: .first)]//1 rank
             ]
 
     }
@@ -155,8 +155,167 @@ struct ChessEngine {
             case .none:
                 print("case not handler")
             }
+        case .rook:
+            switch piece.colour {
+            case .white:
+                coordinates += possbileRookLikeMoves(piece: piece)
+            case .black:
+                coordinates += possbileRookLikeMoves(piece: piece)
+            case .none:
+                print("case not handler")
+            }
+
         case .none:
             print("case not handler")
+        }
+        return coordinates
+    }
+    
+    func possbileRookLikeMoves(piece: Piece) -> [(String, Int)] {
+        var coordinates = [(String, Int)]()
+        let pieceIsWhite = (piece.colour == .white)
+        let pieceIsBlack = (piece.colour == .black)
+    
+        var counterUp = 1 // This counter allows us to give to the user right coordinates.
+        var rankUp = piece.rank.value // Default rank of our piece, by decreasing we swicth to un upper rank.
+        while (rankUp > 0) {
+            let upperRankPieceIsBlack = (pieces[rankUp - 1][piece.file.value].colour == .black)
+            let upperRankPieceIsWhite = (pieces[rankUp - 1][piece.file.value].colour == .white)
+            let upperRankDoesntHavePiece = (pieces[rankUp - 1][piece.file.value].type == .none)
+            
+            if (pieceIsWhite) {
+                if (upperRankPieceIsBlack) {
+                    coordinates.append((piece.file.name, piece.rank.name + counterUp))
+                    break
+                }
+                if (upperRankPieceIsWhite) {
+                    break
+                }
+                if (upperRankDoesntHavePiece) {
+                    coordinates.append((piece.file.name, piece.rank.name + counterUp))
+                }
+                counterUp += 1
+                rankUp -= 1
+            }
+            if (pieceIsBlack) {
+                if (upperRankPieceIsBlack) {
+                    break
+                }
+                if (upperRankPieceIsWhite) {
+                    coordinates.append((piece.file.name, piece.rank.name + counterUp))
+                    break
+                }
+                if (upperRankDoesntHavePiece) {
+                    coordinates.append((piece.file.name, piece.rank.name + counterUp))
+                }
+                counterUp += 1
+                rankUp -= 1
+            }
+        }
+        
+        var counterDown = 1
+        var rankDown = piece.rank.value
+        while (rankDown < 7) {
+            let lowerRankPieceIsBlack = (pieces[rankDown + 1][piece.file.value].colour == .black)
+            let lowerRankPieceIsWhite = (pieces[rankDown + 1][piece.file.value].colour == .white)
+            let lowerRankDoesntHavePiece = (pieces[rankDown + 1][piece.file.value].colour == .none)
+            
+            if (pieceIsWhite) {
+                if (lowerRankPieceIsBlack) {
+                    coordinates.append((piece.file.name, piece.rank.name - counterDown))
+                    break
+                }
+                if (lowerRankPieceIsWhite) {
+                    break
+                }
+                if (lowerRankDoesntHavePiece) {
+                    coordinates.append((piece.file.name, piece.rank.name - counterDown))
+                }
+                counterDown += 1
+                rankDown += 1
+            }
+            if (pieceIsBlack) {
+                if (lowerRankPieceIsBlack) {
+                    break
+                }
+                if (lowerRankPieceIsWhite) {
+                    coordinates.append((piece.file.name, piece.rank.name - counterDown))
+                    break
+                }
+                if (lowerRankDoesntHavePiece) {
+                    coordinates.append((piece.file.name, piece.rank.name - counterDown))
+                }
+                counterDown += 1
+                rankDown += 1
+            }
+        }
+
+        var fileLeft = piece.file.value
+        while (fileLeft > 0) {
+            let leftFileIsBlack = (pieces[piece.rank.value][fileLeft - 1].colour == .black)
+            let leftFileIsWhite = (pieces[piece.rank.value][fileLeft - 1].colour == .white)
+            let leftFileDoesntHavePiece = (pieces[piece.rank.value][fileLeft - 1].type == .none)
+            
+            if (pieceIsWhite) {
+                if (leftFileIsBlack) {
+                    coordinates.append((pieces[piece.rank.value][fileLeft - 1].file.name, piece.rank.name))
+                    break
+                }
+                if (leftFileIsWhite) {
+                    break
+                }
+                if (leftFileDoesntHavePiece) {
+                    coordinates.append((pieces[piece.rank.value][fileLeft - 1].file.name, piece.rank.name))
+                }
+                fileLeft -= 1
+            }
+            if (pieceIsBlack) {
+                if (leftFileIsWhite) {
+                    coordinates.append((pieces[piece.rank.value][fileLeft - 1].file.name, piece.rank.name))
+                    break
+                }
+                if (leftFileIsBlack) {
+                    break
+                }
+                if (leftFileDoesntHavePiece) {
+                    coordinates.append((pieces[piece.rank.value][fileLeft - 1].file.name, piece.rank.name))
+                }
+                fileLeft -= 1
+            }
+        }
+        
+        var fileRight = piece.file.value
+        while (fileRight < 7) {
+            let rightFilePieceIsBlack = (pieces[piece.rank.value][fileRight + 1].colour == .black)
+            let rightFilePieceIsWhite = (pieces[piece.rank.value][fileRight + 1].colour == .white)
+            let rightFileDoesntHavePiece = (pieces[piece.rank.value][fileRight + 1].type == .none)
+            
+            if (pieceIsWhite) {
+                if (rightFilePieceIsBlack) {
+                    coordinates.append((pieces[piece.rank.value][fileRight + 1].file.name, piece.rank.name))
+                    break
+                }
+                if (rightFilePieceIsWhite) {
+                    break
+                }
+                if (rightFileDoesntHavePiece) {
+                    coordinates.append((pieces[piece.rank.value][fileRight + 1].file.name, piece.rank.name))
+                }
+                fileRight += 1
+            }
+            if (pieceIsBlack) {
+                if (rightFilePieceIsWhite) {
+                    coordinates.append((pieces[piece.rank.value][fileRight + 1].file.name, piece.rank.name))
+                    break
+                }
+                if (rightFilePieceIsBlack) {
+                    break
+                }
+                if (rightFileDoesntHavePiece) {
+                    coordinates.append((pieces[piece.rank.value][fileRight + 1].file.name, piece.rank.name))
+                }
+                fileRight += 1
+            }
         }
         return coordinates
     }
