@@ -82,6 +82,7 @@ struct Piece {
     }
     enum PieceType {
         case pawn
+        case rook
         case none // Case for square without a piece. Needed for initialising empty square.
     }
     enum Color {

@@ -155,5 +155,35 @@ final class AlternativeChessTests: XCTestCase {
             let validMovesF3 = chessEngine.possibleMoves(piece: F3Pawn)
             XCTAssert((validMovesF3[0] == ("E", 2)) && (validMovesF3[1] == ("G", 2)))
         }
+    
+    func testRookMoves() {
+        //   Given the user is on the board screen
+        var chessEngine = ChessEngine()
+        chessEngine.initialiseGame()//  And there is a white rook at the D4, white pawn at D2, and black pawn at D7
+        let Wrook = Piece(type: .rook, colour: .white, file: .D, rank: .fourth)
+        _ = Piece(type: .pawn, colour: .white, file: .D, rank: .second)
+        _ = Piece(type: .pawn, colour: .white, file: .D, rank: .seventh)
+
+        //   When they tap the rook D4
+        //   Then the D5, D6, D7, D3, C4, B4, A4, E4, F4, G4 and H4 squares on the board will be highlighted
+        let validMovesD4 = chessEngine.possibleMoves(piece: Wrook)
+        XCTAssert((validMovesD4[0] == ("D", 5)) && (validMovesD4[1] == ("D", 6)) && (validMovesD4[2] == ("D", 7))) // Testing upper ranks
+        XCTAssert(validMovesD4[3] == ("D", 3)) // Testing lower ranks
+        XCTAssert((validMovesD4[4] == ("C", 4)) && (validMovesD4[5] == ("B", 4)) && (validMovesD4[6] == ("A", 4))) // Testing left files
+        XCTAssert((validMovesD4[7] == ("E", 4)) && (validMovesD4[8] == ("F", 4)) && (validMovesD4[9] == ("G", 4)) && (validMovesD4[10] == ("H", 4))) // Testing right files
+        
+        //  And there is a black rook at the E5, white pawn at E2, and black pawn at E7
+        let Brook = Piece(type: .rook, colour: .black, file: .E, rank: .fifth)
+        _ = Piece(type: .pawn, colour: .white, file: .E, rank: .second)
+        _ = Piece(type: .pawn, colour: .black, file: .E, rank: .seventh)
+
+        //   When they tap the rook D4
+        //   Then the D5, D6, D7, D3, C4, B4, A4, E4, F4, G4 and H4 squares on the board will be highlighted
+        let validMovesE5 = chessEngine.possibleMoves(piece: Brook)
+        XCTAssert(validMovesE5[0] == ("E", 6)) // Testing upper ranks
+        XCTAssert((validMovesE5[1] == ("E", 4)) && (validMovesE5[2] == ("E", 3)) && (validMovesE5[3] == ("E", 2))) // Testing lower ranks
+        XCTAssert((validMovesE5[4] == ("D", 5)) && (validMovesE5[5] == ("C", 5)) && (validMovesE5[6] == ("B", 5)) && (validMovesE5[7] == ("A", 5))) // Testing left files
+        XCTAssert((validMovesE5[8] == ("F", 5)) && (validMovesE5[9] == ("G", 5)) && (validMovesE5[10] == ("H", 5))) // Testing right files
+    }
 }
 
