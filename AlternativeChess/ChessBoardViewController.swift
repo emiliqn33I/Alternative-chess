@@ -15,7 +15,6 @@ class ChessBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        chessEngine.initialiseGame()
         boardView?.pieces = chessEngine.pieces
         
     }
@@ -45,7 +44,7 @@ class ChessBoardView: UIView {
     
     func drawBoard() {
         var board = Board()
-        board.renewBoard()
+        // board.renewBoard()
         let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
         var row = 0
         for(_, item) in board.squares.enumerated() {
@@ -72,11 +71,11 @@ class ChessBoardView: UIView {
     }
     
     func drawPieces() {
-        var chessEngine = ChessEngine()
-        chessEngine.initialiseGame()
-        pieces = chessEngine.pieces
+        // var chessEngine = ChessEngine()
+        // chessEngine.initialiseGame()
+        // pieces = chessEngine.pieces
         var chessBoard = Board()
-        chessBoard.renewBoard()
+        // chessBoard.renewBoard()
         let sq : [[Square]] = Array(chessBoard.squares.reversed())
         let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
         

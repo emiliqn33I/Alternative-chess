@@ -7,23 +7,16 @@
 
 import Foundation
 
-struct ChessEngine {
-    var pieces = [Piece]()
-
-    mutating func initialiseGame() {
-        pieces = [
-            Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
-            Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third))
-        ]
-        
-    }
+class ChessEngine {
+    var pieces = [
+        Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
+        Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third))
+    ]
 
     func possibleMoves(piece: Piece) -> [Position] {
         switch piece.type {
         case .pawn:
             return possiblePawnMoves(pawn: piece)
-        default:
-            return []
         }
     }
 
