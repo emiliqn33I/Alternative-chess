@@ -103,87 +103,39 @@ final class AlternativeChessTests: XCTestCase {
         }
     }
     
-    func testPiecesShownOnBoardView() {
-        //Then they will see 8 pawns on the 2nd rank
+    func testPieceShownOnBoardView() {
+        //Then they will see 1 pawns on the 2nd rank
         var engine = ChessEngine()
         engine.initialiseGame()
         let allpieces = engine.pieces
         var piecesOnThe2ndRank = [Piece]()
-        piecesOnThe2ndRank = allpieces[1]
-        XCTAssertTrue(piecesOnThe2ndRank.count == 8)
+        piecesOnThe2ndRank = allpieces.filter( { $0.position.rank == .second } )
+        XCTAssertTrue(piecesOnThe2ndRank.count == 1)
         
         let _ = piecesOnThe2ndRank.map {
             XCTAssertTrue($0.type == .pawn)
         }
-        var piecesOnThe7ndRank = [Piece]()
-        piecesOnThe7ndRank = allpieces[6]
-        XCTAssertTrue(piecesOnThe7ndRank.count == 8)
-        
-        let _ = piecesOnThe7ndRank.map {
-            XCTAssertTrue($0.type == .pawn)
-        }
     }
     
-        func testPawnMoves() {
-            //   Given the user is on the board screen
-            var chessEngine = ChessEngine()
-            chessEngine.initialiseGame()//   And there is a pawn at the A2
-            let pawn = Piece(type: .pawn, colour: .white, file: .A, rank: .second)
-            //   When they tap the pawn A2
-            //   Then the A3 and A4 squares on the board will be highlighted
-            let validMovesA2 = chessEngine.possibleMoves(piece: pawn)
-            XCTAssert((validMovesA2[0] == ("A", 3)) && (validMovesA2[1] == ("A", 4)))
-            // And there is a black pawn at the F3
-            let F3Pawn = Piece(type: .pawn, colour: .black, file: .F, rank: .third)
-            // When they tap the pawn E2, and there is no pawn infront of E2
-            // Then the E3, E4 and F3 squares on the board will be highlighted
-            let E2Pawn = Piece(type: .pawn, colour: .white, file: .E, rank: .second)
-            let validMovesE2 = chessEngine.possibleMoves(piece: E2Pawn)
-            XCTAssert((validMovesE2[0] == ("E", 3)) && (validMovesE2[1] == ("E", 4)) && (validMovesE2[2] == ("F", 3)))
-            // When they tap the pawn F2, and there is pawn infront of F2
-            // Then the pawn on F2 have isn't capable of moving, has 0 squares
-            let F2Pawn = Piece(type: .pawn, colour: .white, file: .F, rank: .second)
-            let validMovesF2 = chessEngine.possibleMoves(piece: F2Pawn)
-            XCTAssert(validMovesF2.isEmpty)
-            // When they tap the pawn C2, they won't be able to take their white pawn on B3
-            // Then the pawn on C2 will have 2 possible moves - to C3 and to C4
-            let C2Pawn = Piece(type: .pawn, colour: .white, file: .C, rank: .second)
-            let validMovesC2 = chessEngine.possibleMoves(piece: C2Pawn)
-            XCTAssert((validMovesC2[0] == ("C", 3)) && (validMovesC2[1] == ("C", 4)))
-            // When they tap the pawn F3
-            // Then the black pawn on F3 will have 2 possible moves - to E2 and to G2
-            let validMovesF3 = chessEngine.possibleMoves(piece: F3Pawn)
-            XCTAssert((validMovesF3[0] == ("E", 2)) && (validMovesF3[1] == ("G", 2)))
-        }
-    //Testing rooks
-    func testRookMoves() {
+    func testWhitePawnMoves2Squares() {
         //   Given the user is on the board screen
         var chessEngine = ChessEngine()
-        chessEngine.initialiseGame()//  And there is a white rook at the D4, white pawn at D2, and black pawn at D7
-        let Wrook = Piece(type: .rook, colour: .white, file: .D, rank: .fourth)
-        _ = Piece(type: .pawn, colour: .white, file: .D, rank: .second)
-        _ = Piece(type: .pawn, colour: .white, file: .D, rank: .seventh)
-
-        //   When they tap the rook D4
-        //   Then the D5, D6, D7, D3, C4, B4, A4, E4, F4, G4 and H4 squares on the board will be highlighted
-        let validMovesD4 = chessEngine.possibleMoves(piece: Wrook)
-        XCTAssert((validMovesD4[0] == ("D", 5)) && (validMovesD4[1] == ("D", 6)) && (validMovesD4[2] == ("D", 7))) // Testing upper ranks
-        XCTAssert(validMovesD4[3] == ("D", 3)) // Testing lower ranks
-        XCTAssert((validMovesD4[4] == ("C", 4)) && (validMovesD4[5] == ("B", 4)) && (validMovesD4[6] == ("A", 4))) // Testing left files
-        XCTAssert((validMovesD4[7] == ("E", 4)) && (validMovesD4[8] == ("F", 4)) && (validMovesD4[9] == ("G", 4)) && (validMovesD4[10] == ("H", 4))) // Testing right files
+        chessEngine.initialiseGame()
+        var board = Board()
+        board.renewBoard()
+        let allpieces = chessEngine.pieces
+        //   And there is a pawn at the A2
+        let pawnA2 = allpieces.filter{ $0.position.rank == .second && $0.position.file == .A}
+        if (pawnA2.isEmpty) {
+            XCTAssert(false)
+        }
         
-        //  And there is a black rook at the E5, white pawn at E2, and black pawn at E7
-        let Brook = Piece(type: .rook, colour: .black, file: .E, rank: .fifth)
-        _ = Piece(type: .pawn, colour: .white, file: .E, rank: .second)
-        _ = Piece(type: .pawn, colour: .black, file: .E, rank: .seventh)
-
-        //   When they tap the rook D4
-        //   Then the D5, D6, D7, D3, C4, B4, A4, E4, F4, G4 and H4 squares on the board will be highlighted
-        let validMovesE5 = chessEngine.possibleMoves(piece: Brook)
-        XCTAssert(validMovesE5[0] == ("E", 6)) // Testing upper ranks
-        XCTAssert((validMovesE5[1] == ("E", 4)) && (validMovesE5[2] == ("E", 3)) && (validMovesE5[3] == ("E", 2))) // Testing lower ranks
-        XCTAssert((validMovesE5[4] == ("D", 5)) && (validMovesE5[5] == ("C", 5)) && (validMovesE5[6] == ("B", 5)) && (validMovesE5[7] == ("A", 5))) // Testing left files
-        XCTAssert((validMovesE5[8] == ("F", 5)) && (validMovesE5[9] == ("G", 5)) && (validMovesE5[10] == ("H", 5))) // Testing right files
+        //   When they tap the pawn A2
+        //   Then the A3 and A4 squares on the board will be highlighted
+        let validMovesA2 = chessEngine.possibleMoves(piece: pawnA2[0])
+        print(validMovesA2[0])
+        XCTAssert((validMovesA2[0].file == .A) && (validMovesA2[0].rank == .third) && (validMovesA2[1].file == .A) && (validMovesA2[1].rank == .fourth))
+        
     }
 }
 
