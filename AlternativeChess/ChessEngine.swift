@@ -13,18 +13,22 @@ class ChessEngine {
         Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third))
     ]
 
+    // MARK: Public methods
+
     func possibleMoves(piece: Piece) -> [Position] {
         switch piece.type {
         case .pawn:
             return possiblePawnMoves(pawn: piece)
         }
     }
+    
+    // MARK: Helper methods
 
-    func piece(at position: Position) -> Piece? {
+    private func piece(at position: Position) -> Piece? {
         pieces.first { $0.position == position }
     }
 
-    func changedPositionRank(for checkPiece: Piece, delta: Int) -> Position? {
+    private func changedPositionRank(for checkPiece: Piece, delta: Int) -> Position? {
         let positionAtRank = checkPiece.position.changedRank(delta: delta)
         if piece(at: positionAtRank) == nil {
             return positionAtRank
@@ -32,7 +36,7 @@ class ChessEngine {
         return nil
     }
 
-    func possiblePawnMoves(pawn: Piece) -> [Position] {
+    private func possiblePawnMoves(pawn: Piece) -> [Position] {
         var coordinates = [Position]()
         if pawn.colour == .white {
             if pawn.position.rank == .second {
