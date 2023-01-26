@@ -137,5 +137,30 @@ final class AlternativeChessTests: XCTestCase {
         XCTAssert((validMovesA2[0].file == .A) && (validMovesA2[0].rank == .third) && (validMovesA2[1].file == .A) && (validMovesA2[1].rank == .fourth))
         
     }
+    
+    func testWhitePawnMoves1Squares() {
+        //   Given the user is on the board screen
+        var chessEngine = ChessEngine()
+        chessEngine.initialiseGame()
+        var board = Board()
+        board.renewBoard()
+        let allpieces = chessEngine.pieces
+        //   And there is a pawn at the B3
+        let pawnB3 = allpieces.filter{ $0.position.rank == .third && $0.position.file == .B}
+        if (pawnB3.isEmpty) {
+            XCTAssert(false)
+        }
+        //   And there is no pawn at B4
+        let pawnB4 = allpieces.filter{ $0.position.rank == .fourth && $0.position.file == .B}
+        if (pawnB4.isEmpty) {
+        } else {
+            XCTAssert(false)
+        }
+        //   When they tap the pawn B3
+        //   Then the B4 squares on the board will be highlighted
+        let validMovesB3 = chessEngine.possibleMoves(piece: pawnB3[0])
+        XCTAssert(validMovesB3.count == 1)
+        XCTAssert((validMovesB3[0].file == .B) && (validMovesB3[0].rank == .fourth))
+    }
 }
 
