@@ -45,7 +45,7 @@ class ChessEngine {
                         coordinates.append(position)
                     }
                 }
-            } else if pawn.position.rank != .eighth {
+            } else if pawn.position.rank != .seventh {
                 if let position = changedPositionRank(for: pawn, delta: 1) {
                     coordinates.append(position)
                 }
