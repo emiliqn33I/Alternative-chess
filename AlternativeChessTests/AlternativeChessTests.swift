@@ -105,8 +105,7 @@ final class AlternativeChessTests: XCTestCase {
     
     func testPieceShownOnBoardView() {
         //Then they will see 1 pawns on the 2nd rank
-        var engine = ChessEngine()
-        engine.initialiseGame()
+        let engine = ChessEngine()
         let allpieces = engine.pieces
         var piecesOnThe2ndRank = [Piece]()
         piecesOnThe2ndRank = allpieces.filter( { $0.position.rank == .second } )
@@ -116,34 +115,27 @@ final class AlternativeChessTests: XCTestCase {
             XCTAssertTrue($0.type == .pawn)
         }
     }
-    
+
     func testWhitePawnMoves2Squares() {
-        //   Given the user is on the board screen
-        var chessEngine = ChessEngine()
-        chessEngine.initialiseGame()
-        var board = Board()
-        board.renewBoard()
+        // Given the user is on the board screen
+        let chessEngine = ChessEngine()
         let allpieces = chessEngine.pieces
-        //   And there is a pawn at the A2
+        // And there is a pawn at the A2
         let pawnA2 = allpieces.filter{ $0.position.rank == .second && $0.position.file == .A}
         if (pawnA2.isEmpty) {
             XCTAssert(false)
         }
-        
-        //   When they tap the pawn A2
-        //   Then the A3 and A4 squares on the board will be highlighted
+
+        // When they tap the pawn A2
+        // Then the A3 and A4 squares on the board will be highlighted
         let validMovesA2 = chessEngine.possibleMoves(piece: pawnA2[0])
         print(validMovesA2[0])
         XCTAssert((validMovesA2[0].file == .A) && (validMovesA2[0].rank == .third) && (validMovesA2[1].file == .A) && (validMovesA2[1].rank == .fourth))
-        
     }
-    
+
     func testWhitePawnMoves1Squares() {
-        //   Given the user is on the board screen
-        var chessEngine = ChessEngine()
-        chessEngine.initialiseGame()
-        var board = Board()
-        board.renewBoard()
+        // Given the user is on the board screen
+        let chessEngine = ChessEngine()
         let allpieces = chessEngine.pieces
         //   And there is a pawn at the B3
         let pawnB3 = allpieces.filter{ $0.position.rank == .third && $0.position.file == .B}
