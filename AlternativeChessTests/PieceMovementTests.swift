@@ -19,7 +19,7 @@ final class PieceMovementTests: XCTestCase {
         //Then they will see 1 pawns on the 2nd rank
         let piecesOnThe2ndRank = chessEngine.pieces.filter { $0.position.rank == .second }
         XCTAssertTrue(piecesOnThe2ndRank.count == 1)
-        
+
         let _ = piecesOnThe2ndRank.map {
             XCTAssertTrue($0.type == .pawn)
         }
@@ -29,10 +29,9 @@ final class PieceMovementTests: XCTestCase {
         // Given the user is on the board screen
         // And there is a pawn at the A2
         let pawnA2 = chessEngine.pieces.filter { $0.position.rank == .second && $0.position.file == .A }
-        if (pawnA2.isEmpty) {
-            XCTAssert(false)
+        if pawnA2.isEmpty {
+            XCTFail()
         }
-
         // When they tap the pawn A2
         // Then the A3 and A4 squares on the board will be highlighted
         let validMovesA2 = chessEngine.possibleMoves(piece: pawnA2[0])
