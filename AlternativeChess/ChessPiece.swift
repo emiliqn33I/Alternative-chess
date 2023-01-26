@@ -17,7 +17,12 @@ struct Position {
         case sixth
         case seventh
         case eighth
+
+        func changed(with delta: Int) -> Rank {
+            return Rank(rawValue: rawValue + delta) ?? .first
+        }
     }
+
     enum File: Int , CaseIterable{
         case A
         case B
@@ -27,61 +32,62 @@ struct Position {
         case F
         case G
         case H
+
+        func changed(with delta: Int) -> File {
+            return File(rawValue: rawValue + delta) ?? .A
+        }
     }
-    var file: File?
-    var rank: Rank?
-    init(file: File?, rank: Rank?) {
+
+    let file: File
+    let rank: Rank
+
+    init(file: File, rank: Rank) {
         self.file = file
         self.rank = rank
     }
-    mutating func canChnageFile(delta: Int) -> Piece? {
-        var chessEngine = ChessEngine()
-        chessEngine.initialiseGame()
-        let pieces = chessEngine.pieces
-        if ((delta + (file?.rawValue ?? 100) >= 0) && (delta + (file?.rawValue ?? 100) <= 7)) {
-            let result = pieces.filter( { $0.position.file?.rawValue ?? 1000 == (delta + (file?.rawValue ?? 100)) } )
-            if (result.isEmpty) {
-                return nil
-            }
-            return result[0]
-        }
-        return nil
+
+    func changedFile(delta: Int) -> Position {
+        return Position(file: file.changed(with: delta), rank: rank)
     }
-    mutating func canChnageRank(delta: Int) -> Piece? {
-        var chessEngine = ChessEngine()
-        chessEngine.initialiseGame()
-        let pieces = chessEngine.pieces
-        if ((delta + (rank?.rawValue ?? 100) >= 0) && (delta + (rank?.rawValue ?? 100) <= 7)) {
-            let result = pieces.filter( { $0.position.rank?.rawValue ?? 1000 == (delta + (rank?.rawValue ?? 100))} )
-            if (result.isEmpty) {
-                return nil
-            }
-            return result[0]
-        }
-        return nil
+
+    func changedRank(delta: Int) -> Position {
+        return Position(file: file, rank: rank.changed(with: delta))
+    }
+
+    func changed(fileDelta: Int, rankDelta: Int) -> Position {
+        return Position(file: file.changed(with: fileDelta), rank: rank.changed(with: rankDelta))
     }
 }
 
-struct Piece: Equatable {
-    static func == (lhs: Piece, rhs: Piece) -> Bool {
-        return lhs.position.file == rhs.position.file && lhs.position.rank == rhs.position.rank
+extension Position: Equatable {
+    static func == (lhs: Position, rhs: Position) -> Bool {
+        return lhs.file == rhs.file && lhs.rank == rhs.rank
     }
-    
-    
+}
+
+struct Piece {
     enum PieceType {
         case pawn
     }
+
     enum Color {
         case white
         case black
     }
+
     var position: Position
     var type: PieceType
     var colour: Color
-    
+
     init(type: PieceType, colour: Color, position: Position) {
         self.type = type
         self.colour = colour
         self.position = position
+    }
+}
+
+extension Piece: Equatable {
+    static func == (lhs: Piece, rhs: Piece) -> Bool {
+        return lhs.position.file == rhs.position.file && lhs.position.rank == rhs.position.rank
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 
 struct ChessEngine {
     var pieces = [Piece]()
+
     mutating func initialiseGame() {
         pieces = [
             Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
@@ -16,62 +17,40 @@ struct ChessEngine {
         ]
         
     }
-    func possibleMoves(piece: Piece) -> [Position] {
 
-        var coordinates = [Position]()
+    func possibleMoves(piece: Piece) -> [Position] {
         switch piece.type {
         case .pawn:
-            coordinates += possiblePawnMoves(pawn1: piece)
+            return possiblePawnMoves(pawn: piece)
+        default:
+            return []
         }
-        return coordinates
     }
 
+    func piece(at position: Position) -> Piece? {
+        pieces.first { $0.position == position }
+    }
 
-    func possiblePawnMoves(pawn1: Piece) -> [Position] {
-        var pawn = pawn1
+    func changedPositionRank(for checkPiece: Piece, delta: Int) -> Position? {
+        let positionAtRank = checkPiece.position.changedRank(delta: delta)
+        if piece(at: positionAtRank) == nil {
+            return positionAtRank
+        }
+        return nil
+    }
+
+    func possiblePawnMoves(pawn: Piece) -> [Position] {
         var coordinates = [Position]()
-        let pawnIsWhite = (pawn.colour == .white)
-        
-        if (pawnIsWhite) {
-            let CheckWPawnOn2Rank = (pawn.position.rank == .second)
-            let CheckWPawnMove1Square = (pawn.position.canChnageRank(delta: 1) == nil)
-            let CheckWPawnMove2Squares = (pawn.position.canChnageRank(delta: 2) == nil)
-            if (CheckWPawnOn2Rank && CheckWPawnMove1Square && CheckWPawnMove2Squares) {
+        if pawn.colour == .white {
+            if pawn.position.rank == .second {
                 for i in 1...2 {
-                    for aRank in Position.Rank.allCases {
-                        if (aRank.rawValue == ((pawn.position.rank?.rawValue ?? 100 ) + i)) {
-                            let position = Position(file: pawn.position.file, rank: aRank)
-                            coordinates.append(position)
-                            break
-                        }
+                    if let position = changedPositionRank(for: pawn, delta: i) {
+                        coordinates.append(position)
                     }
                 }
-            }
-            let CheckWPNot8Rank = (pawn.position.rank != .eighth)
-            if (CheckWPNot8Rank && CheckWPawnMove1Square) {
-                var flag = false
-                for i in coordinates {
-                    let CompareFilesIfAlreadyExisted = (i.file == pawn.position.file)
-                    var currentRank = i.rank
-                    for aRank in Position.Rank.allCases {
-                        if (aRank.rawValue == ((i.rank?.rawValue ?? 100 ) + 1)) {
-                            currentRank = aRank
-                            break
-                        }
-                    }
-                    let CompareRanksIfAlreadyExisted = (currentRank != i.rank)
-                    if (CompareFilesIfAlreadyExisted && CompareRanksIfAlreadyExisted) {
-                        flag = true
-                    }
-                }
-                if (flag == false) {
-                    for aRank in Position.Rank.allCases {
-                        if (aRank.rawValue == ((pawn.position.rank?.rawValue ?? 100 ) + 1)) {
-                            let position = Position(file: pawn.position.file, rank: aRank)
-                            coordinates.append(position)
-                            break
-                        }
-                    }
+            } else if pawn.position.rank != .eighth {
+                if let position = changedPositionRank(for: pawn, delta: 1) {
+                    coordinates.append(position)
                 }
             }
         }
