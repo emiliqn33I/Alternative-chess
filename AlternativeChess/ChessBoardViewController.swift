@@ -28,7 +28,7 @@ class ChessBoardViewController: UIViewController {
 
 class ChessBoardView: UIView {
     static let squaresInRow = 8
-    var pieces = [[Piece]]()
+    var pieces = [Piece]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,11 +40,12 @@ class ChessBoardView: UIView {
     
     override func draw(_ rect: CGRect) {
         drawBoard()
-        drawPieces()
+        drawPieces()  
     }
     
     func drawBoard() {
         var board = Board()
+        board.renewBoard()
         let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
         var row = 0
         for(_, item) in board.squares.enumerated() {
@@ -71,39 +72,37 @@ class ChessBoardView: UIView {
     }
     
     func drawPieces() {
-        var pieces: [[Piece]]
-        var chesengine = ChessEngine()
-        chesengine.initialiseGame()
-        pieces = chesengine.pieces
+        var chessEngine = ChessEngine()
+        chessEngine.initialiseGame()
+        pieces = chessEngine.pieces
+        var chessBoard = Board()
+        chessBoard.renewBoard()
+        let sq : [[Square]] = Array(chessBoard.squares.reversed())
         let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
-        for piece in pieces {
-            for i in piece {
-                switch i.colour {
+        
+        for row in 0...7 {
+            for file in 0...7 {
+                if(sq[row][file].piece != nil) {
+                    switch sq[row][file].piece?.colour {
                     case .white :
-                    switch i.type {
-                    case .pawn :
-                        let pieceImage = UIImage(named: "w_pawn")
-                        pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
-                    case .rook:
-                        let pieceImage = UIImage(named: "w_rook")
-                        pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
-                    case .none:
-                        print("case not handed")
-                    }
+                        switch sq[row][file].piece?.type {
+                        case .pawn :
+                            let pieceImage = UIImage(named: "w_pawn")
+                            pieceImage?.draw(in: CGRect(x: CGFloat(file) * side, y: CGFloat(row) * side, width: side, height: side ))
+                        default:
+                            print(" ")
+                        }
                     case .black :
-                    switch i.type {
-                    case .pawn :
-                        let pieceImage = UIImage(named: "b_pawn")
-                        pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
-                    case .rook:
-                        let pieceImage = UIImage(named: "b_rook")
-                        pieceImage?.draw(in: CGRect(x: CGFloat(i.file.value) * side, y: CGFloat(i.rank.value) * side, width: side, height: side ))
-
-                    case .none:
-                        print("case not handed")
-                    }
+                        switch sq[row][file].piece?.type {
+                        case .pawn :
+                            let pieceImage = UIImage(named: "b_pawn")
+                            pieceImage?.draw(in: CGRect(x: CGFloat(row) * side, y: CGFloat(file) * side, width: side, height: side ))
+                        default:
+                            print(" ")
+                        }
                     default:
-                        print("case not handed")
+                        print(" ")
+                    }
                 }
             }
         }
