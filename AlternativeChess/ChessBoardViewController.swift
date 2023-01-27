@@ -39,7 +39,7 @@ class ChessBoardView: UIView {
     
     override func draw(_ rect: CGRect) {
         drawBoard()
-        drawPieces()  
+        drawPieces()
     }
     
     func drawBoard() {
