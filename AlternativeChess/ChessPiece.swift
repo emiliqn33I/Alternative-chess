@@ -4,7 +4,6 @@
 //
 //  Created by emo on 15.01.23.
 //
-
 import Foundation
 
 struct Position {
@@ -68,6 +67,7 @@ extension Position: Equatable {
 struct Piece {
     enum PieceType {
         case pawn
+        case rook
     }
 
     enum Color {
