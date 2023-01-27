@@ -64,8 +64,9 @@ class ChessEngine {
         return coordinates
     }
     
-    func upperOrLower(direction: Bool) -> [Int] {
+    private func upperOrLower(direction: Bool) -> [Int] {
         var array = [Int]()
+        
         if direction {
             array.append(1)
             array.append(7)
@@ -73,10 +74,11 @@ class ChessEngine {
             array.append(-1)
             array.append(0)
         }
+        
         return array
     }
     
-    func giveFileOrRank(type: Bool, piece: Piece) -> Int {
+    private func giveFileOrRank(type: Bool, piece: Piece) -> Int {
         if type {
             return piece.position.file.rawValue
         } else {
@@ -84,44 +86,46 @@ class ChessEngine {
         }
     }
     
-    func increment(type: Bool, delta: Int, rookPosition: Int) -> [Int] {
+    private func incrementRankOrFile(type: Bool, incrementWith: Int, rookPosition: Int) -> [Int] {
         var array = [Int]()
         
         if type {
-            array.append(delta + 1)
+            array.append(incrementWith + 1)
             array.append(rookPosition + 1)
         } else {
-            array.append(delta - 1)
+            array.append(incrementWith - 1)
             array.append(rookPosition - 1)
         }
+        
         return array
     }
     
-    func appendFileOrRank(fileOrRank: Bool, piece: Piece, delta: Int) -> [Position] {
+    func appendFileOrRank(fileOrRank: Bool, piece: Piece, incrementWith: Int) -> [Position] {
         var coordinates = [Position]()
         
         if fileOrRank {
-            if let position = changedPositionFile(for: piece, delta: delta) {
+            if let position = changedPositionFile(for: piece, delta: incrementWith) {
                 coordinates.append(position)
             }
         } else {
-            if let position = changedPositionRank(for: piece, delta: delta) {
+            if let position = changedPositionRank(for: piece, delta: incrementWith) {
                 coordinates.append(position)
             }
         }
+        
         return coordinates
     }
     
     func iteratingThroughFilesOrRanks(piece: Piece, upOrLower: Bool, fileOrRank: Bool) -> [Position] {
         var coordinates = [Position]()
-        var delta = upperOrLower(direction: upOrLower)[0]
+        var incrementWith = upperOrLower(direction: upOrLower)[0]
         let finalFileOrRank = upperOrLower(direction: upOrLower)[1]
         var rookPosition = giveFileOrRank(type: fileOrRank, piece: piece)
         
         while (rookPosition != finalFileOrRank) {
-            coordinates += appendFileOrRank(fileOrRank: fileOrRank, piece: piece, delta: delta)
-            delta = increment(type: upOrLower, delta: delta, rookPosition: rookPosition)[0]
-            rookPosition = increment(type: upOrLower, delta: delta, rookPosition: rookPosition)[1]
+            coordinates += appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)
+            incrementWith = incrementRankOrFile(type: upOrLower, incrementWith: incrementWith, rookPosition: rookPosition)[0]
+            rookPosition = incrementRankOrFile(type: upOrLower, incrementWith: incrementWith, rookPosition: rookPosition)[1]
         }
         return coordinates
     }
