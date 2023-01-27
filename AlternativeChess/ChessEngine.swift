@@ -64,43 +64,64 @@ class ChessEngine {
         return coordinates
     }
     
-    func iteratingThroughFilesOrRanks(piece: Piece, upperOrLower: Bool, fileOrRank: Bool) -> [Position] {
-        var coordinates = [Position]()
-        var delta: Int
-        var finalFileOrRank: Int
-        var rookPosition: Int
-        
-        if upperOrLower {
-            delta = 1
-            finalFileOrRank = 7
+    func upperOrLower(direction: Bool) -> [Int] {
+        var array = [Int]()
+        if direction {
+            array.append(1)
+            array.append(7)
         } else {
-            delta = -1
-            finalFileOrRank = 0
+            array.append(-1)
+            array.append(0)
         }
+        return array
+    }
+    
+    func giveFileOrRank(type: Bool, piece: Piece) -> Int {
+        if type {
+            return piece.position.file.rawValue
+        } else {
+            return piece.position.rank.rawValue
+        }
+    }
+    
+    func increment(type: Bool, delta: Int, rookPosition: Int) -> [Int] {
+        var array = [Int]()
+        
+        if type {
+            array.append(delta + 1)
+            array.append(rookPosition + 1)
+        } else {
+            array.append(delta - 1)
+            array.append(rookPosition - 1)
+        }
+        return array
+    }
+    
+    func appendFileOrRank(fileOrRank: Bool, piece: Piece, delta: Int) -> [Position] {
+        var coordinates = [Position]()
         
         if fileOrRank {
-            rookPosition = piece.position.file.rawValue
+            if let position = changedPositionFile(for: piece, delta: delta) {
+                coordinates.append(position)
+            }
         } else {
-            rookPosition = piece.position.rank.rawValue
+            if let position = changedPositionRank(for: piece, delta: delta) {
+                coordinates.append(position)
+            }
         }
+        return coordinates
+    }
+    
+    func iteratingThroughFilesOrRanks(piece: Piece, upOrLower: Bool, fileOrRank: Bool) -> [Position] {
+        var coordinates = [Position]()
+        var delta = upperOrLower(direction: upOrLower)[0]
+        let finalFileOrRank = upperOrLower(direction: upOrLower)[1]
+        var rookPosition = giveFileOrRank(type: fileOrRank, piece: piece)
         
         while (rookPosition != finalFileOrRank) {
-            if fileOrRank {
-                if let position = changedPositionFile(for: piece, delta: delta) {
-                    coordinates.append(position)
-                }
-            } else {
-                if let position = changedPositionRank(for: piece, delta: delta) {
-                    coordinates.append(position)
-                }
-            }
-            if upperOrLower {
-                delta += 1
-                rookPosition += 1
-            } else {
-                delta -= 1
-                rookPosition -= 1
-            }
+            coordinates += appendFileOrRank(fileOrRank: fileOrRank, piece: piece, delta: delta)
+            delta = increment(type: upOrLower, delta: delta, rookPosition: rookPosition)[0]
+            rookPosition = increment(type: upOrLower, delta: delta, rookPosition: rookPosition)[1]
         }
         return coordinates
     }
@@ -108,10 +129,10 @@ class ChessEngine {
     private func possibleRookMoves(rook: Piece) -> [Position] {
         var coordinates = [Position]()
         
-        coordinates += iteratingThroughFilesOrRanks(piece: rook, upperOrLower: true, fileOrRank: false)
-        coordinates += iteratingThroughFilesOrRanks(piece: rook, upperOrLower: false, fileOrRank: false)
-        coordinates += iteratingThroughFilesOrRanks(piece: rook, upperOrLower: false, fileOrRank: true)
-        coordinates += iteratingThroughFilesOrRanks(piece: rook, upperOrLower: true, fileOrRank: true)
+        coordinates += iteratingThroughFilesOrRanks(piece: rook, upOrLower: true, fileOrRank: false)
+        coordinates += iteratingThroughFilesOrRanks(piece: rook, upOrLower: false, fileOrRank: false)
+        coordinates += iteratingThroughFilesOrRanks(piece: rook, upOrLower: false, fileOrRank: true)
+        coordinates += iteratingThroughFilesOrRanks(piece: rook, upOrLower: true, fileOrRank: true)
         
         return coordinates
     }
