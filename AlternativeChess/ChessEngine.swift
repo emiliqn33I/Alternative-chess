@@ -11,7 +11,8 @@ class ChessEngine {
         Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
         Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third)),
         Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first)),
-        Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth))
+        //Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth)),
+        Piece(type: .bishop, colour: .white, position: Position(file: .F, rank: .first))
 
     ]
 
@@ -22,11 +23,13 @@ class ChessEngine {
             return possiblePawnMoves(pawn: piece)
         case .rook:
             return possibleRookMoves(rook: piece)
+        case .bishop:
+            return possibleRookMoves(rook: piece)
         }
     }
     
     // MARK: Helper methods
-    private func piece(at position: Position) -> Piece? {
+    func piece(at position: Position) -> Piece? {
         pieces.first { $0.position == position }
     }
 
