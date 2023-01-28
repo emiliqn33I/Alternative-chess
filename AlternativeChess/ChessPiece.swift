@@ -68,6 +68,7 @@ struct Piece {
     enum PieceType {
         case pawn
         case rook
+        case bishop
     }
 
     enum Color {
