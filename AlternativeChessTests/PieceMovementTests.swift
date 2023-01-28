@@ -61,7 +61,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhiteRookMovesStartingPosition() {
         // Given the user is on the board screen
         let allpieces = chessEngine.pieces
-        // And there is a pawn at the H1
+        // And there is a rook at the H1
         let rookH1 = allpieces.first { $0.position.rank == .first && $0.position.file == .H }
         if rookH1 == nil {
             XCTFail()
@@ -102,7 +102,7 @@ final class PieceMovementTests: XCTestCase {
         // Given the user is on the board screen
         let allpieces = chessEngine.pieces
         
-        // And there is a rook at the E4
+        // And there is a bishop at the C1
         let rookE4 = allpieces.first { $0.position.rank == .fourth && $0.position.file == .E }
         if rookE4 == nil {
             XCTFail()
@@ -139,5 +139,56 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesE4[11].file == .F) && (validMovesE4[11].rank == .fourth) &&
                   (validMovesE4[12].file == .G) && (validMovesE4[12].rank == .fourth) &&
                   (validMovesE4[13].file == .H) && (validMovesE4[13].rank == .fourth))
+    }
+    
+    func testWhiteBishopMovesStartingPosition() {
+        // Given the user is on the board screen
+        let allpieces = chessEngine.pieces
+        // And there is a bishop at the F1
+        let bishopF1 = allpieces.first { $0.position.rank == .first && $0.position.file == .F }
+        if bishopF1 == nil {
+            XCTFail()
+        }
+        // And there is no piece on the way of the bishop at H1
+        var positions = [Position]()
+        var fileBishop = bishopF1!.position.file.rawValue
+        var rankBishop = bishopF1!.position.rank.rawValue
+        
+        while(fileBishop > 0) {
+            fileBishop -= 1
+            rankBishop += 1
+            let positon = Position(file: Position.File(rawValue: fileBishop)!, rank: Position.Rank(rawValue: rankBishop)!)
+            positions.append(positon)
+        }
+        
+        fileBishop = bishopF1!.position.file.rawValue
+        rankBishop = bishopF1!.position.rank.rawValue
+
+        while(fileBishop < 7) {
+            fileBishop += 1
+            rankBishop += 1
+            let positon = Position(file: Position.File(rawValue: fileBishop)!, rank: Position.Rank(rawValue: rankBishop)!)
+            positions.append(positon)
+        }
+        
+        for position in positions {
+            let piecesOnBishopWay = allpieces.filter { $0.position.file.rawValue == position.file.rawValue && $0.position.rank.rawValue > position.rank.rawValue }
+            
+            if piecesOnBishopWay.count != 0 {
+                XCTFail()
+            }
+        }
+
+        // When they tap the bishop F1
+        // Then the E2, D3, C4, B5, A6, G2, H3  squares on the board will be highlighted
+        let validMovesF1 = chessEngine.possibleMoves(piece: bishopF1!)
+        XCTAssert(validMovesF1.count == 7)
+        XCTAssert((validMovesF1[0].file == .E) && (validMovesF1[0].rank == .second) &&
+                  (validMovesF1[1].file == .D) && (validMovesF1[1].rank == .third) &&
+                  (validMovesF1[2].file == .C) && (validMovesF1[2].rank == .fourth) &&
+                  (validMovesF1[3].file == .B) && (validMovesF1[3].rank == .fifth) &&
+                  (validMovesF1[4].file == .A) && (validMovesF1[4].rank == .sixth) &&
+                  (validMovesF1[5].file == .G) && (validMovesF1[5].rank == .second) &&
+                  (validMovesF1[6].file == .H) && (validMovesF1[6].rank == .third))
     }
 }
