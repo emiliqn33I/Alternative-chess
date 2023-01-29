@@ -14,7 +14,8 @@ class ChessEngine {
         Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth)),
         Piece(type: .bishop, colour: .white, position: Position(file: .F, rank: .first)),
         Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third)),
-        Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first))
+        Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first)),
+        Piece(type: .knight, colour: .white, position: Position(file: .B, rank: .sixth))
 
     ]
 
