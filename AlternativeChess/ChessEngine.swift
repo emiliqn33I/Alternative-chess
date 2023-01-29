@@ -13,7 +13,8 @@ class ChessEngine {
         //Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first)),
         Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth)),
         Piece(type: .bishop, colour: .white, position: Position(file: .F, rank: .first)),
-        Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third))
+        Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third)),
+        Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first))
 
     ]
 
@@ -25,6 +26,8 @@ class ChessEngine {
         case .rook:
             return possibleRookMoves(rook: piece)
         case .bishop:
+            return possibleBishopMoves(bishop: piece)
+        case .knight:
             return possibleBishopMoves(bishop: piece)
         }
     }
