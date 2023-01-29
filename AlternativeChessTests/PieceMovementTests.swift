@@ -244,4 +244,32 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesG1[1].file == .F) && (validMovesG1[1].rank == .third) &&
                   (validMovesG1[2].file == .H) && (validMovesG1[2].rank == .third))
     }
+    
+    func testWhiteKnightMovesRandomPosition() {
+        // Given the user is on the board screen
+        let allpieces = chessEngine.pieces
+        // And there is a knight at the B6
+        let knightB6 = allpieces.first { $0.position.rank == .sixth && $0.position.file == .B }
+        if knightB6 == nil && knightB6?.type != .knight {
+            XCTFail()
+        }
+        // And there is no piece on the way of the knight at B6
+        let validMovesB6 = chessEngine.possibleMoves(piece: knightB6!)
+        
+        for moves in validMovesB6 {
+            let pieces = allpieces.filter { ($0.position.rank.rawValue == moves.rank.rawValue) && ($0.position.file.rawValue == moves.file.rawValue) }
+            if pieces.count != 0 {
+                XCTFail()
+            }
+        }
+        // When they tap the knight at B6
+        // Then the A8, C8, D7, D5, A4, C4 squares on the board will be highlighted
+        XCTAssert(validMovesB6.count == 3)
+        XCTAssert((validMovesB6[0].file == .A) && (validMovesB6[0].rank == .eighth) &&
+                  (validMovesB6[1].file == .C) && (validMovesB6[1].rank == .eighth) &&
+                  (validMovesB6[2].file == .D) && (validMovesB6[2].rank == .seventh) &&
+                  (validMovesB6[3].file == .D) && (validMovesB6[3].rank == .fifth) &&
+                  (validMovesB6[4].file == .A) && (validMovesB6[4].rank == .fourth) &&
+                  (validMovesB6[5].file == .C) && (validMovesB6[5].rank == .fourth))
+    }
 }
