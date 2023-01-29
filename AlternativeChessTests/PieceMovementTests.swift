@@ -107,7 +107,6 @@ final class PieceMovementTests: XCTestCase {
         if rookE4 == nil {
             XCTFail()
         }
-        
         // And there is no piece on E file other than the rook
         let piecesOnEFile = allpieces.filter { $0.position.file == .E }
 
@@ -120,7 +119,6 @@ final class PieceMovementTests: XCTestCase {
         if (piecesOn4Rank.count != 1) || (piecesOn4Rank[0].type != .rook) {
             XCTFail()
         }
-        
         // When they tap the rook E3
         // Then the E4, E5, E6, E7, E8, E2, E1, D3, C3, B3, A3, F3, G3, H3 squares on the board will be highlighted
         let validMovesE4 = chessEngine.possibleMoves(piece: rookE4!)
@@ -178,7 +176,6 @@ final class PieceMovementTests: XCTestCase {
                 XCTFail()
             }
         }
-
         // When they tap the bishop F1
         // Then the E2, D3, C4, B5, A6, G2, H3  squares on the board will be highlighted
         let validMovesF1 = chessEngine.possibleMoves(piece: bishopF1!)
@@ -190,5 +187,37 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesF1[4].file == .A) && (validMovesF1[4].rank == .sixth) &&
                   (validMovesF1[5].file == .G) && (validMovesF1[5].rank == .second) &&
                   (validMovesF1[6].file == .H) && (validMovesF1[6].rank == .third))
+    }
+    
+    func testWhiteBishopMovesRandomPosition() {
+        // Given the user is on the board screen
+        let allpieces = chessEngine.pieces
+        // And there is a bishop at the G3
+        let bishopG3 = allpieces.first { $0.position.rank == .third && $0.position.file == .G }
+        if bishopG3 == nil {
+            XCTFail()
+        }
+        // And there is no piece on the way of the bishop at G3
+        let validMovesG3 = chessEngine.possibleMoves(piece: bishopG3!)
+        
+        for moves in validMovesG3 {
+            let pieces = allpieces.filter { ($0.position.rank.rawValue == moves.rank.rawValue) && ($0.position.file.rawValue == moves.file.rawValue) }
+            if pieces.count != 0 {
+                XCTFail()
+            }
+        }
+        print(validMovesG3)
+        // When they tap the bishop G3
+        // Then the F4, E5, D6, C7, B8, H4, H2, F2, E1 squares on the board will be highlighted
+        XCTAssert(validMovesG3.count == 9)
+        XCTAssert((validMovesG3[0].file == .F) && (validMovesG3[0].rank == .fourth) &&
+                  (validMovesG3[1].file == .E) && (validMovesG3[1].rank == .fifth) &&
+                  (validMovesG3[2].file == .D) && (validMovesG3[2].rank == .sixth) &&
+                  (validMovesG3[3].file == .C) && (validMovesG3[3].rank == .seventh) &&
+                  (validMovesG3[4].file == .B) && (validMovesG3[4].rank == .eighth) &&
+                  (validMovesG3[5].file == .H) && (validMovesG3[5].rank == .fourth) &&
+                  (validMovesG3[6].file == .H) && (validMovesG3[6].rank == .second) &&
+                  (validMovesG3[7].file == .F) && (validMovesG3[7].rank == .second) &&
+                  (validMovesG3[8].file == .E) && (validMovesG3[8].rank == .first))
     }
 }
