@@ -206,7 +206,6 @@ final class PieceMovementTests: XCTestCase {
                 XCTFail()
             }
         }
-        print(validMovesG3)
         // When they tap the bishop G3
         // Then the F4, E5, D6, C7, B8, H4, H2, F2, E1 squares on the board will be highlighted
         XCTAssert(validMovesG3.count == 9)
@@ -219,5 +218,30 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesG3[6].file == .H) && (validMovesG3[6].rank == .second) &&
                   (validMovesG3[7].file == .F) && (validMovesG3[7].rank == .second) &&
                   (validMovesG3[8].file == .E) && (validMovesG3[8].rank == .first))
+    }
+    
+    func testWhiteKnightMovesStartingPosition() {
+        // Given the user is on the board screen
+        let allpieces = chessEngine.pieces
+        // And there is a knight at the G1
+        let knightG1 = allpieces.first { $0.position.rank == .first && $0.position.file == .G }
+        if knightG1 == nil && knightG1?.type != .knight {
+            XCTFail()
+        }
+        // And there is no piece on the way of the knight at G1
+        let validMovesG1 = chessEngine.possibleMoves(piece: knightG1!)
+        
+        for moves in validMovesG1 {
+            let pieces = allpieces.filter { ($0.position.rank.rawValue == moves.rank.rawValue) && ($0.position.file.rawValue == moves.file.rawValue) }
+            if pieces.count != 0 {
+                XCTFail()
+            }
+        }
+        // When they tap the knight at G1
+        // Then the E2, F3, H3 squares on the board will be highlighted
+        XCTAssert(validMovesG1.count == 3)
+        XCTAssert((validMovesG1[0].file == .E) && (validMovesG1[0].rank == .second) &&
+                  (validMovesG1[1].file == .F) && (validMovesG1[1].rank == .third) &&
+                  (validMovesG1[2].file == .H) && (validMovesG1[2].rank == .third))
     }
 }
