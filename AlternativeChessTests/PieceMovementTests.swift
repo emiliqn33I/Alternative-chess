@@ -300,20 +300,20 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesD1[4].file == .D) && (validMovesD1[4].rank == .sixth) &&
                   (validMovesD1[5].file == .D) && (validMovesD1[5].rank == .seventh) &&
                   (validMovesD1[6].file == .D) && (validMovesD1[6].rank == .eighth) &&
-                  (validMovesD1[7].file == .E) && (validMovesD1[7].rank == .first) &&
-                  (validMovesD1[8].file == .F) && (validMovesD1[8].rank == .first) &&
-                  (validMovesD1[9].file == .G) && (validMovesD1[9].rank == .first) &&
-                  (validMovesD1[10].file == .H) && (validMovesD1[10].rank == .first) &&
-                  (validMovesD1[11].file == .C) && (validMovesD1[11].rank == .first) &&
-                  (validMovesD1[12].file == .B) && (validMovesD1[12].rank == .first) &&
-                  (validMovesD1[13].file == .A) && (validMovesD1[13].rank == .first) &&
-                  (validMovesD1[14].file == .E) && (validMovesD1[14].rank == .second) &&
-                  (validMovesD1[15].file == .F) && (validMovesD1[15].rank == .third) &&
-                  (validMovesD1[16].file == .G) && (validMovesD1[16].rank == .fourth) &&
-                  (validMovesD1[17].file == .H) && (validMovesD1[17].rank == .fifth) &&
-                  (validMovesD1[18].file == .C) && (validMovesD1[18].rank == .second) &&
-                  (validMovesD1[19].file == .B) && (validMovesD1[19].rank == .third) &&
-                  (validMovesD1[20].file == .A) && (validMovesD1[20].rank == .fourth))
+                  (validMovesD1[7].file == .C) && (validMovesD1[7].rank == .first) &&
+                  (validMovesD1[8].file == .B) && (validMovesD1[8].rank == .first) &&
+                  (validMovesD1[9].file == .A) && (validMovesD1[9].rank == .first) &&
+                  (validMovesD1[10].file == .E) && (validMovesD1[10].rank == .first) &&
+                  (validMovesD1[11].file == .F) && (validMovesD1[11].rank == .first) &&
+                  (validMovesD1[12].file == .G) && (validMovesD1[12].rank == .first) &&
+                  (validMovesD1[13].file == .H) && (validMovesD1[13].rank == .first) &&
+                  (validMovesD1[14].file == .C) && (validMovesD1[14].rank == .second) &&
+                  (validMovesD1[15].file == .B) && (validMovesD1[15].rank == .third) &&
+                  (validMovesD1[16].file == .A) && (validMovesD1[16].rank == .fourth) &&
+                  (validMovesD1[17].file == .E) && (validMovesD1[17].rank == .second) &&
+                  (validMovesD1[18].file == .F) && (validMovesD1[18].rank == .third) &&
+                  (validMovesD1[19].file == .G) && (validMovesD1[19].rank == .fourth) &&
+                  (validMovesD1[20].file == .H) && (validMovesD1[20].rank == .fifth))
     }
     
     func testWhiteQueenMovesRandomPosition() {
@@ -343,20 +343,20 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesE3[4].file == .E) && (validMovesE3[4].rank == .eighth) &&
                   (validMovesE3[5].file == .E) && (validMovesE3[5].rank == .second) &&
                   (validMovesE3[6].file == .E) && (validMovesE3[6].rank == .first) &&
-                  (validMovesE3[7].file == .F) && (validMovesE3[7].rank == .third) &&
-                  (validMovesE3[8].file == .G) && (validMovesE3[8].rank == .third) &&
-                  (validMovesE3[9].file == .H) && (validMovesE3[9].rank == .third) &&
-                  (validMovesE3[10].file == .D) && (validMovesE3[10].rank == .third) &&
-                  (validMovesE3[11].file == .C) && (validMovesE3[11].rank == .third) &&
-                  (validMovesE3[12].file == .B) && (validMovesE3[12].rank == .third) &&
-                  (validMovesE3[13].file == .A) && (validMovesE3[13].rank == .third) &&
-                  (validMovesE3[14].file == .F) && (validMovesE3[14].rank == .fourth) &&
-                  (validMovesE3[15].file == .G) && (validMovesE3[15].rank == .fifth) &&
-                  (validMovesE3[16].file == .H) && (validMovesE3[16].rank == .sixth) &&
-                  (validMovesE3[17].file == .D) && (validMovesE3[17].rank == .fourth) &&
-                  (validMovesE3[18].file == .C) && (validMovesE3[18].rank == .fifth) &&
-                  (validMovesE3[19].file == .B) && (validMovesE3[19].rank == .sixth) &&
-                  (validMovesE3[20].file == .A) && (validMovesE3[20].rank == .seventh) &&
+                  (validMovesE3[7].file == .D) && (validMovesE3[7].rank == .third) &&
+                  (validMovesE3[8].file == .C) && (validMovesE3[8].rank == .third) &&
+                  (validMovesE3[9].file == .B) && (validMovesE3[9].rank == .third) &&
+                  (validMovesE3[10].file == .A) && (validMovesE3[10].rank == .third) &&
+                  (validMovesE3[11].file == .F) && (validMovesE3[11].rank == .third) &&
+                  (validMovesE3[12].file == .G) && (validMovesE3[12].rank == .third) &&
+                  (validMovesE3[13].file == .H) && (validMovesE3[13].rank == .third) &&
+                  (validMovesE3[14].file == .D) && (validMovesE3[14].rank == .fourth) &&
+                  (validMovesE3[15].file == .C) && (validMovesE3[15].rank == .fifth) &&
+                  (validMovesE3[16].file == .B) && (validMovesE3[16].rank == .sixth) &&
+                  (validMovesE3[17].file == .A) && (validMovesE3[17].rank == .seventh) &&
+                  (validMovesE3[18].file == .F) && (validMovesE3[18].rank == .fourth) &&
+                  (validMovesE3[19].file == .G) && (validMovesE3[19].rank == .fifth) &&
+                  (validMovesE3[20].file == .H) && (validMovesE3[20].rank == .sixth) &&
                   (validMovesE3[21].file == .F) && (validMovesE3[21].rank == .second) &&
                   (validMovesE3[22].file == .G) && (validMovesE3[22].rank == .first) &&
                   (validMovesE3[23].file == .D) && (validMovesE3[23].rank == .second) &&
