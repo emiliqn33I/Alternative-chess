@@ -8,15 +8,16 @@ import Foundation
 
 class ChessEngine {
     var pieces = [
-        Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
-        Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third)),
+//        Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
+//        Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third)),
         //Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first)),
-        Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth)),
-        Piece(type: .bishop, colour: .white, position: Position(file: .F, rank: .first)),
-        Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third)),
-        Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first)),
-        Piece(type: .knight, colour: .white, position: Position(file: .B, rank: .sixth))
-
+//        Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth)),
+//        Piece(type: .bishop, colour: .white, position: Position(file: .F, rank: .first)),
+//        Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third)),
+//        Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first)),
+//        Piece(type: .knight, colour: .white, position: Position(file: .B, rank: .sixth)),
+          Piece(type: .queen, colour: .white, position: Position(file: .D, rank: .first)),
+          Piece(type: .queen, colour: .white, position: Position(file: .E, rank: .third))
     ]
 
     // MARK: Public methods
@@ -30,6 +31,8 @@ class ChessEngine {
             return possibleBishopMoves(bishop: piece)
         case .knight:
             return possibleKnightMoves(knight: piece)
+        case .queen:
+            return possibleQueenMoves(queen: piece)
         }
     }
     
@@ -314,4 +317,14 @@ class ChessEngine {
         
         return coordinates
     }
+    
+    private func possibleQueenMoves(queen: Piece) -> [Position] {
+        var coordinates = [Position]()
+        
+        coordinates += possibleRookMoves(rook: queen)
+        coordinates += possibleBishopMoves(bishop: queen)
+        
+        return coordinates
+    }
+
 }
