@@ -238,10 +238,10 @@ final class PieceMovementTests: XCTestCase {
             }
         }
         // When they tap the knight at G1
-        // Then the E2, F3, H3 squares on the board will be highlighted
+        // Then the F3, E2, H3 squares on the board will be highlighted
         XCTAssert(validMovesG1.count == 3)
-        XCTAssert((validMovesG1[0].file == .E) && (validMovesG1[0].rank == .second) &&
-                  (validMovesG1[1].file == .F) && (validMovesG1[1].rank == .third) &&
+        XCTAssert((validMovesG1[0].file == .F) && (validMovesG1[0].rank == .third) &&
+                  (validMovesG1[1].file == .E) && (validMovesG1[1].rank == .second) &&
                   (validMovesG1[2].file == .H) && (validMovesG1[2].rank == .third))
     }
     
@@ -263,13 +263,13 @@ final class PieceMovementTests: XCTestCase {
             }
         }
         // When they tap the knight at B6
-        // Then the A8, C8, D7, D5, A4, C4 squares on the board will be highlighted
-        XCTAssert(validMovesB6.count == 3)
+        // Then the A8, C8, D7, C4, D5, A4 squares on the board will be highlighted
+        XCTAssert(validMovesB6.count == 6)
         XCTAssert((validMovesB6[0].file == .A) && (validMovesB6[0].rank == .eighth) &&
                   (validMovesB6[1].file == .C) && (validMovesB6[1].rank == .eighth) &&
                   (validMovesB6[2].file == .D) && (validMovesB6[2].rank == .seventh) &&
-                  (validMovesB6[3].file == .D) && (validMovesB6[3].rank == .fifth) &&
-                  (validMovesB6[4].file == .A) && (validMovesB6[4].rank == .fourth) &&
-                  (validMovesB6[5].file == .C) && (validMovesB6[5].rank == .fourth))
+                  (validMovesB6[3].file == .C) && (validMovesB6[3].rank == .fourth) &&
+                  (validMovesB6[4].file == .D) && (validMovesB6[4].rank == .fifth) &&
+                  (validMovesB6[5].file == .A) && (validMovesB6[5].rank == .fourth))
     }
 }
