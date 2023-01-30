@@ -29,7 +29,7 @@ class ChessEngine {
         case .bishop:
             return possibleBishopMoves(bishop: piece)
         case .knight:
-            return possibleBishopMoves(bishop: piece)
+            return possibleKnightMoves(knight: piece)
         }
     }
     
@@ -141,6 +141,37 @@ class ChessEngine {
         return array
     }
     
+    private func incrementRankAndFileKnight(file: Bool, rank: Bool, incrementFile: Int, incrementRank: Int) -> [Int] {
+        var array = [Int]()
+        
+        if file && rank {
+            array.append(incrementFile + 1)
+            array.append(incrementRank + 2)
+            array.append(incrementFile + 2)
+            array.append(incrementRank + 1)
+        }
+        if file && (rank == false) {
+            array.append(incrementFile + 1)
+            array.append(incrementRank - 2)
+            array.append(incrementFile + 2)
+            array.append(incrementRank - 1)
+        }
+        if (file == false) && rank {
+            array.append(incrementFile - 1)
+            array.append(incrementRank + 2)
+            array.append(incrementFile - 2)
+            array.append(incrementRank + 1)
+        }
+        if (file == false) && (rank == false) {
+            array.append(incrementFile - 1)
+            array.append(incrementRank - 2)
+            array.append(incrementFile - 2)
+            array.append(incrementRank - 1)
+        }
+        
+        return array
+    }
+
     
     private func appendFileOrRank(fileOrRank: Bool, piece: Piece, incrementWith: Int) -> [Position] {
         var coordinates = [Position]()
@@ -162,6 +193,16 @@ class ChessEngine {
         var coordinates = [Position]()
         
         if let position = changedPositionFileAndRank(for: piece, fileDelta: incrementFile, rankDelta: incrementRank) {
+            coordinates.append(position)
+        }
+        
+        return coordinates
+    }
+    
+    private func appendFileAndRankKnight(knight: Piece, incrementFile: Int, incrementRank: Int) -> [Position] {
+        var coordinates = [Position]()
+        
+        if let position = changedPositionFileAndRank(for: knight, fileDelta: incrementFile, rankDelta: incrementRank) {
             coordinates.append(position)
         }
         
@@ -205,7 +246,6 @@ class ChessEngine {
         let finalFile = upperOrLower(direction: rightOrLeft)[1]
         let finalRank = upperOrLower(direction: upOrLower)[1]
         
-        //print(rankBishop)
         while((file != finalFile) && (rank != finalRank)) {
             coordinates += appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)
             
@@ -217,7 +257,6 @@ class ChessEngine {
         
         return coordinates
     }
-
     
     private func possibleBishopMoves(bishop: Piece) -> [Position] {
         var coordinates = [Position]()
@@ -226,6 +265,52 @@ class ChessEngine {
         coordinates += iteratingThroughFilesAndRanks(piece: bishop, upOrLower: true, rightOrLeft: true)
         coordinates += iteratingThroughFilesAndRanks(piece: bishop, upOrLower: false, rightOrLeft: true)
         coordinates += iteratingThroughFilesAndRanks(piece: bishop, upOrLower: false, rightOrLeft: false)
+        
+        return coordinates
+    }
+    
+    private func iteratingThroughFilesAndRanksForKnight(piece: Piece, upOrLower: Bool, rightOrLeft: Bool) -> [Position] {
+        var coordinates = [Position]()
+        var countFile = 0
+        var countRank = 1
+        
+        for _ in 1...2 {
+            var fileKnight = 0
+            var rankKnight = 0
+            
+            fileKnight = incrementRankAndFileKnight(file: rightOrLeft, rank: upOrLower, incrementFile: fileKnight, incrementRank: rankKnight)[countFile]
+            
+            rankKnight = incrementRankAndFileKnight(file: rightOrLeft, rank: upOrLower, incrementFile: fileKnight, incrementRank: rankKnight)[countRank]
+
+            var casesRank = [Int]()
+            var casesFile = [Int]()
+            
+            for rank in Position.Rank.allCases {
+                casesRank.append(rank.rawValue)
+            }
+            
+            for file in Position.File.allCases {
+                casesFile.append(file.rawValue)
+            }
+            
+            if (casesRank.contains(piece.position.rank.rawValue + rankKnight)) && (casesFile.contains(piece.position.file.rawValue + fileKnight)) {
+                coordinates += appendFileAndRank(piece: piece, incrementFile: fileKnight, incrementRank: rankKnight)
+            }
+            
+            countFile += 2
+            countRank += 2
+        }
+        
+        return coordinates
+    }
+    
+    private func possibleKnightMoves(knight: Piece) -> [Position] {
+        var coordinates = [Position]()
+        
+        coordinates += iteratingThroughFilesAndRanksForKnight(piece: knight, upOrLower: true, rightOrLeft: false)
+        coordinates += iteratingThroughFilesAndRanksForKnight(piece: knight, upOrLower: true, rightOrLeft: true)
+        coordinates += iteratingThroughFilesAndRanksForKnight(piece: knight, upOrLower: false, rightOrLeft: true)
+        coordinates += iteratingThroughFilesAndRanksForKnight(piece: knight, upOrLower: false, rightOrLeft: false)
         
         return coordinates
     }
