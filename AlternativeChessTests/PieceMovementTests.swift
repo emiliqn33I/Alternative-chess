@@ -362,4 +362,31 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesE3[23].file == .D) && (validMovesE3[23].rank == .second) &&
                   (validMovesE3[24].file == .C) && (validMovesE3[24].rank == .first))
     }
+    
+    func testWhiteKingMovesStartingPosition() {
+        // Given the user is on the board screen
+        let allpieces = chessEngine.pieces
+        // And there is a king at the E1
+        let kingE1 = allpieces.first { $0.position.rank == .first && $0.position.file == .E }
+        if kingE1 == nil || kingE1?.type != .king {
+            XCTFail()
+        }
+        // And there is no piece on the way of the king at E1
+        let validMovesE1 = chessEngine.possibleMoves(piece: kingE1!)
+        
+        for moves in validMovesE1 {
+            let pieces = allpieces.filter { ($0.position.rank.rawValue == moves.rank.rawValue) && ($0.position.file.rawValue == moves.file.rawValue) }
+            if pieces.count != 0 {
+                XCTFail()
+            }
+        }
+        // When they tap the king at E1
+        // Then the E2, F1, D1, F2, D2 squares on the board will be highlighted
+        XCTAssert(validMovesE1.count == 5)
+        XCTAssert((validMovesE1[0].file == .E) && (validMovesE1[0].rank == .second) &&
+                  (validMovesE1[1].file == .F) && (validMovesE1[1].rank == .first) &&
+                  (validMovesE1[2].file == .D) && (validMovesE1[2].rank == .first) &&
+                  (validMovesE1[3].file == .F) && (validMovesE1[3].rank == .second) &&
+                  (validMovesE1[4].file == .D) && (validMovesE1[4].rank == .second))
+    }
 }
