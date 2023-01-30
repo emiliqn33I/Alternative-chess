@@ -272,4 +272,47 @@ final class PieceMovementTests: XCTestCase {
                   (validMovesB6[4].file == .D) && (validMovesB6[4].rank == .fifth) &&
                   (validMovesB6[5].file == .A) && (validMovesB6[5].rank == .fourth))
     }
+    
+    func testWhiteQueenMovesStartingPosition() {
+        // Given the user is on the board screen
+        let allpieces = chessEngine.pieces
+        // And there is a queen at the D1
+        let queenD1 = allpieces.first { $0.position.rank == .first && $0.position.file == .D }
+        if queenD1 == nil || queenD1?.type != .queen {
+            XCTFail()
+        }
+        // And there is no piece on the way of the knight at B6
+        let validMovesD1 = chessEngine.possibleMoves(piece: queenD1!)
+        
+        for moves in validMovesD1 {
+            let pieces = allpieces.filter { ($0.position.rank.rawValue == moves.rank.rawValue) && ($0.position.file.rawValue == moves.file.rawValue) }
+            if pieces.count != 0 {
+                XCTFail()
+            }
+        }
+        // When they tap the queen at D1
+        // Then the D2, D3, D4, D5, D6, D7, D8, E1, F1, G1, H1, C1, B1, A1, E2, F3, G4, H5, C2, B3, A4 squares on the board will be highlighted
+        XCTAssert(validMovesD1.count == 21)
+        XCTAssert((validMovesD1[0].file == .D) && (validMovesD1[0].rank == .second) &&
+                  (validMovesD1[1].file == .D) && (validMovesD1[1].rank == .third) &&
+                  (validMovesD1[2].file == .D) && (validMovesD1[2].rank == .fourth) &&
+                  (validMovesD1[3].file == .D) && (validMovesD1[3].rank == .fifth) &&
+                  (validMovesD1[4].file == .D) && (validMovesD1[4].rank == .sixth) &&
+                  (validMovesD1[5].file == .D) && (validMovesD1[5].rank == .seventh) &&
+                  (validMovesD1[6].file == .D) && (validMovesD1[0].rank == .eighth) &&
+                  (validMovesD1[7].file == .E) && (validMovesD1[1].rank == .first) &&
+                  (validMovesD1[8].file == .F) && (validMovesD1[2].rank == .first) &&
+                  (validMovesD1[9].file == .G) && (validMovesD1[3].rank == .first) &&
+                  (validMovesD1[10].file == .H) && (validMovesD1[4].rank == .first) &&
+                  (validMovesD1[11].file == .C) && (validMovesD1[5].rank == .first) &&
+                  (validMovesD1[12].file == .B) && (validMovesD1[4].rank == .first) &&
+                  (validMovesD1[13].file == .A) && (validMovesD1[5].rank == .first) &&
+                  (validMovesD1[14].file == .E) && (validMovesD1[0].rank == .second) &&
+                  (validMovesD1[15].file == .F) && (validMovesD1[1].rank == .third) &&
+                  (validMovesD1[16].file == .G) && (validMovesD1[2].rank == .fourth) &&
+                  (validMovesD1[17].file == .H) && (validMovesD1[3].rank == .fifth) &&
+                  (validMovesD1[18].file == .C) && (validMovesD1[4].rank == .second) &&
+                  (validMovesD1[19].file == .B) && (validMovesD1[5].rank == .third) &&
+                  (validMovesD1[20].file == .A) && (validMovesD1[5].rank == .fourth))
+    }
 }
