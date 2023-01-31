@@ -71,6 +71,7 @@ struct Piece {
         case bishop
         case knight
         case queen
+        case king
     }
 
     enum Color {
