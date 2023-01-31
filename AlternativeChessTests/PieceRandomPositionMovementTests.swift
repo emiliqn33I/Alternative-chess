@@ -13,6 +13,18 @@ final class PieceRandomPositionMovementTests: XCTestCase {
         return ChessEngine(pieces: [piece])
     }
     
+    func testWhitePawnMovesRandomPosition() {
+        // Given the user is on the board screen
+        // And there is a pawn at the D5
+        let piece = Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .fifth))
+        let chessEngine = createSUT(piece: piece)
+        // When they tap the pawn D5
+        // Then the D6 square on the board will be highlighted
+        let validMovesD6 = chessEngine.possibleMoves(piece: piece)
+        XCTAssert(validMovesD6.count == 1)
+        XCTAssert((validMovesD6[0].file == .D) && (validMovesD6[0].rank == .sixth))
+    }
+    
     func testWhiteRookMovesRandomPosition() {
         // Given the user is on the board screen
         // And there is a rook at the E4
