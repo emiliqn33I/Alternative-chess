@@ -16,8 +16,10 @@ class ChessEngine {
 //        Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third)),
 //        Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first)),
 //        Piece(type: .knight, colour: .white, position: Position(file: .B, rank: .sixth)),
-          Piece(type: .queen, colour: .white, position: Position(file: .D, rank: .first)),
-          Piece(type: .queen, colour: .white, position: Position(file: .E, rank: .third))
+//        Piece(type: .queen, colour: .white, position: Position(file: .D, rank: .first)),
+//        Piece(type: .queen, colour: .white, position: Position(file: .E, rank: .third))
+          Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+          Piece(type: .king, colour: .white, position: Position(file: .E, rank: .sixth))
     ]
 
     // MARK: Public methods
@@ -33,6 +35,8 @@ class ChessEngine {
             return possibleKnightMoves(knight: piece)
         case .queen:
             return possibleQueenMoves(queen: piece)
+        case .king:
+            return possibleKingMoves(king: piece)
         }
     }
     
@@ -326,5 +330,43 @@ class ChessEngine {
         
         return coordinates
     }
+    
+    private func appendKingRookLikeMoves(king: Piece, upOrlower: Bool, fileOrRank: Bool) -> [Position] {
+        var coordinates = [Position]()
 
+        if iteratingThroughFilesOrRanks(piece: king, upOrLower: upOrlower, fileOrRank: fileOrRank).count != 0 {
+            coordinates.append(iteratingThroughFilesOrRanks(piece: king, upOrLower: upOrlower, fileOrRank: fileOrRank)[0])
+            
+            return coordinates
+        }
+        
+        return coordinates
+    }
+    
+    private func appendKingBishopLikeMoves(king: Piece, upOrlower: Bool, fileOrRank: Bool) -> [Position] {
+        var coordinates = [Position]()
+
+        if iteratingThroughFilesAndRanks(piece: king, upOrLower: upOrlower, rightOrLeft: fileOrRank).count != 0 {
+            coordinates.append(iteratingThroughFilesAndRanks(piece: king, upOrLower: upOrlower, rightOrLeft: fileOrRank)[0])
+            
+            return coordinates
+        }
+        
+        return coordinates
+    }
+
+    private func possibleKingMoves(king: Piece) -> [Position] {
+        var coordinates = [Position]()
+
+        coordinates += appendKingRookLikeMoves(king: king, upOrlower: true, fileOrRank: false)
+        coordinates += appendKingRookLikeMoves(king: king, upOrlower: false, fileOrRank: false)
+        coordinates += appendKingRookLikeMoves(king: king, upOrlower: false, fileOrRank: true)
+        coordinates += appendKingRookLikeMoves(king: king, upOrlower: true, fileOrRank: true)
+        coordinates += appendKingBishopLikeMoves(king: king, upOrlower: true, fileOrRank: false)
+        coordinates += appendKingBishopLikeMoves(king: king, upOrlower: false, fileOrRank: false)
+        coordinates += appendKingBishopLikeMoves(king: king, upOrlower: false, fileOrRank: true)
+        coordinates += appendKingBishopLikeMoves(king: king, upOrlower: true, fileOrRank: true)
+        
+        return coordinates
+    }
 }
