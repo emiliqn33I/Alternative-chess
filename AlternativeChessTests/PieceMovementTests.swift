@@ -381,12 +381,43 @@ final class PieceMovementTests: XCTestCase {
             }
         }
         // When they tap the king at E1
-        // Then the E2, F1, D1, F2, D2 squares on the board will be highlighted
+        // Then the E2, D1, F1, D2, F2 squares on the board will be highlighted
         XCTAssert(validMovesE1.count == 5)
         XCTAssert((validMovesE1[0].file == .E) && (validMovesE1[0].rank == .second) &&
-                  (validMovesE1[1].file == .F) && (validMovesE1[1].rank == .first) &&
-                  (validMovesE1[2].file == .D) && (validMovesE1[2].rank == .first) &&
-                  (validMovesE1[3].file == .F) && (validMovesE1[3].rank == .second) &&
-                  (validMovesE1[4].file == .D) && (validMovesE1[4].rank == .second))
+                  (validMovesE1[1].file == .D) && (validMovesE1[1].rank == .first) &&
+                  (validMovesE1[2].file == .F) && (validMovesE1[2].rank == .first) &&
+                  (validMovesE1[3].file == .D) && (validMovesE1[3].rank == .second) &&
+                  (validMovesE1[4].file == .F) && (validMovesE1[4].rank == .second))
+    }
+    
+    func testWhiteKingMovesRandomPosition() {
+        // Given the user is on the board screen
+        let allpieces = chessEngine.pieces
+        // And there is a king at the E6
+        let kingE6 = allpieces.first { $0.position.rank == .sixth && $0.position.file == .E }
+        if kingE6 == nil || kingE6?.type != .king {
+            XCTFail()
+        }
+        // And there is no piece on the way of the king at E6
+        let validMovesE6 = chessEngine.possibleMoves(piece: kingE6!)
+        
+        for moves in validMovesE6 {
+            let pieces = allpieces.filter { ($0.position.rank.rawValue == moves.rank.rawValue) && ($0.position.file.rawValue == moves.file.rawValue) }
+            if pieces.count != 0 {
+                XCTFail()
+            }
+        }
+        print(validMovesE6)
+        // When they tap the king at E6
+        // Then the E7, E5, D6, F6, D7, F7, F5, D5 squares on the board will be highlighted
+        XCTAssert(validMovesE6.count == 8)
+        XCTAssert((validMovesE6[0].file == .E) && (validMovesE6[0].rank == .seventh) &&
+                  (validMovesE6[1].file == .E) && (validMovesE6[1].rank == .fifth) &&
+                  (validMovesE6[2].file == .D) && (validMovesE6[2].rank == .sixth) &&
+                  (validMovesE6[3].file == .F) && (validMovesE6[3].rank == .sixth) &&
+                  (validMovesE6[4].file == .D) && (validMovesE6[4].rank == .seventh) &&
+                  (validMovesE6[5].file == .D) && (validMovesE6[5].rank == .fifth) &&
+                  (validMovesE6[6].file == .F) && (validMovesE6[6].rank == .fifth) &&
+                  (validMovesE6[7].file == .F) && (validMovesE6[7].rank == .seventh) )
     }
 }
