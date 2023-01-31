@@ -9,14 +9,10 @@ import UIKit
 
 class ChessBoardViewController: UIViewController {
     
-    var chessEngine = ChessEngine()
-    
     @IBOutlet weak var boardView: ChessBoardView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        boardView?.pieces = chessEngine.pieces
-        
     }
     override func loadViewIfNeeded() {
         super.loadViewIfNeeded()
