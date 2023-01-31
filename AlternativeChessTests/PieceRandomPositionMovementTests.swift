@@ -60,8 +60,6 @@ final class PieceRandomPositionMovementTests: XCTestCase {
                   (validMovesG3[8].file == .E) && (validMovesG3[8].rank == .first))
     }
     
-    
-    
     func testWhiteKnightMovesRandomPosition() {
         // Given the user is on the board screen
         // And there is a knight at the B6
@@ -80,9 +78,8 @@ final class PieceRandomPositionMovementTests: XCTestCase {
                   (validMovesB6[5].file == .A) && (validMovesB6[5].rank == .fourth))
     }
     
-    
     func testWhiteQueenMovesRandomPosition() {
-        // Given the user is on the board screen
+        // Given the user is on the board
         // And there is a queen at the E3
         let piece = Piece(type: .queen, colour: .white, position: Position(file: .E, rank: .third))
         let chessEngine = createSUT(piece: piece)
@@ -117,8 +114,6 @@ final class PieceRandomPositionMovementTests: XCTestCase {
                   (validMovesE3[23].file == .D) && (validMovesE3[23].rank == .second) &&
                   (validMovesE3[24].file == .C) && (validMovesE3[24].rank == .first))
     }
-    
-    
     
     func testWhiteKingMovesRandomPosition() {
         // Given the user is on the board screen
