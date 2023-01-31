@@ -18,6 +18,7 @@
 		BD505F492974270A00890A77 /* ChessEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F482974270A00890A77 /* ChessEngine.swift */; };
 		BD505F4B2974273900890A77 /* ChessPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F4A2974273900890A77 /* ChessPiece.swift */; };
 		BD505F4D2974276C00890A77 /* ChessBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F4C2974276C00890A77 /* ChessBoard.swift */; };
+		BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		BD505F482974270A00890A77 /* ChessEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessEngine.swift; sourceTree = "<group>"; };
 		BD505F4A2974273900890A77 /* ChessPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessPiece.swift; sourceTree = "<group>"; };
 		BD505F4C2974276C00890A77 /* ChessBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessBoard.swift; sourceTree = "<group>"; };
+		BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRandomPositionMovementTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 			children = (
 				90A8CFE7294BB40300229742 /* AlternativeChessTests.swift */,
 				90DCD1192982F5D30026B65D /* PieceMovementTests.swift */,
+				BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */,
 			);
 			path = AlternativeChessTests;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */,
 				90A8CFE8294BB40300229742 /* AlternativeChessTests.swift in Sources */,
 				90DCD11A2982F5D30026B65D /* PieceMovementTests.swift in Sources */,
 			);
