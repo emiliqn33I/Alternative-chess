@@ -29,11 +29,11 @@ final class AlternativeChessTests: XCTestCase {
             XCTFail()
             return
         }
-        
-        let squares = chessBoardViewController.board.squares
+        let chessBoard = Board()
+        let squares = chessBoard.squares
         XCTAssert(squares.count == 8)
         let _ = squares.map { XCTAssert($0.count == 8) }
-        
+
         // And the squares should alternate beteen white and black
         var row = 0
         var flagRow = 10
@@ -72,7 +72,7 @@ final class AlternativeChessTests: XCTestCase {
              }
             row += 1
         }
-        
+
         // And the bottom left square is black
         let bottomLeftSquare = squares[7][0]
         XCTAssert(bottomLeftSquare.color == .black)
@@ -86,9 +86,10 @@ final class AlternativeChessTests: XCTestCase {
         let chessBoardViewController = ChessBoardViewController()
         chessBoardViewController.loadViewIfNeeded()
         let chessBoardView = chessBoardViewController.board
+        let chessBoard = Board()
 
         var row = 0
-        for(_, item) in chessBoardView.squares.enumerated() {
+        for(_, item) in chessBoard.squares.enumerated() {
              var counter = 0
              for square in item {
                  let SideSquare = chessBoardView.bounds.height / Double(ChessBoardView.squaresInRow)
