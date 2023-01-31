@@ -7,20 +7,11 @@
 import Foundation
 
 class ChessEngine {
-    var pieces = [
-//        Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
-//        Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third)),
-        //Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first)),
-//        Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth)),
-//        Piece(type: .bishop, colour: .white, position: Position(file: .F, rank: .first)),
-//        Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third)),
-//        Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first)),
-//        Piece(type: .knight, colour: .white, position: Position(file: .B, rank: .sixth)),
-//        Piece(type: .queen, colour: .white, position: Position(file: .D, rank: .first)),
-//        Piece(type: .queen, colour: .white, position: Position(file: .E, rank: .third))
-          Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
-          Piece(type: .king, colour: .white, position: Position(file: .E, rank: .sixth))
-    ]
+    private let pieces: [Piece]
+    
+    init(pieces: [Piece]) {
+        self.pieces = pieces
+    }
 
     // MARK: Public methods
     func possibleMoves(piece: Piece) -> [Position] {
@@ -200,16 +191,6 @@ class ChessEngine {
         var coordinates = [Position]()
         
         if let position = changedPositionFileAndRank(for: piece, fileDelta: incrementFile, rankDelta: incrementRank) {
-            coordinates.append(position)
-        }
-        
-        return coordinates
-    }
-    
-    private func appendFileAndRankKnight(knight: Piece, incrementFile: Int, incrementRank: Int) -> [Position] {
-        var coordinates = [Position]()
-        
-        if let position = changedPositionFileAndRank(for: knight, fileDelta: incrementFile, rankDelta: incrementRank) {
             coordinates.append(position)
         }
         
