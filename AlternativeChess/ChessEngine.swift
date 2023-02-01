@@ -69,6 +69,9 @@ class ChessEngine {
                     if let position = changedPositionRank(for: pawn, delta: i) {
                         coordinates.append(position)
                     }
+                    else {
+                        break
+                    }
                 }
             } else if pawn.position.rank != .eighth {
                 if let position = changedPositionRank(for: pawn, delta: 1) {
@@ -217,11 +220,7 @@ class ChessEngine {
     }
     
     private func checkIsEmpty(positions: [Position]) -> Bool {
-        if positions.isEmpty {
-            return true
-        }
-        
-        return false
+        return positions.isEmpty
     }
     
     private func possibleRookMoves(rook: Piece) -> [Position] {
