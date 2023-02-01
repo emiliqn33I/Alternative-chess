@@ -205,12 +205,23 @@ class ChessEngine {
         var rookPosition = giveFileOrRank(type: fileOrRank, piece: piece)
         
         while (rookPosition != finalFileOrRank) {
+            if checkIsEmpty(positions: appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)) {
+                break
+            }
             coordinates += appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)
             incrementWith = incrementRankOrFile(type: upOrLower, incrementWith: incrementWith, rookPosition: rookPosition)[0]
             rookPosition = incrementRankOrFile(type: upOrLower, incrementWith: incrementWith, rookPosition: rookPosition)[1]
         }
         
         return coordinates
+    }
+    
+    private func checkIsEmpty(positions: [Position]) -> Bool {
+        if positions.isEmpty {
+            return true
+        }
+        
+        return false
     }
     
     private func possibleRookMoves(rook: Piece) -> [Position] {
@@ -235,6 +246,9 @@ class ChessEngine {
         let finalRank = upperOrLower(direction: upOrLower)[1]
         
         while((file != finalFile) && (rank != finalRank)) {
+            if checkIsEmpty(positions: appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)) {
+                break
+            }
             coordinates += appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)
             
             fileBishop = incrementRankAndFile(file: rightOrLeft, rank: upOrLower, incrementFile: fileBishop, incrementRank: rankBishop)[0]
