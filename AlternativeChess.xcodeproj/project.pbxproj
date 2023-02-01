@@ -19,6 +19,7 @@
 		BD505F4B2974273900890A77 /* ChessPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F4A2974273900890A77 /* ChessPiece.swift */; };
 		BD505F4D2974276C00890A77 /* ChessBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F4C2974276C00890A77 /* ChessBoard.swift */; };
 		BDCC22E6298995AD008133FB /* WhitePiecesMovementStartingPositionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC22E5298995AD008133FB /* WhitePiecesMovementStartingPositionTest.swift */; };
+		BDCC22E8298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC22E7298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift */; };
 		BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		BD505F4A2974273900890A77 /* ChessPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessPiece.swift; sourceTree = "<group>"; };
 		BD505F4C2974276C00890A77 /* ChessBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessBoard.swift; sourceTree = "<group>"; };
 		BDCC22E5298995AD008133FB /* WhitePiecesMovementStartingPositionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitePiecesMovementStartingPositionTest.swift; sourceTree = "<group>"; };
+		BDCC22E7298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitePiecesAtRandomPositonPossibleMoves.swift; sourceTree = "<group>"; };
 		BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRandomPositionMovementTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +113,7 @@
 				90DCD1192982F5D30026B65D /* PieceMovementTests.swift */,
 				BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */,
 				BDCC22E5298995AD008133FB /* WhitePiecesMovementStartingPositionTest.swift */,
+				BDCC22E7298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift */,
 			);
 			path = AlternativeChessTests;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */,
 				90A8CFE8294BB40300229742 /* AlternativeChessTests.swift in Sources */,
 				BDCC22E6298995AD008133FB /* WhitePiecesMovementStartingPositionTest.swift in Sources */,
+				BDCC22E8298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift in Sources */,
 				90DCD11A2982F5D30026B65D /* PieceMovementTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
