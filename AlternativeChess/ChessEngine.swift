@@ -78,6 +78,21 @@ class ChessEngine {
                     coordinates.append(position)
                 }
             }
+        } else {
+            if pawn.position.rank == .seventh {
+                for i in 1...2 {
+                    if let position = changedPositionRank(for: pawn, delta: -i) {
+                        coordinates.append(position)
+                    }
+                    else {
+                        break
+                    }
+                }
+            } else if pawn.position.rank != .first {
+                if let position = changedPositionRank(for: pawn, delta: -1) {
+                    coordinates.append(position)
+                }
+            }
         }
         
         return coordinates
