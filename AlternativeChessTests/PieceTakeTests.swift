@@ -24,7 +24,7 @@ final class PieceTakeTests: XCTestCase {
         // When they tap the B2 pawn
         // Then the C3 and A3 will be highlighted
         let validMovesB2pawn = chessEngine.possibleMoves(piece: pieces[1])
-        print(validMovesB2pawn)
+        XCTAssertTrue(validMovesB2pawn.count == 4)
         XCTAssertTrue(validMovesB2pawn.contains(Position(file: .C, rank: .third)))
         XCTAssertTrue(validMovesB2pawn.contains(Position(file: .A, rank: .third)))
     }
