@@ -13,6 +13,23 @@ final class PieceTakeTests: XCTestCase {
     func createSUT(pieces: [Piece]) -> ChessEngine {
         return ChessEngine(pieces: pieces)
     }
+    
+    func testPlacePiece() {
+        // Given the user has obtained a certain set of VALID moves
+        let piece = Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second))
+        let chessEngine = createSUT(pieces: [piece])
+        let validMoves = chessEngine.validMoves(for: piece)
+        let move = validMoves.first!
+    
+        // When the user places the piece at any of the valid moves
+        chessEngine.place(piece: piece, at: move)
+            
+        // And the board will contain the piece at its new position
+        let pieceAtNewPosition = chessEngine.piece(at: move)
+        XCTAssertNotNil(pieceAtNewPosition)
+//        XCTAssertTrue(pieceAtNewPosition!.type == piece.type)
+//        XCTAssertTrue(pieceAtNewPosition!.colour == piece.colour)
+    }
 
     func testWhitePawnTakes() {
         // Given the user is on the board screen

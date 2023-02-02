@@ -14,6 +14,29 @@ class ChessEngine {
     }
 
     // MARK: Public methods
+
+    func place(piece: Piece, at position: Position) -> Void {
+        let piece = Piece(type: piece.type,
+                          colour: piece.colour,
+                          position: position)
+        if let pieceToRemove = pieces.first(where: { $0 == piece }) {
+            let removeIndex = pieces.firstIndex(of: pieceToRemove)!
+            pieces.remove(at: removeIndex)
+        }
+        pieces.append(piece)
+    }
+
+    func validMoves(for piece: Piece) -> [Position] {
+        let possibleMoves = possibleMoves(piece: piece)
+        // 1. King check logic
+//        let kingCheckMoves = kingCheckMoves(king(color: .white), for: possibleMoves)
+//        let validMoves = [Position(file: .A, rank: .first)] // possibleMoves - kingCheckMoves
+//        return validMoves
+        return possibleMoves
+    }
+
+    // MARK: Helper methods
+
     func possibleMoves(piece: Piece) -> [Position] {
         switch piece.type {
         case .pawn:
@@ -29,6 +52,24 @@ class ChessEngine {
         case .king:
             return possibleKingMoves(king: piece)
         }
+    }
+
+    func king(color: Piece.Color) -> Piece {
+        pieces.first { $0.type == .king && color == $0.colour }!
+    }
+
+    func kingCheckMoves(_ king: Piece, for possibleMoves: [Position]) -> [Position] {
+        var checkPositions = [Position]()
+        for move in possibleMoves {
+            if isKingInCheck(king, at: move) {
+                checkPositions.append(move)
+            }
+        }
+        return checkPositions
+    }
+
+    func isKingInCheck(_ king: Piece, at position: Position) -> Bool {
+        return king.position == position
     }
     
     // MARK: Helper methods
