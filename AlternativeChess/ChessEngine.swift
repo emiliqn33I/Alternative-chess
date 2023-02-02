@@ -78,6 +78,9 @@ class ChessEngine {
                     coordinates.append(position)
                 }
             }
+            
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: 1)
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: 1)
         } else {
             if pawn.position.rank == .seventh {
                 for i in 1...2 {
@@ -93,6 +96,9 @@ class ChessEngine {
                     coordinates.append(position)
                 }
             }
+            
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: -1)
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: -1)
         }
         
         return coordinates
@@ -215,6 +221,17 @@ class ChessEngine {
         return coordinates
     }
     
+    func appendIfTakablePiece(piece: Piece, incrementWithFile: Int, incrementWithRank: Int) -> [Position] {
+        var coordinates = [Position]()
+        
+        if pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: incrementWithFile, rankBishop: incrementWithRank) != nil {
+            let oppositeColorPieceAtThatPosition = pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: incrementWithFile, rankBishop: incrementWithRank)
+            coordinates.append(oppositeColorPieceAtThatPosition!)
+        }
+        
+        return coordinates
+    }
+    
     private func iteratingThroughFilesOrRanks(piece: Piece, upOrLower: Bool, fileOrRank: Bool) -> [Position] {
         var coordinates = [Position]()
         
@@ -224,6 +241,11 @@ class ChessEngine {
         
         while (rookPosition != finalFileOrRank) {
             if checkIsEmpty(positions: appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)) {
+                if fileOrRank {
+                    coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: incrementWith, incrementWithRank: 0)
+                } else {
+                    coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: 0, incrementWithRank: incrementWith)
+                }
                 break
             }
             coordinates += appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)
@@ -249,6 +271,16 @@ class ChessEngine {
         return coordinates
     }
     
+    func pieceIsOpositeColorAtThatPosition(piece: Piece, fileBishop: Int, rankBishop: Int) -> Position? {
+        let newPos = piece.position.changed(fileDelta: fileBishop, rankDelta: rankBishop)
+        let pieceAtThatPos = pieces.filter { $0.position == newPos && $0.colour != piece.colour}
+        if pieceAtThatPos.count != 0 {
+            return newPos
+        }
+        
+        return nil
+    }
+    
     private func iteratingThroughFilesAndRanks(piece: Piece, upOrLower: Bool, rightOrLeft: Bool) -> [Position] {
         var coordinates = [Position]()
         
@@ -261,8 +293,10 @@ class ChessEngine {
         
         while((file != finalFile) && (rank != finalRank)) {
             if checkIsEmpty(positions: appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)) {
+                coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: fileBishop, incrementWithRank: rankBishop)
                 break
             }
+            
             coordinates += appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)
             
             fileBishop = incrementRankAndFile(file: rightOrLeft, rank: upOrLower, incrementFile: fileBishop, incrementRank: rankBishop)[0]
@@ -311,6 +345,7 @@ class ChessEngine {
             
             if (casesRank.contains(piece.position.rank.rawValue + rankKnight)) && (casesFile.contains(piece.position.file.rawValue + fileKnight)) {
                 coordinates += appendFileAndRank(piece: piece, incrementFile: fileKnight, incrementRank: rankKnight)
+                coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: fileKnight, incrementWithRank: rankKnight)
             }
             
             countFile += 2
