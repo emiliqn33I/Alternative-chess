@@ -93,4 +93,28 @@ final class PieceTakeTests: XCTestCase {
         XCTAssertTrue(validMovesD4Queen.contains(Position(file: .A, rank: .fourth)))
         XCTAssertTrue(validMovesD4Queen.contains(Position(file: .F, rank: .fourth)))
     }
+    
+    func testWhiteKingTakes() {
+        // Given the user is on the board screen
+        // And there is white king at D4 and black pawns at C5, D5, E5, C3, E3, D3
+        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .fifth)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .fifth)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .fifth)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .third)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .third)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .third)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .third)),
+                      Piece(type: .king, colour: .white, position: Position(file: .D, rank: .fourth))]
+        let chessEngine = createSUT(pieces: pieces)
+        // When they tap the D4 king
+        // Then the C5, D5, E5, C3, E3, D3 will be highlighted
+        let validMovesD4King = chessEngine.possibleMoves(piece: pieces[7])
+        XCTAssertTrue(validMovesD4King.count == 8)
+        XCTAssertTrue(validMovesD4King.contains(Position(file: .C, rank: .fifth)))
+        XCTAssertTrue(validMovesD4King.contains(Position(file: .D, rank: .fifth)))
+        XCTAssertTrue(validMovesD4King.contains(Position(file: .E, rank: .fifth)))
+        XCTAssertTrue(validMovesD4King.contains(Position(file: .C, rank: .third)))
+        XCTAssertTrue(validMovesD4King.contains(Position(file: .D, rank: .third)))
+        XCTAssertTrue(validMovesD4King.contains(Position(file: .E, rank: .third)))
+    }
 }
