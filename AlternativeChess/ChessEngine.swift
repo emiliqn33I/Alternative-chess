@@ -221,6 +221,17 @@ class ChessEngine {
         return coordinates
     }
     
+    func appendIfTakablePieceForRook(piece: Piece, incrementWithFile: Int, incrementWithRank: Int) -> [Position] {
+        var coordinates = [Position]()
+        
+        if pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: incrementWithFile, rankBishop: incrementWithRank) != nil {
+            let oppositeColorPieceAtThatPosition = pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: incrementWithFile, rankBishop: incrementWithRank)
+            coordinates.append(oppositeColorPieceAtThatPosition!)
+        }
+        
+        return coordinates
+    }
+    
     private func iteratingThroughFilesOrRanks(piece: Piece, upOrLower: Bool, fileOrRank: Bool) -> [Position] {
         var coordinates = [Position]()
         
@@ -230,6 +241,11 @@ class ChessEngine {
         
         while (rookPosition != finalFileOrRank) {
             if checkIsEmpty(positions: appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)) {
+                if fileOrRank {
+                    coordinates += appendIfTakablePieceForRook(piece: piece, incrementWithFile: incrementWith, incrementWithRank: 0)
+                } else {
+                    coordinates += appendIfTakablePieceForRook(piece: piece, incrementWithFile: 0, incrementWithRank: incrementWith)
+                }
                 break
             }
             coordinates += appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)
