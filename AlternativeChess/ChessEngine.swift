@@ -221,7 +221,7 @@ class ChessEngine {
         return coordinates
     }
     
-    func appendIfTakablePieceForRook(piece: Piece, incrementWithFile: Int, incrementWithRank: Int) -> [Position] {
+    func appendIfTakablePiece(piece: Piece, incrementWithFile: Int, incrementWithRank: Int) -> [Position] {
         var coordinates = [Position]()
         
         if pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: incrementWithFile, rankBishop: incrementWithRank) != nil {
@@ -242,9 +242,9 @@ class ChessEngine {
         while (rookPosition != finalFileOrRank) {
             if checkIsEmpty(positions: appendFileOrRank(fileOrRank: fileOrRank, piece: piece, incrementWith: incrementWith)) {
                 if fileOrRank {
-                    coordinates += appendIfTakablePieceForRook(piece: piece, incrementWithFile: incrementWith, incrementWithRank: 0)
+                    coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: incrementWith, incrementWithRank: 0)
                 } else {
-                    coordinates += appendIfTakablePieceForRook(piece: piece, incrementWithFile: 0, incrementWithRank: incrementWith)
+                    coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: 0, incrementWithRank: incrementWith)
                 }
                 break
             }
@@ -293,10 +293,7 @@ class ChessEngine {
         
         while((file != finalFile) && (rank != finalRank)) {
             if checkIsEmpty(positions: appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)) {
-                if pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: fileBishop, rankBishop: rankBishop) != nil {
-                    let oppositeColorPieceAtThatPosition = pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: fileBishop, rankBishop: rankBishop)
-                    coordinates.append(oppositeColorPieceAtThatPosition!)
-                }
+                coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: fileBishop, incrementWithRank: rankBishop)
                 break
             }
             
