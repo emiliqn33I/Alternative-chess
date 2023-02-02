@@ -117,4 +117,31 @@ final class PieceTakeTests: XCTestCase {
         XCTAssertTrue(validMovesD4King.contains(Position(file: .D, rank: .third)))
         XCTAssertTrue(validMovesD4King.contains(Position(file: .E, rank: .third)))
     }
+    
+    func testWhiteKnightTakes() {
+        // Given the user is on the board screen
+        // And there is white knight at D4 and black pawns at C6, C2, E2, E6, B3, B5, F3 and F5
+        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .sixth)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .second)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .second)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .sixth)),
+                      Piece(type: .knight, colour: .white, position: Position(file: .D, rank: .fourth)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .B, rank: .third)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .B, rank: .fifth)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .third)),
+                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .fifth))]
+        let chessEngine = createSUT(pieces: pieces)
+        // When they tap the D4 queen
+        // Then the C5, C3, E3, E5, D2, D6, A4 and F6 will be highlighted
+        let validMovesD4Knight = chessEngine.possibleMoves(piece: pieces[4])
+        XCTAssertTrue(validMovesD4Knight.count == 8)
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .C, rank: .sixth)))
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .C, rank: .second)))
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .E, rank: .second)))
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .E, rank: .sixth)))
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .B, rank: .third)))
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .B, rank: .fifth)))
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .F, rank: .third)))
+        XCTAssertTrue(validMovesD4Knight.contains(Position(file: .F, rank: .fifth)))
+    }
 }
