@@ -345,6 +345,7 @@ class ChessEngine {
             
             if (casesRank.contains(piece.position.rank.rawValue + rankKnight)) && (casesFile.contains(piece.position.file.rawValue + fileKnight)) {
                 coordinates += appendFileAndRank(piece: piece, incrementFile: fileKnight, incrementRank: rankKnight)
+                coordinates += appendIfTakablePiece(piece: piece, incrementWithFile: fileKnight, incrementWithRank: rankKnight)
             }
             
             countFile += 2
