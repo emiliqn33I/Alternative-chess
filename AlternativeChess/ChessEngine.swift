@@ -79,8 +79,8 @@ class ChessEngine {
                 }
             }
             
-            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: true, fileOrRank: false)
-            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: true, fileOrRank: true)
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: 1)
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: 1)
         } else {
             if pawn.position.rank == .seventh {
                 for i in 1...2 {
@@ -97,8 +97,8 @@ class ChessEngine {
                 }
             }
             
-            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: false, fileOrRank: false)
-            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: false, fileOrRank: true)
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: -1)
+            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: -1)
         }
         
         return coordinates
