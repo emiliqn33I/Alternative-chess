@@ -78,6 +78,9 @@ class ChessEngine {
                     coordinates.append(position)
                 }
             }
+            
+            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: true, fileOrRank: false)
+            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: true, fileOrRank: true)
         } else {
             if pawn.position.rank == .seventh {
                 for i in 1...2 {
@@ -93,6 +96,9 @@ class ChessEngine {
                     coordinates.append(position)
                 }
             }
+            
+            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: false, fileOrRank: false)
+            coordinates += appendKingBishopLikeMoves(king: pawn, upOrlower: false, fileOrRank: true)
         }
         
         return coordinates
@@ -249,6 +255,16 @@ class ChessEngine {
         return coordinates
     }
     
+    func pieceIsOpositeColorAtThatPosition(piece: Piece, fileBishop: Int, rankBishop: Int) -> Position? {
+        let newPos = piece.position.changed(fileDelta: fileBishop, rankDelta: rankBishop)
+        let pieceAtThatPos = pieces.filter { $0.position == newPos && $0.colour != piece.colour}
+        if pieceAtThatPos.count != 0 {
+            return newPos
+        }
+        
+        return nil
+    }
+    
     private func iteratingThroughFilesAndRanks(piece: Piece, upOrLower: Bool, rightOrLeft: Bool) -> [Position] {
         var coordinates = [Position]()
         
@@ -261,8 +277,13 @@ class ChessEngine {
         
         while((file != finalFile) && (rank != finalRank)) {
             if checkIsEmpty(positions: appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)) {
+                if pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: fileBishop, rankBishop: rankBishop) != nil {
+                    let oppositeColorPieceAtThatPosition = pieceIsOpositeColorAtThatPosition(piece: piece, fileBishop: fileBishop, rankBishop: rankBishop)
+                    coordinates.append(oppositeColorPieceAtThatPosition!)
+                }
                 break
             }
+            
             coordinates += appendFileAndRank(piece: piece, incrementFile: fileBishop, incrementRank: rankBishop)
             
             fileBishop = incrementRankAndFile(file: rightOrLeft, rank: upOrLower, incrementFile: fileBishop, incrementRank: rankBishop)[0]
