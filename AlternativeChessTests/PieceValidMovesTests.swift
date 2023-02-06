@@ -14,7 +14,7 @@ final class PieceValidMovesTests: XCTestCase {
         return ChessEngine(pieces: pieces)
     }
     
-    func PieceValidMovesTests() {
+    func testPieceValidMovesTests() {
         // Given the user has obtained a certain set of VALID moves
         let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
                       Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .second)),
