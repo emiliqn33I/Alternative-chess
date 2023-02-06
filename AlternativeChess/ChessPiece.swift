@@ -64,7 +64,7 @@ extension Position: Equatable {
     }
 }
 
-struct Piece {
+class Piece {
     enum PieceType {
         case pawn
         case rook
