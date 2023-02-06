@@ -7,32 +7,44 @@
 import Foundation
 
 class ChessEngine {
-    private let pieces: [Piece]
+    var pieces: [Piece]
     
     init(pieces: [Piece]) {
         self.pieces = pieces
     }
 
     // MARK: Public methods
-
     func place(piece: Piece, at position: Position) -> Void {
-        let piece = Piece(type: piece.type,
-                          colour: piece.colour,
-                          position: position)
-        if let pieceToRemove = pieces.first(where: { $0 == piece }) {
-            let removeIndex = pieces.firstIndex(of: pieceToRemove)!
-            pieces.remove(at: removeIndex)
+        for aPiece in pieces {
+            if aPiece.position == piece.position {
+                if let index = pieces.firstIndex(of: aPiece) {
+                    pieces[index].position = position
+                }
+            }
         }
-        pieces.append(piece)
     }
-
+    
+    
     func validMoves(for piece: Piece) -> [Position] {
         let possibleMoves = possibleMoves(piece: piece)
         // 1. King check logic
-//        let kingCheckMoves = kingCheckMoves(king(color: .white), for: possibleMoves)
-//        let validMoves = [Position(file: .A, rank: .first)] // possibleMoves - kingCheckMoves
-//        return validMoves
-        return possibleMoves
+        let kingCheckMoves = kingCheckMoves(king(color: .white), for: possibleMoves, piece: piece)
+        var validMoves = [Position]()
+        
+        for move in possibleMoves {
+            var flag = true
+            
+            for moveCheck in kingCheckMoves {
+                if move == moveCheck {
+                    flag = false
+                }
+            }
+            
+            if flag {
+                validMoves.append(move)
+            }
+        }
+        return validMoves
     }
 
     // MARK: Helper methods
@@ -58,18 +70,37 @@ class ChessEngine {
         pieces.first { $0.type == .king && color == $0.colour }!
     }
 
-    func kingCheckMoves(_ king: Piece, for possibleMoves: [Position]) -> [Position] {
+    func kingCheckMoves(_ king: Piece, for possibleMoves: [Position], piece: Piece) -> [Position] {
         var checkPositions = [Position]()
         for move in possibleMoves {
-            if isKingInCheck(king, at: move) {
+            if isKingInCheck(king, at: move, piece: piece) {
                 checkPositions.append(move)
             }
         }
         return checkPositions
     }
 
-    func isKingInCheck(_ king: Piece, at position: Position) -> Bool {
-        return king.position == position
+    func isKingInCheck(_ king: Piece, at position: Position, piece: Piece) -> Bool {
+        var gameState = [Position]()
+        
+        for aPiece in pieces {
+            gameState.append(aPiece.position)
+        }
+        
+        place(piece: piece, at: position)
+        
+        for aPiece in pieces {
+            let possiblePieceMoves = possibleMoves(piece: aPiece)
+            if possiblePieceMoves.contains(king.position) {
+                for i in pieces {
+                    if let index = pieces.firstIndex(of: i) {
+                        pieces[index].position = gameState[index]
+                    }
+                }
+                return true
+            }
+        }
+        return false
     }
     
     // MARK: Helper methods
