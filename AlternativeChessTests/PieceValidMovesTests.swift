@@ -130,4 +130,34 @@ final class PieceValidMovesTests: XCTestCase {
         XCTAssertTrue(pieces[0].position == Position(file: .D, rank: .third))
         XCTAssertNil((pieces.first { $0.position == Position(file: .D, rank: .fourth)}))
     }
+    
+    func testPieceValidMovesTests2() {
+        // Given the user has obtained a certain set of VALID moves
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .bishop, colour: .black, position: Position(file: .C, rank: .fourth)),
+                      Piece(type: .queen, colour: .black, position: Position(file: .E, rank: .second)),
+                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: false)
+        // When the user places choses a pawn at D2(that defence the king from checks, from the queen at B4).
+        // Then the pawn won't have any valid moves
+        let validMoves = chessEngine.validMoves(for: pieces[0])
+        print(validMoves)
+
+        XCTAssertTrue(validMoves.isEmpty)
+    }
+    
+    func testCheckMate() {
+        // Given the user has a white king at E1 and black queen at E2, and black bishop at C4, and black king for validating moves
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .bishop, colour: .black, position: Position(file: .C, rank: .fourth)),
+                      Piece(type: .queen, colour: .black, position: Position(file: .E, rank: .second)),
+                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: true)
+        // And there are no pieces that can take the queen
+        XCTAssertTrue(chessEngine.validMovesDefendingKing(king: pieces[0]).isEmpty)
+        // Then the black king will be checkMated, and white wins
+        chessEngine.validMoves(for: pieces[0])
+        XCTAssertTrue(chessEngine.checkMate == true)
+        XCTAssertTrue(chessEngine.winner == true)
+    }
 }
