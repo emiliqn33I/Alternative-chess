@@ -171,6 +171,8 @@ final class PieceValidMovesTests: XCTestCase {
         XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .G, rank: .first)))
         chessEngine.place(piece: pieces[0], at: Position(file: .G, rank: .first))
         //And the rook will be at F1
+        
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .white, position: Position(file: .F, rank: .first))))
+        XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .king, colour: .white, position: Position(file: .G, rank: .first))))
     }
 }
