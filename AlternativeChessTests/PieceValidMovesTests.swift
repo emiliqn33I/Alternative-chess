@@ -175,4 +175,19 @@ final class PieceValidMovesTests: XCTestCase {
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .white, position: Position(file: .F, rank: .first))))
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .king, colour: .white, position: Position(file: .G, rank: .first))))
     }
+    
+    func testRokadoWhiteQueenSide() {
+        // Given the user has a white king at E1 and white rook at A1
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .rook, colour: .white, position: Position(file: .A, rank: .first))]
+        let chessEngine = createSUT(pieces: pieces, turn: true)
+        // And there are no pieces that are attacking the king between the rook
+        // Then the white king can castle queenside and will have G1 as a valid move
+        XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .C, rank: .first)))
+        chessEngine.place(piece: pieces[0], at: Position(file: .C, rank: .first))
+        //And the rook will be at D1
+        
+        XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .white, position: Position(file: .D, rank: .first))))
+        XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .king, colour: .white, position: Position(file: .C, rank: .first))))
+    }
 }
