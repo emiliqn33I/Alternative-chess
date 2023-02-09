@@ -156,7 +156,7 @@ final class PieceValidMovesTests: XCTestCase {
         // And there are no pieces that can take the queen
         XCTAssertTrue(chessEngine.validMovesDefendingKing(king: pieces[0]).isEmpty)
         // Then the black king will be checkMated, and white wins
-        chessEngine.validMoves(for: pieces[0])
+        XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).isEmpty)
         XCTAssertTrue(chessEngine.checkMate == true)
         XCTAssertTrue(chessEngine.winner == true)
     }
