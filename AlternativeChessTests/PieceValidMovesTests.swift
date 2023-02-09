@@ -104,4 +104,30 @@ final class PieceValidMovesTests: XCTestCase {
         XCTAssertTrue(pieces[0].position == Position(file: .F, rank: .third))
         XCTAssertNil((pieces.first { $0.position == Position(file: .F, rank: .fourth)}))
     }
+    
+    func testPawnEnPassantBlackLeftDiagonal() {
+        // Given the user has a black pawn at E4 and white pawn at D2, and king at E8 for validating moves
+        var pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .fourth)),
+                      Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .second)),
+                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: true)
+        // And the white have moved pawn form D2 to D4
+        chessEngine.place(piece: pieces[1], at: Position(file: .D, rank: .fourth))
+        // And it's turn to the user(as black) to move
+        if chessEngine.turn != false {
+            XCTFail()
+        }
+        // And the last move of the black pieces was a pawn at D2 to D4
+        if chessEngine.history.last! != (Position(file: .D, rank: .second), Position(file: .D, rank: .fourth)) {
+            XCTFail()
+        }
+        // Then the user will be able to take the pawn at D4 while moveing to D3 with the black pawn, and the pawn at D4 will be removed
+        let validMoves = chessEngine.validMoves(for: pieces[0])
+        XCTAssertTrue(validMoves.contains(Position(file: .D, rank: .third)))
+        
+        chessEngine.place(piece: pieces[0], at: Position(file: .D, rank: .third))
+        pieces = chessEngine.pieces
+        XCTAssertTrue(pieces[0].position == Position(file: .D, rank: .third))
+        XCTAssertNil((pieces.first { $0.position == Position(file: .D, rank: .fourth)}))
+    }
 }
