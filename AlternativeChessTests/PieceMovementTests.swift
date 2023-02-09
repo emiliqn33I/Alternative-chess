@@ -10,7 +10,7 @@ import XCTest
 
 final class PieceMovementTests: XCTestCase {
     func createSUT(piece: Piece) -> ChessEngine {
-        return ChessEngine(pieces: [piece])
+        return ChessEngine(pieces: [piece], turn: true)
     }
 
     func testWhitePawnMoves2Squares() {

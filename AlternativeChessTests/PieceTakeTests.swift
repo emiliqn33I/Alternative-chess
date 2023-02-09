@@ -11,7 +11,7 @@ import XCTest
 final class PieceTakeTests: XCTestCase {
 
     func createSUT(pieces: [Piece]) -> ChessEngine {
-        return ChessEngine(pieces: pieces)
+        return ChessEngine(pieces: pieces, turn: true)
     }
     
     func testPlacePiece() {
