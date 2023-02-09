@@ -8,13 +8,19 @@ import Foundation
 
 class ChessEngine {
     var pieces: [Piece]
+    var history: [(from: Position, to: Position)] = []
+    var turn: Bool
+    var enPassantMoves: [Position] = []
     
-    init(pieces: [Piece]) {
+    init(pieces: [Piece], turn: Bool) {
         self.pieces = pieces
+        self.turn = turn
     }
 
     // MARK: Public methods
     func place(piece: Piece, at position: Position) -> Void {
+        history += [(from: piece.position, to: position)]
+        
         for aPiece in pieces {
             if aPiece.position == piece.position {
                 if let index = pieces.firstIndex(of: aPiece) {
@@ -22,15 +28,35 @@ class ChessEngine {
                 }
             }
         }
+    
+        if enPassantMoves.contains(position) && piece.type == .pawn {
+            if turn {
+                removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: -1)
+            } else {
+                removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: 1)
+            }
+        }
+        turn = turn.reverse()
     }
     
+    func removeTakenPawnByEnPassant(piece: Piece, at position: Position, changeRankWith: Int) {
+        let pawn = pieces.filter { $0.position == Position(file: position.file, rank: position.rank.changed(with: changeRankWith))}
+        if pawn.count != 0 {
+            if (pawn[0].colour != piece.colour) && (pawn[0].type == .pawn) {
+                if let index = pieces.firstIndex(of: pawn[0]) {
+                    pieces.remove(at: index)
+                    enPassantMoves.removeAll()
+                }
+            }
+        }
+    }
     
     func validMoves(for piece: Piece) -> [Position] {
+        let currentTurn = turn
         let possibleMoves = possibleMoves(piece: piece)
-        // 1. King check logic
-        let kingCheckMoves = kingCheckMoves(king(color: .white), for: possibleMoves, piece: piece)
+        let kingCheckMoves = kingCheckMoves(king(color: piece.colour), for: possibleMoves, piece: piece)
         var validMoves = [Position]()
-        
+
         for move in possibleMoves {
             var flag = true
             
@@ -44,6 +70,8 @@ class ChessEngine {
                 validMoves.append(move)
             }
         }
+        turn = currentTurn
+        history.removeAll()
         return validMoves
     }
 
@@ -72,6 +100,7 @@ class ChessEngine {
 
     func kingCheckMoves(_ king: Piece, for possibleMoves: [Position], piece: Piece) -> [Position] {
         var checkPositions = [Position]()
+        
         for move in possibleMoves {
             if isKingInCheck(king, at: move, piece: piece) {
                 checkPositions.append(move)
@@ -132,10 +161,26 @@ class ChessEngine {
         return nil
     }
 
+    func enPassantLogic(pawn: Piece, changeFileWith: Int, changeRankWith: Int, enPassantlastRank: Int) -> [Position] {
+        var coordinates = [Position]()
+        let enPassantPawn = piece(at: Position(file: pawn.position.file.changed(with: changeFileWith), rank: pawn.position.rank))
+        let enPassantPawnLastPosition = history.last!.0
+        let enPassantPawnCurrentPosition = history.last!.1
+        let ifLastPositionIsRight = (enPassantPawnLastPosition == changedPositionFileAndRank(for: pawn, fileDelta: changeFileWith, rankDelta: enPassantlastRank))
+        let ifCurrentPositionIsRight = (enPassantPawnCurrentPosition == Position(file: pawn.position.file.changed(with: changeFileWith), rank: pawn.position.rank))
+
+        if ifLastPositionIsRight && ifCurrentPositionIsRight && enPassantPawn?.type == .pawn && enPassantPawn?.colour != pawn.colour {
+            coordinates.append(changedPositionFileAndRank(for: pawn, fileDelta: changeFileWith, rankDelta: changeRankWith)!)
+            enPassantMoves.append(changedPositionFileAndRank(for: pawn, fileDelta: changeFileWith, rankDelta: changeRankWith)!)
+        }
+        
+        return coordinates
+    }
+    
     private func possiblePawnMoves(pawn: Piece) -> [Position] {
         var coordinates = [Position]()
         
-        if pawn.colour == .white {
+        if pawn.colour == .white && turn == true{
             if pawn.position.rank == .second {
                 for i in 1...2 {
                     if let position = changedPositionRank(for: pawn, delta: i) {
@@ -153,6 +198,11 @@ class ChessEngine {
             
             coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: 1)
             coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: 1)
+            
+            if pawn.position.rank == .fifth {
+                coordinates += enPassantLogic(pawn: pawn, changeFileWith: 1, changeRankWith: 1, enPassantlastRank: 2)
+                coordinates += enPassantLogic(pawn: pawn, changeFileWith: -1, changeRankWith: 1, enPassantlastRank: 2)
+            }
         } else {
             if pawn.position.rank == .seventh {
                 for i in 1...2 {
@@ -171,6 +221,11 @@ class ChessEngine {
             
             coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: -1)
             coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: -1)
+            
+            if pawn.position.rank == .fourth {
+                coordinates += enPassantLogic(pawn: pawn, changeFileWith: 1, changeRankWith: -1, enPassantlastRank: -2)
+                coordinates += enPassantLogic(pawn: pawn, changeFileWith: -1, changeRankWith: -1, enPassantlastRank: -2)
+            }
         }
         
         return coordinates
@@ -484,5 +539,17 @@ class ChessEngine {
         coordinates += appendKingBishopLikeMoves(king: king, upOrlower: true, fileOrRank: true)
         
         return coordinates
+    }
+}
+
+extension Bool{
+    mutating func reverse() -> Bool{
+        if self == true {
+            self = false
+            return self
+        } else {
+          self = true
+          return self
+        }
     }
 }
