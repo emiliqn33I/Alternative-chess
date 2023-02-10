@@ -131,21 +131,6 @@ final class PieceValidMovesTests: XCTestCase {
         XCTAssertNil((pieces.first { $0.position == Position(file: .D, rank: .fourth)}))
     }
     
-    func testPieceValidMovesTests2() {
-        // Given the user has obtained a certain set of VALID moves
-        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
-                      Piece(type: .bishop, colour: .black, position: Position(file: .C, rank: .fourth)),
-                      Piece(type: .queen, colour: .black, position: Position(file: .E, rank: .second)),
-                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
-        let chessEngine = createSUT(pieces: pieces, turn: false)
-        // When the user places choses a pawn at D2(that defence the king from checks, from the queen at B4).
-        // Then the pawn won't have any valid moves
-        let validMoves = chessEngine.validMoves(for: pieces[0])
-        print(validMoves)
-
-        XCTAssertTrue(validMoves.isEmpty)
-    }
-    
     func testCheckMate() {
         // Given the user has a white king at E1 and black queen at E2, and black bishop at C4, and black king for validating moves
         let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
@@ -197,7 +182,7 @@ final class PieceValidMovesTests: XCTestCase {
                       Piece(type: .rook, colour: .black, position: Position(file: .H, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: true)
         // And there are no pieces that are attacking the king between the rook
-        // Then the white king can castle kingside and will have G8 as a valid move
+        // Then the black king can castle kingside and will have G8 as a valid move
         XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .G, rank: .eighth)))
         chessEngine.place(piece: pieces[0], at: Position(file: .G, rank: .eighth))
         //And the rook will be at F8
@@ -206,16 +191,64 @@ final class PieceValidMovesTests: XCTestCase {
     }
     
     func testRokadoBlackQueenSide() {
-        // Given the user has a black king at E8 and white rook at A8
+        // Given the user has a black king at E8 and black rook at A8
         let pieces = [Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth)),
                       Piece(type: .rook, colour: .black, position: Position(file: .A, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: true)
         // And there are no pieces that are attacking the king between the rook
-        // Then the white king can castle queenside and will have G8 as a valid move
+        // Then the black king can castle queenside and will have G8 as a valid move
         XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .C, rank: .eighth)))
         chessEngine.place(piece: pieces[0], at: Position(file: .C, rank: .eighth))
         //And the rook will be at D8
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .black, position: Position(file: .D, rank: .eighth))))
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .king, colour: .black, position: Position(file: .C, rank: .eighth))))
+    }
+    
+    func testRokadoWhiteKingSideCannot() {
+        // Given the user has a white king at E1 and white rook at H1, but there is black rook at F8
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first)),
+                      Piece(type: .rook, colour: .black, position: Position(file: .F, rank: .eighth)),
+                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: true)
+        // Then the white king can't castle kingside and will not have G1 and F1 as a valid moves
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .G, rank: .first)))
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .F, rank: .first)))
+    }
+    
+    func testRokadoWhiteQueenSideCannot() {
+        // Given the user has a white king at E1 and white rook at A1, but there is black rook at D8
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first)),
+                      Piece(type: .rook, colour: .black, position: Position(file: .D, rank: .eighth)),
+                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: true)
+        // Then the white king can't castle kingside and will not have C1 and D1 as a valid moves
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .C, rank: .first)))
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .D, rank: .first)))
+    }
+    
+    func testRokadoBlackKingSideCannot() {
+        // Given the user has a black king at E8 and black rook at H8, but there is white rook at F1
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .rook, colour: .black, position: Position(file: .H, rank: .eighth)),
+                      Piece(type: .rook, colour: .white, position: Position(file: .F, rank: .first)),
+                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: true)
+        // Then the black king can't castle kingside and will not have G8 and F8 as a valid moves
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[3]).contains(Position(file: .G, rank: .eighth)))
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[3]).contains(Position(file: .F, rank: .eighth)))
+    }
+    
+    func testRokadoBlackQueenSideCannot() {
+        // Given the user has a black king at E8 and black rook at A8, but there is white rook at D1
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .rook, colour: .black, position: Position(file: .A, rank: .eighth)),
+                      Piece(type: .rook, colour: .white, position: Position(file: .D, rank: .first)),
+                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: true)
+        // Then the black king can't castle queenside and will not have C8 and D8 as a valid moves
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[3]).contains(Position(file: .C, rank: .eighth)))
+        XCTAssertFalse(chessEngine.validMoves(for: pieces[3]).contains(Position(file: .D, rank: .eighth)))
     }
 }
