@@ -87,15 +87,9 @@ class ChessEngine {
         rokadoPlaceLogic(piece: piece, at: position)
         
         history += [(from: piece.position, to: position)]
-        
-        for aPiece in pieces {
-            if aPiece.position == piece.position {
-                if let index = pieces.firstIndex(of: aPiece) {
-                    pieces[index].position = position
-                }
-            }
-        }
-    
+
+        self.piece(at: position)?.position = position
+
         if enPassantMoves.contains(position) && piece.type == .pawn {
             if turn {
                 removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: -1)
@@ -103,10 +97,7 @@ class ChessEngine {
                 removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: 1)
             }
         }
-        
-        ifKingMovesFromStartingPosition(piece: piece)
-        ifRookMovesFromStartingPosition(piece: piece)
-        
+
         turn = turn.reverse()
     }
     
