@@ -12,6 +12,12 @@ class ChessEngine {
     var turn: Bool
     var checkMate = false
     var winner = false
+    var kingMovedW = false
+    var kingMovedB = false
+    var rookMovedRightW = false
+    var rookMovedLeftW = false
+    var rookMovedRightB = false
+    var rookMovedLeftB = false
     var enPassantMoves: [Position] = []
     
     init(pieces: [Piece], turn: Bool) {
@@ -20,7 +26,66 @@ class ChessEngine {
     }
 
     // MARK: Public methods
+    func placeRookWhenRokado(position: Position, kingsideOrQueenside: Bool) {
+        for aPiece in pieces {
+            if aPiece.position == position && aPiece.type == .rook {
+                if let index = pieces.firstIndex(of: aPiece) {
+                    if kingsideOrQueenside {
+                        pieces[index].position = Position(file: .F, rank: position.rank)
+                    } else {
+                        pieces[index].position = Position(file: .D, rank: position.rank)
+                    }
+                }
+            }
+        }
+    }
+    
+    func rokadoPlaceLogic(piece: Piece, at position: Position) {
+        if piece.type == .king && kingMovedW == false && rookMovedRightW == false && position == Position(file: .G, rank: .first) {
+            placeRookWhenRokado(position: Position(file: .H, rank: .first), kingsideOrQueenside: true)
+        }
+        if piece.type == .king && kingMovedW == false && rookMovedLeftW == false && position == Position(file: .C, rank: .first) {
+            placeRookWhenRokado(position: Position(file: .A, rank: .first), kingsideOrQueenside: false)
+        }
+        if piece.type == .king && kingMovedB == false && rookMovedRightB == false && position == Position(file: .G, rank: .eighth) {
+            placeRookWhenRokado(position: Position(file: .H, rank: .eighth), kingsideOrQueenside: true)
+        }
+        if piece.type == .king && kingMovedB == false && rookMovedLeftB == false && position == Position(file: .C, rank: .eighth) {
+            placeRookWhenRokado(position: Position(file: .A, rank: .eighth), kingsideOrQueenside: false)
+        }
+    }
+    
+    func ifKingMovesFromStartingPosition(piece: Piece) {
+        if piece.type == .king && piece.colour == .white  {
+            kingMovedW = true
+        }
+        if piece.type == .king && piece.colour == .black {
+            kingMovedB = true
+        }
+    }
+    
+    func ifRookMovesFromStartingPosition(piece: Piece) {
+        if piece.type == .rook && piece.colour == .white {
+            if piece.position == Position(file: .H, rank: .first) {
+                rookMovedRightW = true
+            }
+            if piece.position == Position(file: .A, rank: .first) {
+                rookMovedLeftW = true
+            }
+        }
+        if piece.type == .rook && piece.colour == .black {
+            if piece.position == Position(file: .H, rank: .eighth) {
+                rookMovedRightB = true
+            }
+            if piece.position == Position(file: .A, rank: .eighth) {
+                rookMovedLeftB = true
+            }
+        }
+    }
+    
     func place(piece: Piece, at position: Position) -> Void {
+        rokadoPlaceLogic(piece: piece, at: position)
+        
         history += [(from: piece.position, to: position)]
         
         for aPiece in pieces {
@@ -38,6 +103,10 @@ class ChessEngine {
                 removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: 1)
             }
         }
+        
+        ifKingMovesFromStartingPosition(piece: piece)
+        ifRookMovesFromStartingPosition(piece: piece)
+        
         turn = turn.reverse()
     }
     
@@ -74,7 +143,30 @@ class ChessEngine {
         }
         
         turn = currentTurn
+        kingMovedW = false
+        kingMovedB = false
+        rookMovedRightW = false
+        rookMovedLeftW = false
+        rookMovedRightB = false
+        rookMovedLeftB = false
         history.removeAll()
+        
+        if piece.type == .king && piece.colour == .white {
+            if validMoves.contains(Position(file: .G, rank: .first)) && (validMoves.contains(Position(file: .F, rank: .first)) == false) {
+                validMoves = removePositionFromValidMoves(validMoves: validMoves, position: Position(file: .G, rank: .first))
+            }
+            if validMoves.contains(Position(file: .C, rank: .first)) && (validMoves.contains(Position(file: .D, rank: .first)) == false) {
+                validMoves = removePositionFromValidMoves(validMoves: validMoves, position: Position(file: .C, rank: .first))
+            }
+        }
+        if piece.type == .king && piece.colour == .black {
+            if validMoves.contains(Position(file: .G, rank: .eighth)) && (validMoves.contains(Position(file: .F, rank: .eighth)) == false) {
+                validMoves = removePositionFromValidMoves(validMoves: validMoves, position: Position(file: .G, rank: .eighth))
+            }
+            if validMoves.contains(Position(file: .C, rank: .eighth)) && (validMoves.contains(Position(file: .D, rank: .eighth)) == false) {
+                validMoves = removePositionFromValidMoves(validMoves: validMoves, position: Position(file: .C, rank: .eighth))
+            }
+        }
         if piece.type == .king && validMoves.isEmpty && validMovesDefendingKing(king: piece).isEmpty {
             checkMate = true
             if piece.colour == .white {
@@ -82,6 +174,19 @@ class ChessEngine {
             }
         }
         return validMoves
+    }
+    
+    func removePositionFromValidMoves(validMoves: [Position], position: Position) -> [Position]{
+        var validMovesArray = validMoves
+        
+        for move in validMovesArray {
+            if move == position {
+                if let index = validMovesArray.firstIndex(of: move) {
+                    validMovesArray.remove(at: index)
+                }
+            }
+        }
+        return validMovesArray
     }
 
     func validMovesDefendingKing(king: Piece) -> [Position] {
@@ -558,6 +663,19 @@ class ChessEngine {
         coordinates += appendKingBishopLikeMoves(king: king, upOrlower: false, fileOrRank: false)
         coordinates += appendKingBishopLikeMoves(king: king, upOrlower: false, fileOrRank: true)
         coordinates += appendKingBishopLikeMoves(king: king, upOrlower: true, fileOrRank: true)
+        
+        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .first)} != nil) {
+            coordinates.append(Position(file: .G, rank: .first))
+        }
+        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .eighth)} != nil) {
+            coordinates.append(Position(file: .G, rank: .eighth))
+        }
+        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .first)} != nil) {
+            coordinates.append(Position(file: .C, rank: .first))
+        }
+        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .eighth)} != nil) {
+            coordinates.append(Position(file: .C, rank: .eighth))
+        }
         
         return coordinates
     }
