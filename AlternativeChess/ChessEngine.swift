@@ -114,9 +114,8 @@ class ChessEngine {
     }
     
     func validMoves(for piece: Piece) -> [Position] {
-        let currentTurn = turn
         let possibleMoves = possibleMoves(piece: piece)
-        let kingCheckMoves = kingCheckMoves(king: king(color: piece.colour), for: possibleMoves, piece: piece)
+        let kingCheckMoves = kingCheckMoves(for: possibleMoves, piece: piece)
         var validMoves = [Position]()
 
         for move in possibleMoves {
@@ -132,16 +131,7 @@ class ChessEngine {
                 validMoves.append(move)
             }
         }
-        
-        turn = currentTurn
-        kingMovedW = false
-        kingMovedB = false
-        rookMovedRightW = false
-        rookMovedLeftW = false
-        rookMovedRightB = false
-        rookMovedLeftB = false
-        history.removeAll()
-        
+
         if piece.type == .king && piece.colour == .white {
             if validMoves.contains(Position(file: .G, rank: .first)) && (validMoves.contains(Position(file: .F, rank: .first)) == false) {
                 validMoves = removePositionFromValidMoves(validMoves: validMoves, position: Position(file: .G, rank: .first))
@@ -215,9 +205,9 @@ class ChessEngine {
         pieces.first { $0.type == .king && color == $0.colour }!
     }
 
-    func kingCheckMoves(king: Piece, for possibleMoves: [Position], piece: Piece) -> [Position] {
+    func kingCheckMoves(for possibleMoves: [Position], piece: Piece) -> [Position] {
         var checkPositions = [Position]()
-
+        let king = king(color: piece.colour)
         for move in possibleMoves {
             if isKingInCheck(king: king, at: move, piece: piece) {
                 checkPositions.append(move)
@@ -227,22 +217,14 @@ class ChessEngine {
     }
 
     func isKingInCheck(king: Piece, at position: Position, piece: Piece) -> Bool {
-        var gameState = [Position]()
-        for aPiece in pieces {
-            gameState.append(aPiece.position)
+        let originalPiecePosition = piece.position
+        // Update piece position temporarily to check if the king is in check after making the move.
+        piece.position = position
+        defer {
+            piece.position = originalPiecePosition
         }
-
-        place(piece: piece, at: position)
-        
         for aPiece in pieces {
-            let possiblePieceMoves = possibleMoves(piece: aPiece)
-            
-            if possiblePieceMoves.contains(king.position) {
-                for i in pieces {
-                    if let index = pieces.firstIndex(of: i) {
-                        pieces[index].position = gameState[index]
-                    }
-                }
+            if possibleMoves(piece: aPiece).contains(king.position) {
                 return true
             }
         }
