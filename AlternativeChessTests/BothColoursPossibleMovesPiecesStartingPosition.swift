@@ -11,11 +11,11 @@ import XCTest
 final class BothColoursPossibleMovesPiecesStartingPosition: XCTestCase {
 
     func createSUT(piece: Piece) -> ChessEngine {
-        return ChessEngine(pieces: [piece], turn: true)
+        return ChessEngine(pieces: [piece], turn: .white)
     }
     
     func createSUT(pieces: [Piece]) -> ChessEngine {
-        return ChessEngine(pieces: pieces, turn: true)
+        return ChessEngine(pieces: pieces, turn: .white)
     }
     
     func testWhitePiecesStartingPosition() {
@@ -168,7 +168,6 @@ final class BothColoursPossibleMovesPiecesStartingPosition: XCTestCase {
         XCTAssertTrue(validMovesA8Rook.isEmpty)
         
         let validMovesB8Knight = chessEngine.possibleMoves(piece: pieces[25])
-        print(validMovesB8Knight)
         XCTAssertTrue(validMovesB8Knight.count == 2)
         XCTAssertTrue((validMovesB8Knight[0].file == .C) && (validMovesB8Knight[0].rank == .sixth))
         XCTAssertTrue((validMovesB8Knight[1].file == .A) && (validMovesB8Knight[1].rank == .sixth))
