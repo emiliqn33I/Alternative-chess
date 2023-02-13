@@ -70,7 +70,7 @@ class ChessBoardView: UIView {
         // var chessEngine = ChessEngine()
         // chessEngine.initialiseGame()
         // pieces = chessEngine.pieces
-        var chessBoard = Board()
+        let chessBoard = Board()
         // chessBoard.renewBoard()
         let sq : [[Square]] = Array(chessBoard.squares.reversed())
         let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
