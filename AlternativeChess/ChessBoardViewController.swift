@@ -8,53 +8,119 @@
 import UIKit
 
 class ChessBoardViewController: UIViewController {
-    
     @IBOutlet weak var boardView: ChessBoardView!
+    let chessEngine: ChessEngine
+    
+    required init?(coder aDecoder: NSCoder) {
+        let pieces = [Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .first)),
+                      Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
+                      Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .third))]
+        chessEngine = ChessEngine(pieces: pieces, turn: .white)
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    override func loadViewIfNeeded() {
-        super.loadViewIfNeeded()
-        
-        let parentView = boardView
-        
-        let squareSize = parentView!.bounds.width / 8
-        
-        for row in 0..<8 {
-            for col in 0..<8 {
-                let xPosition = CGFloat(col) * squareSize
-                let yPosition = CGFloat(row) * squareSize
-                let squareFrame = CGRect(x: xPosition, y: yPosition, width: squareSize, height: squareSize)
-                let squareView = UIView(frame: squareFrame)
-                squareView.backgroundColor = (row + col) % 2 == 0 ? UIColor.white : UIColor.black
-                parentView!.addSubview(squareView)
-            }
-        }
+        boardView.pieces = chessEngine.pieces
     }
     
-    let board = ChessBoardView()
+    // TODO:
+    func didTap(piece: Piece) {
+        let validMoves = chessEngine.validMoves(for: piece)
+    }
+
+}
+
+class PieceView: UIView {
+    private let piece: Piece
+    private let squareSide: CGFloat
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    init(piece: Piece, squareSide: CGFloat) {
+        self.piece = piece
+        self.squareSide = squareSide
+        let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
+         
+        super.init(frame: frame)
+        let imageView = imageView(for: piece)
+        imageView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+        addSubview(imageView)
+    }
+
+    private func imageView(for piece: Piece) -> UIImageView {
+        var imageName: String = ""
+        switch piece.type {
+        case .pawn:
+            imageName = piece.colour == .white ? "w_pawn" : "b_pawn"
+        case .rook:
+            imageName = ""
+        case .bishop:
+            imageName = ""
+        case .knight:
+            imageName = ""
+        case .queen:
+            imageName = ""
+        case .king:
+            imageName = ""
+        }
+        let imageView = UIImageView(image: UIImage(named: imageName))
+        return imageView
+    }
+    
+    private static func rect(for position: Position, squareSide: CGFloat) -> CGRect {
+        let fileRaw = CGFloat(position.file.rawValue)
+        let y = CGFloat(PieceView.rankReversed(rank: position.rank).rawValue) * squareSide
+        return CGRect(x: fileRaw * squareSide, y: y, width: squareSide, height: squareSide)
+    }
+
+    private static func rankReversed(rank: Position.Rank) -> Position.Rank {
+        switch rank {
+        case .first:
+            return .eighth
+        case .second:
+            return .seventh
+        case .third:
+            return .sixth
+        case .fourth:
+            return .fifth
+        case .fifth:
+            return .fourth
+        case .sixth:
+            return .third
+        case .seventh:
+            return .second
+        case .eighth:
+            return .first
+        }
+    }
     
 }
 
 class ChessBoardView: UIView {
     static let squaresInRow = 8
-    var pieces = [Piece]()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
+    let board = Board()
+    var pieces: [Piece] = []
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     override func draw(_ rect: CGRect) {
         drawBoard()
+        drawPieces(pieces: pieces)
     }
-    
+
+    func drawPieces(pieces: [Piece]) {
+        for piece in pieces {
+            let pieceView = PieceView(piece: piece, squareSide: frame.width / 8)
+            addSubview(pieceView)
+        }
+    }
+
     func drawBoard() {
-        var board = Board()
         let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
         var row = 0
         
@@ -67,13 +133,11 @@ class ChessBoardView: UIView {
                     blackColor.setStroke()
                     UIColor.white.setFill()
                     path.fill()
-                    board.squares[row][counter].sideOfSquare = Double(side)
                 } else {
                     let blackColor = UIColor.black
                     blackColor.setStroke()
                     UIColor.black.setFill()
                     path.fill()
-                    board.squares[row][counter].sideOfSquare = Double(side)
                 }
                 counter += 1
             }
@@ -81,5 +145,3 @@ class ChessBoardView: UIView {
         }
     }
 }
-
-
