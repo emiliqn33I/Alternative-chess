@@ -16,7 +16,23 @@ class ChessBoardViewController: UIViewController {
     }
     override func loadViewIfNeeded() {
         super.loadViewIfNeeded()
+        
+        let parentView = boardView
+        
+        let squareSize = parentView!.bounds.width / 8
+        
+        for row in 0..<8 {
+            for col in 0..<8 {
+                let xPosition = CGFloat(col) * squareSize
+                let yPosition = CGFloat(row) * squareSize
+                let squareFrame = CGRect(x: xPosition, y: yPosition, width: squareSize, height: squareSize)
+                let squareView = UIView(frame: squareFrame)
+                squareView.backgroundColor = (row + col) % 2 == 0 ? UIColor.white : UIColor.black
+                parentView!.addSubview(squareView)
+            }
+        }
     }
+    
     let board = ChessBoardView()
     
 }
@@ -35,14 +51,13 @@ class ChessBoardView: UIView {
     
     override func draw(_ rect: CGRect) {
         drawBoard()
-        drawPieces()
     }
     
     func drawBoard() {
         var board = Board()
-        // board.renewBoard()
         let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
         var row = 0
+        
         for(_, item) in board.squares.enumerated() {
             var counter = 0
             for square in item {
@@ -65,41 +80,6 @@ class ChessBoardView: UIView {
             row += 1
         }
     }
-    
-    func drawPieces() {
-        // var chessEngine = ChessEngine()
-        // chessEngine.initialiseGame()
-        // pieces = chessEngine.pieces
-        let chessBoard = Board()
-        // chessBoard.renewBoard()
-        let sq : [[Square]] = Array(chessBoard.squares.reversed())
-        let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
-        
-        for row in 0...7 {
-            for file in 0...7 {
-                if(sq[row][file].piece != nil) {
-                    switch sq[row][file].piece?.colour {
-                    case .white :
-                        switch sq[row][file].piece?.type {
-                        case .pawn :
-                            let pieceImage = UIImage(named: "w_pawn")
-                            pieceImage?.draw(in: CGRect(x: CGFloat(file) * side, y: CGFloat(row) * side, width: side, height: side ))
-                        default:
-                            print(" ")
-                        }
-                    case .black :
-                        switch sq[row][file].piece?.type {
-                        case .pawn :
-                            let pieceImage = UIImage(named: "b_pawn")
-                            pieceImage?.draw(in: CGRect(x: CGFloat(row) * side, y: CGFloat(file) * side, width: side, height: side ))
-                        default:
-                            print(" ")
-                        }
-                    default:
-                        print(" ")
-                    }
-                }
-            }
-        }
-    }
 }
+
+
