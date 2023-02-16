@@ -30,19 +30,4 @@ struct Board {
         }
         return board
     }()
-    
-//    mutating func renewBoard() {
-//        var chessEngine = ChessEngine()
-//        chessEngine.initialiseGame()
-//        let pieces = chessEngine.pieces
-//        for row in 0...7 {
-//            for flank in 0...7 {
-//                for i in pieces {
-//                    if((row == i.position.rank.rawValue) && (flank == i.position.file.rawValue)) {
-//                        squares[row][flank].piece = i
-//                    }
-//                }
-//            }
-//        }
-//    }
 }
