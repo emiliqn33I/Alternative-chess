@@ -51,17 +51,22 @@ class ChessBoardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         boardView.pieces = chessEngine.pieces
+        boardView.delegate = self
     }
-    
-    // TODO:
-    func didTap(piece: Piece) {
-        let validMoves = chessEngine.validMoves(for: piece)
+}
+
+extension ChessBoardViewController: ChessBoardViewDelegate {
+    func validMoves(for piece: Piece) -> [Position] {
+        return chessEngine.validMoves(for: piece)
     }
 
+    func didMove(piece: Piece, to position: Position) {
+        chessEngine.place(piece: piece, at: position)
+    }
 }
 
 class PieceView: UIView {
-    private let piece: Piece
+    let piece: Piece
     private let squareSide: CGFloat
 
     required init?(coder: NSCoder) {
@@ -127,13 +132,38 @@ class PieceView: UIView {
     }
 }
 
+protocol ChessBoardViewDelegate: AnyObject {
+    func validMoves(for piece: Piece) -> [Position]
+    func didMove(piece: Piece, to position: Position)
+}
+
 class ChessBoardView: UIView {
     static let squaresInRow = 8
     let board = Board()
     var pieces: [Piece] = []
+    var pieceViews: [PieceView] = []
+ 
+    weak var delegate: ChessBoardViewDelegate?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView(_:)))
+        self.addGestureRecognizer(gestureRecognizer)
+    }
+
+    @objc func didTapView(_ sender: UITapGestureRecognizer? = nil) {
+        guard let gestureRecognizer = sender else {
+            return
+        }
+        if
+            let piece = piece(at: gestureRecognizer.location(in: self)),
+            let delegate = delegate {
+            let validMoves = delegate.validMoves(for: piece)
+        }
+    }
+
+    func piece(at point: CGPoint) -> Piece? {
+        pieceViews.first { $0.frame.contains(point) }?.piece
     }
 
     override func draw(_ rect: CGRect) {
@@ -144,6 +174,7 @@ class ChessBoardView: UIView {
     func drawPieces(pieces: [Piece]) {
         for piece in pieces {
             let pieceView = PieceView(piece: piece, squareSide: frame.width / 8)
+            pieceViews.append(pieceView)
             addSubview(pieceView)
         }
     }
