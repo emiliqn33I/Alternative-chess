@@ -110,7 +110,7 @@ class PieceView: UIView {
         return CGRect(x: fileRaw * squareSide, y: y, width: squareSide, height: squareSide)
     }
 
-    private static func rankReversed(rank: Position.Rank) -> Position.Rank {
+     static func rankReversed(rank: Position.Rank) -> Position.Rank {
         switch rank {
         case .first:
             return .eighth
@@ -159,6 +159,28 @@ class ChessBoardView: UIView {
             let piece = piece(at: gestureRecognizer.location(in: self)),
             let delegate = delegate {
             let validMoves = delegate.validMoves(for: piece)
+            drawValidMoves(validMoves: validMoves)
+        }
+    }
+    
+    var validMoveViews: [UIView] = []
+
+    func drawValidMoves(validMoves: [Position]) {
+        let side = bounds.width / CGFloat(Position.File.allCases.count)
+
+        for view in validMoveViews {
+            view.removeFromSuperview()
+        }
+        validMoveViews.removeAll()
+        
+        for position in validMoves {
+            let fileRaw = CGFloat(position.file.rawValue)
+            let y = CGFloat(PieceView.rankReversed(rank: position.rank).rawValue) * side
+            let validMoveView = UIView(frame: CGRect(x: fileRaw * side, y: y, width: side, height: side))
+            validMoveView.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+            addSubview(validMoveView)
+        
+            validMoveViews.append(validMoveView)
         }
     }
 
