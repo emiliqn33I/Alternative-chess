@@ -28,42 +28,37 @@ class ChessBoardView: UIView {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView(_:)))
         self.addGestureRecognizer(gestureRecognizer)
     }
-    
-    @objc func didTapView(_ sender: UITapGestureRecognizer? = nil) {
+
+    override func draw(_ rect: CGRect) {
+        drawBoard()
+        drawPieces(pieces: pieces)
+    }
+
+    // MARK: UI Action Events
+
+    @objc private func didTapView(_ sender: UITapGestureRecognizer? = nil) {
         guard let gestureRecognizer = sender else {
             return
         }
-        
-        if let selectedPiece = piece(at: gestureRecognizer.location(in: self)) {
+        let tappedLocation = gestureRecognizer.location(in: self)
+
+        if let selectedPiece = piece(at: tappedLocation) {
             currentSelectedPiece = selectedPiece
-        }
-        
-        performDrawingValidMoves()
-        
-        if let chosenPosition = position(for: gestureRecognizer.location(in: self)) {
-            performMovingPiece(to: chosenPosition)
+            if let delegate = delegate {
+                drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
+            }
+        } else if
+            let chosenPosition = position(for: tappedLocation),
+            let currentSelectedPiece = currentSelectedPiece {
+                print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
+                delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
+                pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
         }
     }
 
-    func performDrawingValidMoves() {
-        if
-            let delegate = delegate,
-            let piece = currentSelectedPiece {
-            drawValidMoves(validMoves: delegate.validMoves(for: piece))
-        }
-    }
-    
-    func performMovingPiece(to position: Position) {
-        if
-            let delegate = delegate,
-            let selectedPiece = currentSelectedPiece {
-            print("You have chosen to move \(selectedPiece.type) to this position \(position). ")
-            delegate.didMove(piece: selectedPiece, to: position)
-            pieceView(at: position)?.setup(with: selectedPiece)
-        }
-    }
-    
-    func drawValidMoves(validMoves: [Position]) {
+    // MARK: Drawing
+
+    private func drawValidMoves(validMoves: [Position]) {
         let side = bounds.width / CGFloat(Position.File.allCases.count)
 
         for view in validMoveViews {
@@ -82,15 +77,50 @@ class ChessBoardView: UIView {
         }
     }
 
-    func piece(at point: CGPoint) -> Piece? {
+    private func drawPieces(pieces: [Piece]) {
+        for piece in pieces {
+            let pieceView = PieceView(piece: piece, squareSide: frame.width / 8)
+            pieceViews.append(pieceView)
+            addSubview(pieceView)
+        }
+    }
+
+    private func drawBoard() {
+        let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
+        var row = 0
+
+        for(_, item) in board.squares.enumerated() {
+            var counter = 0
+            for square in item {
+                let path = UIBezierPath(rect: CGRect(x: CGFloat(counter) * side, y: CGFloat(row) * side, width: side, height: side))
+                if (square.color == .white) {
+                    let blackColor = UIColor.white
+                    blackColor.setStroke()
+                    UIColor.white.setFill()
+                    path.fill()
+                } else {
+                    let blackColor = UIColor.black
+                    blackColor.setStroke()
+                    UIColor.black.setFill()
+                    path.fill()
+                }
+                counter += 1
+            }
+            row += 1
+        }
+    }
+
+    // MARK: Helpers
+
+    private func piece(at point: CGPoint) -> Piece? {
         pieceViews.first { $0.frame.contains(point) }?.piece
     }
     
-    func pieceView(at position: Position) -> PieceView? {
+    private func pieceView(at position: Position) -> PieceView? {
         pieceViews.first { $0.piece.position == position }
     }
     
-    func position(for point: CGPoint) -> Position? {
+    private func position(for point: CGPoint) -> Position? {
         let selectedValidMove = validMoveViews.first { $0.frame.contains(point) }
         var file: Position.File?
         var rank: Position.Rank?
@@ -120,43 +150,5 @@ class ChessBoardView: UIView {
             return nil
         }
         return Position(file: file, rank: rank)
-    }
-
-    override func draw(_ rect: CGRect) {
-        drawBoard()
-        drawPieces(pieces: pieces)
-    }
-
-    func drawPieces(pieces: [Piece]) {
-        for piece in pieces {
-            let pieceView = PieceView(piece: piece, squareSide: frame.width / 8)
-            pieceViews.append(pieceView)
-            addSubview(pieceView)
-        }
-    }
-
-    func drawBoard() {
-        let side = bounds.width / CGFloat(ChessBoardView.squaresInRow)
-        var row = 0
-        
-        for(_, item) in board.squares.enumerated() {
-            var counter = 0
-            for square in item {
-                let path = UIBezierPath(rect: CGRect(x: CGFloat(counter) * side, y: CGFloat(row) * side, width: side, height: side))
-                if (square.color == .white) {
-                    let blackColor = UIColor.white
-                    blackColor.setStroke()
-                    UIColor.white.setFill()
-                    path.fill()
-                } else {
-                    let blackColor = UIColor.black
-                    blackColor.setStroke()
-                    UIColor.black.setFill()
-                    path.fill()
-                }
-                counter += 1
-            }
-            row += 1
-        }
     }
 }
