@@ -25,6 +25,8 @@
 		BDCC22EE29915A18008133FB /* PieceValidMovesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */; };
 		BDCF52B4299A876D00FF5944 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCF52B3299A876D00FF5944 /* Move.swift */; };
 		BDCF52B6299A957000FF5944 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCF52B5299A957000FF5944 /* Helper.swift */; };
+		BDCF52B829B10E7400FF5944 /* ChessBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCF52B729B10E7400FF5944 /* ChessBoardView.swift */; };
+		BDCF52BA29B10ECB00FF5944 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCF52B929B10ECB00FF5944 /* PieceView.swift */; };
 		BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +62,8 @@
 		BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceValidMovesTests.swift; sourceTree = "<group>"; };
 		BDCF52B3299A876D00FF5944 /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		BDCF52B5299A957000FF5944 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		BDCF52B729B10E7400FF5944 /* ChessBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessBoardView.swift; sourceTree = "<group>"; };
+		BDCF52B929B10ECB00FF5944 /* PieceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
 		BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRandomPositionMovementTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,6 +108,8 @@
 			children = (
 				90A8CFD0294BB40100229742 /* AppDelegate.swift */,
 				90A8CFD2294BB40100229742 /* SceneDelegate.swift */,
+				BDCF52B929B10ECB00FF5944 /* PieceView.swift */,
+				BDCF52B729B10E7400FF5944 /* ChessBoardView.swift */,
 				90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */,
 				BD505F4A2974273900890A77 /* ChessPiece.swift */,
 				BD505F482974270A00890A77 /* ChessEngine.swift */,
@@ -239,8 +245,10 @@
 				BDCF52B6299A957000FF5944 /* Helper.swift in Sources */,
 				BD505F4D2974276C00890A77 /* ChessBoard.swift in Sources */,
 				90A8CFD5294BB40100229742 /* ChessBoardViewController.swift in Sources */,
+				BDCF52BA29B10ECB00FF5944 /* PieceView.swift in Sources */,
 				90A8CFD1294BB40100229742 /* AppDelegate.swift in Sources */,
 				BD505F4B2974273900890A77 /* ChessPiece.swift in Sources */,
+				BDCF52B829B10E7400FF5944 /* ChessBoardView.swift in Sources */,
 				90A8CFD3294BB40100229742 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
