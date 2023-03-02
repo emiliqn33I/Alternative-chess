@@ -66,7 +66,7 @@ extension ChessBoardViewController: ChessBoardViewDelegate {
 }
 
 class PieceView: UIView {
-    let piece: Piece
+    var piece: Piece
     private let squareSide: CGFloat
 
     required init?(coder: NSCoder) {
@@ -82,6 +82,13 @@ class PieceView: UIView {
         let imageView = imageView(for: piece)
         imageView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         addSubview(imageView)
+    }
+    
+    func setup(with piece: Piece) {
+        let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
+        self.frame = frame
+        self.piece = piece
+
     }
 
     private func imageView(for piece: Piece) -> UIImageView {
@@ -151,26 +158,31 @@ class ChessBoardView: UIView {
         self.addGestureRecognizer(gestureRecognizer)
     }
     
-    var piece: Piece?
+    var currentSelectedPiece: Piece?
     @objc func didTapView(_ sender: UITapGestureRecognizer? = nil) {
         guard let gestureRecognizer = sender else {
             return
         }
-        var aPiece = piece(at: gestureRecognizer.location(in: self))
-        
-        if let delegate = delegate {
-            if aPiece != nil {
-                piece = piece(at: gestureRecognizer.location(in: self))
-                let validMoves = delegate.validMoves(for: piece!)
-                drawValidMoves(validMoves: validMoves)
-            }
+
+        if let selectedPiece = piece(at: gestureRecognizer.location(in: self)) {
+            currentSelectedPiece = selectedPiece
         }
-        var chosenSquareForPiece = validPosition(at: gestureRecognizer.location(in: self))
         
-        if chosenSquareForPiece != nil {
-            if let delegate = delegate {
-                delegate.didMove(piece: piece!, to: chosenSquareForPiece!)
-            }
+        if
+            let delegate = delegate,
+            let piece = currentSelectedPiece {
+            let validMoves = delegate.validMoves(for: piece)
+            drawValidMoves(validMoves: validMoves)
+        }
+        let chosenPosition = position(for: gestureRecognizer.location(in: self))
+        
+        if
+            let chosenPosition = chosenPosition,
+            let delegate = delegate,
+            let selectedPiece = currentSelectedPiece {
+            print("You have chosen to move \(selectedPiece.type) to this position \(chosenPosition). ")
+            delegate.didMove(piece: selectedPiece, to: chosenPosition)
+            pieceView(at: chosenPosition)?.setup(with: selectedPiece)
         }
     }
     
@@ -199,12 +211,19 @@ class ChessBoardView: UIView {
         pieceViews.first { $0.frame.contains(point) }?.piece
     }
     
-    func validPosition(at point: CGPoint) -> Position? {
-        var selectedValidMove = validMoveViews.first { $0.frame.contains(point) }
+    func pieceView(at position: Position) -> PieceView? {
+        pieceViews.first { $0.piece.position == position }
+    }
+    
+    func position(for point: CGPoint) -> Position? {
+        let selectedValidMove = validMoveViews.first { $0.frame.contains(point) }
         var file: Position.File?
         var rank: Position.Rank?
         
-        if let width = selectedValidMove?.frame.width, let x = selectedValidMove?.frame.origin.x, let y = selectedValidMove?.frame.origin.y {
+        if
+            let width = selectedValidMove?.frame.width,
+            let x = selectedValidMove?.frame.origin.x,
+            let y = selectedValidMove?.frame.origin.y {
             let resultX = x / width
             let resultY = y / width
             
@@ -220,11 +239,12 @@ class ChessBoardView: UIView {
                 }
             }
         }
-        //print("This is the file of the valid move you have chosen \(file) and this is the rank \(rank) .")
-        if file == nil || rank == nil {
+        guard
+            let file = file,
+            let rank = rank else {
             return nil
         }
-        return Position(file: file!, rank: rank!)
+        return Position(file: file, rank: rank)
     }
 
     override func draw(_ rect: CGRect) {
