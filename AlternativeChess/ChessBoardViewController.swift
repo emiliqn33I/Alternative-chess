@@ -150,16 +150,27 @@ class ChessBoardView: UIView {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView(_:)))
         self.addGestureRecognizer(gestureRecognizer)
     }
-
+    
+    var piece: Piece?
     @objc func didTapView(_ sender: UITapGestureRecognizer? = nil) {
         guard let gestureRecognizer = sender else {
             return
         }
-        if
-            let piece = piece(at: gestureRecognizer.location(in: self)),
-            let delegate = delegate {
-            let validMoves = delegate.validMoves(for: piece)
-            drawValidMoves(validMoves: validMoves)
+        var aPiece = piece(at: gestureRecognizer.location(in: self))
+        
+        if let delegate = delegate {
+            if aPiece != nil {
+                piece = piece(at: gestureRecognizer.location(in: self))
+                let validMoves = delegate.validMoves(for: piece!)
+                drawValidMoves(validMoves: validMoves)
+            }
+        }
+        var chosenSquareForPiece = validPosition(at: gestureRecognizer.location(in: self))
+        
+        if chosenSquareForPiece != nil {
+            if let delegate = delegate {
+                delegate.didMove(piece: piece!, to: chosenSquareForPiece!)
+            }
         }
     }
     
@@ -186,6 +197,34 @@ class ChessBoardView: UIView {
 
     func piece(at point: CGPoint) -> Piece? {
         pieceViews.first { $0.frame.contains(point) }?.piece
+    }
+    
+    func validPosition(at point: CGPoint) -> Position? {
+        var selectedValidMove = validMoveViews.first { $0.frame.contains(point) }
+        var file: Position.File?
+        var rank: Position.Rank?
+        
+        if let width = selectedValidMove?.frame.width, let x = selectedValidMove?.frame.origin.x, let y = selectedValidMove?.frame.origin.y {
+            let resultX = x / width
+            let resultY = y / width
+            
+            for aFile in Position.File.allCases {
+                if Int(resultX) == aFile.rawValue {
+                    file = aFile
+                }
+            }
+            
+            for aRank in Position.Rank.allCases {
+                if Int(resultY) == aRank.rawValue {
+                    rank = PieceView.rankReversed(rank: aRank)
+                }
+            }
+        }
+        //print("This is the file of the valid move you have chosen \(file) and this is the rank \(rank) .")
+        if file == nil || rank == nil {
+            return nil
+        }
+        return Position(file: file!, rank: rank!)
     }
 
     override func draw(_ rect: CGRect) {
