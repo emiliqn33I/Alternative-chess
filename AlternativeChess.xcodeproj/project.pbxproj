@@ -108,14 +108,9 @@
 			children = (
 				90A8CFD0294BB40100229742 /* AppDelegate.swift */,
 				90A8CFD2294BB40100229742 /* SceneDelegate.swift */,
-				BDCF52B929B10ECB00FF5944 /* PieceView.swift */,
-				BDCF52B729B10E7400FF5944 /* ChessBoardView.swift */,
-				90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */,
-				BD505F4A2974273900890A77 /* ChessPiece.swift */,
+				BDCF52BB29B10F7800FF5944 /* UI */,
+				BDCF52BC29B10FBC00FF5944 /* Model */,
 				BD505F482974270A00890A77 /* ChessEngine.swift */,
-				BDCF52B5299A957000FF5944 /* Helper.swift */,
-				BDCF52B3299A876D00FF5944 /* Move.swift */,
-				BD505F4C2974276C00890A77 /* ChessBoard.swift */,
 				90A8CFD6294BB40100229742 /* Main.storyboard */,
 				90A8CFD9294BB40300229742 /* Assets.xcassets */,
 				90A8CFDB294BB40300229742 /* LaunchScreen.storyboard */,
@@ -137,6 +132,27 @@
 				BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */,
 			);
 			path = AlternativeChessTests;
+			sourceTree = "<group>";
+		};
+		BDCF52BB29B10F7800FF5944 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				BDCF52B929B10ECB00FF5944 /* PieceView.swift */,
+				BDCF52B729B10E7400FF5944 /* ChessBoardView.swift */,
+				90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */,
+				BDCF52B5299A957000FF5944 /* Helper.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		BDCF52BC29B10FBC00FF5944 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BD505F4A2974273900890A77 /* ChessPiece.swift */,
+				BDCF52B3299A876D00FF5944 /* Move.swift */,
+				BD505F4C2974276C00890A77 /* ChessBoard.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
