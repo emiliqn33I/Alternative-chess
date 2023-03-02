@@ -21,6 +21,7 @@ class ChessEngine {
     }
     
     func place(piece: Piece, at position: Position) -> Void {
+    func place(piece: Piece, at position: Position) {
         castlePlaceLogic(piece: piece, at: position)
         
         history += [Move(piece: piece, from: piece.position, to: position)]
