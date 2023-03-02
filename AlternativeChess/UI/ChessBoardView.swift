@@ -18,6 +18,8 @@ class ChessBoardView: UIView {
     let board = Board()
     var pieces: [Piece] = []
     var pieceViews: [PieceView] = []
+    var currentSelectedPiece: Piece?
+    var validMoveViews: [UIView] = []
  
     weak var delegate: ChessBoardViewDelegate?
 
@@ -27,38 +29,40 @@ class ChessBoardView: UIView {
         self.addGestureRecognizer(gestureRecognizer)
     }
     
-    var currentSelectedPiece: Piece?
     @objc func didTapView(_ sender: UITapGestureRecognizer? = nil) {
         guard let gestureRecognizer = sender else {
             return
         }
-
+        
         if let selectedPiece = piece(at: gestureRecognizer.location(in: self)) {
             currentSelectedPiece = selectedPiece
         }
         
+        performDrawingValidMoves()
+        
+        if let chosenPosition = position(for: gestureRecognizer.location(in: self)) {
+            performMovingPiece(to: chosenPosition)
+        }
+    }
+
+    func performDrawingValidMoves() {
         if
             let delegate = delegate,
             let piece = currentSelectedPiece {
-            let validMoves = delegate.validMoves(for: piece)
-            drawValidMoves(validMoves: validMoves)
-        }
-        let chosenPosition = position(for: gestureRecognizer.location(in: self))
-        
-        if
-            let chosenPosition = chosenPosition,
-            let delegate = delegate,
-            let selectedPiece = currentSelectedPiece {
-            print("You have chosen to move \(selectedPiece.type) to this position \(chosenPosition). ")
-            delegate.didMove(piece: selectedPiece, to: chosenPosition)
-            
-            
-            pieceView(at: chosenPosition)?.setup(with: selectedPiece)
+            drawValidMoves(validMoves: delegate.validMoves(for: piece))
         }
     }
     
-    var validMoveViews: [UIView] = []
-
+    func performMovingPiece(to position: Position) {
+        if
+            let delegate = delegate,
+            let selectedPiece = currentSelectedPiece {
+            print("You have chosen to move \(selectedPiece.type) to this position \(position). ")
+            delegate.didMove(piece: selectedPiece, to: position)
+            pieceView(at: position)?.setup(with: selectedPiece)
+        }
+    }
+    
     func drawValidMoves(validMoves: [Position]) {
         let side = bounds.width / CGFloat(Position.File.allCases.count)
 
