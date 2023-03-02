@@ -52,6 +52,7 @@ class ChessBoardView: UIView {
             let currentSelectedPiece = currentSelectedPiece {
                 print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
                 delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
+                removeValidMoves()
                 pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
         }
     }
@@ -61,11 +62,8 @@ class ChessBoardView: UIView {
     private func drawValidMoves(validMoves: [Position]) {
         let side = bounds.width / CGFloat(Position.File.allCases.count)
 
-        for view in validMoveViews {
-            view.removeFromSuperview()
-        }
-        validMoveViews.removeAll()
-        
+        removeValidMoves()
+
         for position in validMoves {
             let fileRaw = CGFloat(position.file.rawValue)
             let y = CGFloat(PieceView.rankReversed(rank: position.rank).rawValue) * side
@@ -108,6 +106,13 @@ class ChessBoardView: UIView {
             }
             row += 1
         }
+    }
+
+    func removeValidMoves() {
+        for view in validMoveViews {
+            view.removeFromSuperview()
+        }
+        validMoveViews.removeAll()
     }
 
     // MARK: Helpers
