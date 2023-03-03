@@ -20,16 +20,20 @@ class ChessEngine {
         self.turn = turn
     }
     
-    func place(piece: Piece, at position: Position) -> Void {
-    func place(piece: Piece, at position: Position) {
+    //func place(piece: Piece, at position: Position) -> Void {
+    func place(piece: Piece, at position: Position) -> Piece? {
+        var affectedPiece: Piece?
+        
         castlePlaceLogic(piece: piece, at: position)
         
         history += [Move(piece: piece, from: piece.position, to: position)]
         
         placePieceAtPosition(piece: piece, position: position)
-        removeLogicEnPassant(position: position, piece: piece)
+        affectedPiece = removeLogicEnPassant(position: position, piece: piece)
         checkMateFunction(piece: piece)
         turn = helper.reverse(colour: turn)
+        
+        return affectedPiece
     }
     
     func validMoves(for piece: Piece) -> [Position] {
@@ -119,27 +123,33 @@ class ChessEngine {
     }
     
     // MARK: Remove methods
-    func removeLogicEnPassant(position: Position, piece: Piece) {
+    func removeLogicEnPassant(position: Position, piece: Piece) -> Piece? {
+        var affectedPawn: Piece?
+        
         if enPassantMoves.contains(position) && piece.type == .pawn {
             if turn == .white {
-                removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: -1)
+                affectedPawn = removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: -1)
             }
             if turn == .black {
-                removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: 1)
+                affectedPawn = removeTakenPawnByEnPassant(piece: piece, at: position, changeRankWith: 1)
             }
         }
+        return affectedPawn
     }
     
-    func removeTakenPawnByEnPassant(piece: Piece, at position: Position, changeRankWith: Int) {
+    func removeTakenPawnByEnPassant(piece: Piece, at position: Position, changeRankWith: Int) -> Piece? {
         let takablePawnFromEnPassant = pieces.filter { $0.position == Position(file: position.file, rank: position.rank.changed(with: changeRankWith))}
         if takablePawnFromEnPassant.count != 0 {
             if (takablePawnFromEnPassant[0].colour != piece.colour) && (takablePawnFromEnPassant[0].type == .pawn) {
                 if let index = pieces.firstIndex(of: takablePawnFromEnPassant[0]) {
+                    let removedPawn = pieces[index]
                     pieces.remove(at: index)
                     enPassantMoves.removeAll()
+                    return removedPawn
                 }
             }
         }
+        return nil
     }
     
     func removeValidMoveForCastle(piece: Piece, validMovess: [Position]) -> [Position] {
@@ -168,7 +178,7 @@ class ChessEngine {
     func king(color: Piece.Color) -> Piece? {
         pieces.first { $0.type == .king && color == $0.colour }
     }
-
+    
     func kingCheckMoves(for possibleMoves: [Position], piece: Piece) -> [Position] {
         var checkPositions = [Position]()
         let king = king(color: piece.colour)
@@ -181,7 +191,7 @@ class ChessEngine {
         }
         return checkPositions
     }
-
+    
     func isKingInCheck(king: Piece, at position: Position, piece: Piece) -> Bool {
         let originalPiecePosition = piece.position
         // Update piece position temporarily to check if the king is in check after making the move.
@@ -199,7 +209,7 @@ class ChessEngine {
     
     func appendKingRookLikeMoves(king: Piece, upOrlower: Bool, fileOrRank: Bool) -> [Position] {
         var coordinates = [Position]()
-
+        
         if iteratingThroughFilesOrRanks(piece: king, upOrLower: upOrlower, fileOrRank: fileOrRank).count != 0 {
             coordinates.append(iteratingThroughFilesOrRanks(piece: king, upOrLower: upOrlower, fileOrRank: fileOrRank)[0])
             
@@ -211,7 +221,7 @@ class ChessEngine {
     
     func appendKingBishopLikeMoves(king: Piece, upOrlower: Bool, fileOrRank: Bool) -> [Position] {
         var coordinates = [Position]()
-
+        
         if iteratingThroughFilesAndRanks(piece: king, upOrLower: upOrlower, rightOrLeft: fileOrRank).count != 0 {
             coordinates.append(iteratingThroughFilesAndRanks(piece: king, upOrLower: upOrlower, rightOrLeft: fileOrRank)[0])
             
@@ -220,10 +230,10 @@ class ChessEngine {
         
         return coordinates
     }
-
+    
     func possibleKingMoves(king: Piece) -> [Position] {
         var coordinates = [Position]()
-
+        
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: true, fileOrRank: false)
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: false, fileOrRank: false)
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: false, fileOrRank: true)
@@ -249,7 +259,7 @@ class ChessEngine {
         
         return coordinates
     }
-
+    
     // MARK: Pawn methods
     func enPassantLogic(pawn: Piece, changeFileWith: Int, changeRankWith: Int, enPassantlastRank: Int) -> [Position] {
         var coordinates = [Position]()
@@ -348,7 +358,7 @@ class ChessEngine {
         var validMovesDefend = [Position]()
         let sameColourAsAttackedKingPieces = pieces.filter { i in
             return i.colour == king.colour
-          }
+        }
         for i in sameColourAsAttackedKingPieces {
             if i.type != .king {
                 validMovesDefend += validMoves(for: i)
@@ -490,7 +500,7 @@ class ChessEngine {
             fileKnight = helper.incrementRankAndFileKnight(file: rightOrLeft, rank: upOrLower, incrementFile: fileKnight, incrementRank: rankKnight)[countFile]
             
             rankKnight = helper.incrementRankAndFileKnight(file: rightOrLeft, rank: upOrLower, incrementFile: fileKnight, incrementRank: rankKnight)[countRank]
-
+            
             var casesRank = [Int]()
             var casesFile = [Int]()
             
