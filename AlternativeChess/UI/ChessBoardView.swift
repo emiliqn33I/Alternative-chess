@@ -10,7 +10,7 @@ import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
     func validMoves(for piece: Piece) -> [Position]
-    func didMove(piece: Piece, to position: Position)
+    func didMove(piece: Piece, to position: Position) -> Piece?
 }
 
 class ChessBoardView: UIView {
@@ -51,9 +51,15 @@ class ChessBoardView: UIView {
             let chosenPosition = position(for: tappedLocation),
             let currentSelectedPiece = currentSelectedPiece {
                 print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
-                delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
+                let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
                 removeValidMoves()
                 pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
+                
+                if let affectedPiece = affectedPiece {
+                    if affectedPiece.colour != currentSelectedPiece.colour {
+                        pieceView(at: affectedPiece.position)!.removeFromSuperview()
+                    }
+                }
         }
     }
 
