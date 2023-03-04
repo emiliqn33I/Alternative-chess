@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
+    func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
     func didMove(piece: Piece, to position: Position) -> Piece?
 }
@@ -43,10 +44,28 @@ class ChessBoardView: UIView {
         let tappedLocation = gestureRecognizer.location(in: self)
 
         if let selectedPiece = piece(at: tappedLocation) {
-            currentSelectedPiece = selectedPiece
             if let delegate = delegate {
-                drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
+                if selectedPiece.colour == delegate.turn() {
+                    currentSelectedPiece = selectedPiece
+                    drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
+                }
             }
+            if
+               let chosenPosition = position(for: tappedLocation),
+               let currentSelectedPiece = currentSelectedPiece {
+                   //print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
+                    let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
+                    if let affectedPiece = affectedPiece {
+                        if affectedPiece.colour != currentSelectedPiece.colour {
+                                pieceViewType(at: affectedPiece.position, color: affectedPiece.colour)!.removeFromSuperview()
+                            }
+                    }
+                
+                    removeValidMoves()
+                
+                    pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
+                }
+            
         } else if
             let chosenPosition = position(for: tappedLocation),
             let currentSelectedPiece = currentSelectedPiece {
@@ -58,6 +77,8 @@ class ChessBoardView: UIView {
                 if let affectedPiece = affectedPiece {
                     if affectedPiece.colour != currentSelectedPiece.colour {
                         pieceView(at: affectedPiece.position)!.removeFromSuperview()
+                    } else if affectedPiece.colour == currentSelectedPiece.colour {
+                        pieceView(at: affectedPiece.position)!.setup(with: affectedPiece)
                     }
                 }
         }
@@ -129,6 +150,10 @@ class ChessBoardView: UIView {
     
     private func pieceView(at position: Position) -> PieceView? {
         pieceViews.first { $0.piece.position == position }
+    }
+    
+    private func pieceViewType(at position: Position, color: Piece.Color) -> PieceView? {
+        pieceViews.first { $0.piece.position == position &&  $0.piece.colour == color }
     }
     
     private func position(for point: CGPoint) -> Position? {
