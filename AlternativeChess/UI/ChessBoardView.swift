@@ -53,56 +53,44 @@ class ChessBoardView: UIView {
             if
                let chosenPosition = position(for: tappedLocation),
                let currentSelectedPiece = currentSelectedPiece {
-                   //print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
-                    let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
-                    if let affectedPiece = affectedPiece {
+                    if let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition) {
                         if affectedPiece.colour != currentSelectedPiece.colour {
                                 pieceViewType(at: affectedPiece.position, color: affectedPiece.colour)!.removeFromSuperview()
                             }
                     }
                     
-                    if currentSelectedPiece.type == .pawn && (chosenPosition.rank == .first || chosenPosition.rank == .eighth) {
-                        pieceView(at: chosenPosition)?.imageView!.removeFromSuperview()
-                        
-                        currentSelectedPiece.type = .queen
-                        
-                        removeValidMoves()
-                        
-                        pieceView(at: chosenPosition)?.setupViewPicture(with: currentSelectedPiece)
-                    } else {
-                        removeValidMoves()
-                        
-                        pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
-                    }
+                    updatePromotedPawnView(chosenPosition: chosenPosition)
                 }
             
         } else if
             let chosenPosition = position(for: tappedLocation),
             let currentSelectedPiece = currentSelectedPiece {
                 print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
-                let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
-                
-                if currentSelectedPiece.type == .pawn && (chosenPosition.rank == .first || chosenPosition.rank == .eighth) {
-                    pieceView(at: chosenPosition)?.imageView!.removeFromSuperview()
-                    
-                    currentSelectedPiece.type = .queen
-                    
-                    removeValidMoves()
-                    
-                    pieceView(at: chosenPosition)?.setupViewPicture(with: currentSelectedPiece)
-                } else {
-                    removeValidMoves()
-                    
-                    pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
-                }
-                
-                if let affectedPiece = affectedPiece {
+                if let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition) {
                     if affectedPiece.colour != currentSelectedPiece.colour {
                         pieceView(at: affectedPiece.position)!.removeFromSuperview()
                     } else if affectedPiece.colour == currentSelectedPiece.colour {
                         pieceView(at: affectedPiece.position)!.setup(with: affectedPiece)
                     }
                 }
+                
+                updatePromotedPawnView(chosenPosition: chosenPosition)
+        }
+    }
+    
+    func updatePromotedPawnView(chosenPosition: Position) {
+        if currentSelectedPiece!.type == .pawn && (chosenPosition.rank == .first || chosenPosition.rank == .eighth) {
+            pieceView(at: chosenPosition)?.imageView!.removeFromSuperview()
+            
+            currentSelectedPiece!.type = .queen
+            
+            removeValidMoves()
+            
+            pieceView(at: chosenPosition)?.setupViewPicture(with: currentSelectedPiece!)
+        } else {
+            removeValidMoves()
+            
+            pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece!)
         }
     }
 
