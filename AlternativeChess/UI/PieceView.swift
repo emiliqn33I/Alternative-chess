@@ -11,6 +11,7 @@ import UIKit
 class PieceView: UIView {
     var piece: Piece
     private let squareSide: CGFloat
+    var imageView: UIImageView?
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -23,6 +24,7 @@ class PieceView: UIView {
          
         super.init(frame: frame)
         let imageView = imageView(for: piece)
+        self.imageView = imageView
         imageView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         addSubview(imageView)
     }
@@ -32,6 +34,16 @@ class PieceView: UIView {
         self.frame = frame
         self.piece = piece
 
+    }
+    
+    func setupViewPicture(with piece: Piece) {
+        let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
+        self.frame = frame
+        self.piece = piece
+
+        let imageView = imageView(for: piece)
+        imageView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+        addSubview(imageView)
     }
 
     private func imageView(for piece: Piece) -> UIImageView {
