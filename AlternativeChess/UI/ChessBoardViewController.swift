@@ -56,14 +56,15 @@ class ChessBoardViewController: UIViewController {
 }
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
+    func turn() -> Piece.Color {
+        chessEngine.turn
+    }
     
     func validMoves(for piece: Piece) -> [Position] {
         return chessEngine.validMoves(for: piece)
     }
 
     func didMove(piece: Piece, to position: Position) -> Piece? {
-        var affectedPiece = chessEngine.place(piece: piece, at: position)
-        
-        return affectedPiece
+        chessEngine.place(piece: piece, at: position)
     }
 }
