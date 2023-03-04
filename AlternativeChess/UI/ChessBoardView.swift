@@ -60,10 +60,20 @@ class ChessBoardView: UIView {
                                 pieceViewType(at: affectedPiece.position, color: affectedPiece.colour)!.removeFromSuperview()
                             }
                     }
-                
-                    removeValidMoves()
-                
-                    pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
+                    
+                    if currentSelectedPiece.type == .pawn && (chosenPosition.rank == .first || chosenPosition.rank == .eighth) {
+                        pieceView(at: chosenPosition)?.imageView!.removeFromSuperview()
+                        
+                        currentSelectedPiece.type = .queen
+                        
+                        removeValidMoves()
+                        
+                        pieceView(at: chosenPosition)?.setupViewPicture(with: currentSelectedPiece)
+                    } else {
+                        removeValidMoves()
+                        
+                        pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
+                    }
                 }
             
         } else if
@@ -71,8 +81,20 @@ class ChessBoardView: UIView {
             let currentSelectedPiece = currentSelectedPiece {
                 print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
                 let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition)
-                removeValidMoves()
-                pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
+                
+                if currentSelectedPiece.type == .pawn && (chosenPosition.rank == .first || chosenPosition.rank == .eighth) {
+                    pieceView(at: chosenPosition)?.imageView!.removeFromSuperview()
+                    
+                    currentSelectedPiece.type = .queen
+                    
+                    removeValidMoves()
+                    
+                    pieceView(at: chosenPosition)?.setupViewPicture(with: currentSelectedPiece)
+                } else {
+                    removeValidMoves()
+                    
+                    pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece)
+                }
                 
                 if let affectedPiece = affectedPiece {
                     if affectedPiece.colour != currentSelectedPiece.colour {
