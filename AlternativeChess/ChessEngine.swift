@@ -27,6 +27,8 @@ class ChessEngine {
             affectedPiece = piece
         }
         
+        history += [Move(piece: piece, from: piece.position, to: position)]
+        
         if let piece = placePieceAtPosition(piece: piece, position: position) {
             affectedPiece = piece
         }
@@ -35,7 +37,6 @@ class ChessEngine {
             affectedPiece = piece
         }
         
-        history += [Move(piece: piece, from: piece.position, to: position)]
         checkMateFunction(piece: piece)
         turn = helper.reverse(colour: turn)
         
