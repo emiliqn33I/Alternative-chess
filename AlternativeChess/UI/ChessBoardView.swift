@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
+    func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
     func didMove(piece: Piece, to position: Position) -> Piece?
@@ -21,6 +22,7 @@ class ChessBoardView: UIView {
     var pieceViews: [PieceView] = []
     var currentSelectedPiece: Piece?
     var validMoveViews: [UIView] = []
+    var isCheckMate = 0
  
     weak var delegate: ChessBoardViewDelegate?
 
@@ -75,6 +77,36 @@ class ChessBoardView: UIView {
                 }
                 
                 updatePromotedPawnView(chosenPosition: chosenPosition)
+        }
+        
+        if let delegate = delegate {
+            if delegate.checkMate() == true {
+                isCheckMate += 1
+                checkMateView()
+            }
+        }
+    }
+    
+    func checkMateView() {
+        if isCheckMate == 1 {
+            
+            let checkMateOverlay = UIView(frame: bounds)
+            checkMateOverlay.backgroundColor = UIColor.lightGray.withAlphaComponent(0.7)
+            
+            let label = UILabel()
+            label.text = "Checkmate"
+            label.textColor = UIColor.white
+            label.font = UIFont.boldSystemFont(ofSize: 40)
+            label.textAlignment = .center
+            label.translatesAutoresizingMaskIntoConstraints = false
+            checkMateOverlay.addSubview(label)
+            
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: checkMateOverlay.centerXAnchor),
+                label.centerYAnchor.constraint(equalTo: checkMateOverlay.centerYAnchor)
+            ])
+            
+            addSubview(checkMateOverlay)
         }
     }
     
