@@ -56,6 +56,10 @@ class ChessBoardViewController: UIViewController {
 }
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
+    func checkMate() -> Bool {
+        chessEngine.checkMate
+    }
+    
     func turn() -> Piece.Color {
         chessEngine.turn
     }
