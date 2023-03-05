@@ -252,6 +252,8 @@ class ChessEngine {
     func possibleKingMoves(king: Piece) -> [Position] {
         var coordinates = [Position]()
         var checkKingDidNotMoved: Bool
+        var checkRookHDidNotMoved: Bool
+        var checkRookADidNotMoved: Bool
         
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: true, fileOrRank: false)
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: false, fileOrRank: false)
@@ -266,21 +268,29 @@ class ChessEngine {
         
         if king.colour == .white {
             checkKingDidNotMoved = history.first { $0.from == Position(file: .E, rank: .first) } == nil
+            
+            checkRookADidNotMoved = history.first { $0.from == Position(file: .A, rank: .first) } == nil
+            
+            checkRookHDidNotMoved = history.first { $0.from == Position(file: .H, rank: .first) } == nil
         } else {
             checkKingDidNotMoved = history.first { $0.from == Position(file: .E, rank: .eighth) } == nil
+            
+            checkRookADidNotMoved = history.first { $0.from == Position(file: .A, rank: .eighth) } == nil
+            
+            checkRookHDidNotMoved = history.first { $0.from == Position(file: .H, rank: .eighth) } == nil
         }
         
         //If the kings and the rooks are at right place for castle and the king hasn't move than its appending castle move
-        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .first)} != nil) && checkKingDidNotMoved {
+        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .first)} != nil) && checkKingDidNotMoved && checkRookHDidNotMoved {
             coordinates.append(Position(file: .G, rank: .first))
         }
-        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .eighth)} != nil) && checkKingDidNotMoved {
+        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .eighth)} != nil) && checkKingDidNotMoved && checkRookHDidNotMoved {
             coordinates.append(Position(file: .G, rank: .eighth))
         }
-        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .first)} != nil) && checkKingDidNotMoved {
+        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .first)} != nil) && checkKingDidNotMoved && checkRookADidNotMoved {
             coordinates.append(Position(file: .C, rank: .first))
         }
-        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .eighth)} != nil) && checkKingDidNotMoved {
+        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .eighth)} != nil) && checkKingDidNotMoved && checkRookADidNotMoved {
             coordinates.append(Position(file: .C, rank: .eighth))
         }
         
@@ -324,8 +334,14 @@ class ChessEngine {
                 }
             }
             // If there is takable piece for the pawn, then the coordinates will be appended.
-            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: 1)
-            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: 1)
+            if pawn.position.file == .A {
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: 1)
+            } else if pawn.position.file == .H {
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: 1)
+            } else {
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: 1)
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: 1)
+            }
             
             if pawn.position.rank == .fifth {
                 coordinates += enPassantLogic(pawn: pawn, changeFileWith: 1, changeRankWith: 1, enPassantlastRank: 2)
@@ -347,8 +363,14 @@ class ChessEngine {
                 }
             }
             
-            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: -1)
-            coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: -1)
+            if pawn.position.file == .A {
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: -1)
+            } else if pawn.position.file == .H {
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: -1)
+            } else {
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: -1, incrementWithRank: -1)
+                coordinates += appendIfTakablePiece(piece: pawn, incrementWithFile: 1, incrementWithRank: -1)
+            }
             
             if pawn.position.rank == .fourth {
                 coordinates += enPassantLogic(pawn: pawn, changeFileWith: 1, changeRankWith: -1, enPassantlastRank: -2)
