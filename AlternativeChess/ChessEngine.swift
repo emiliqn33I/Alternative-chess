@@ -200,9 +200,9 @@ class ChessEngine {
     func kingCheckMoves(for possibleMoves: [Position], piece: Piece) -> [Position] {
         var checkPositions = [Position]()
         let king = king(color: piece.colour)
-        if king != nil {
+        if let king = king {
             for move in possibleMoves {
-                if isKingInCheck(king: king!, at: move, piece: piece) {
+                if isKingInCheck(king: king, at: move, piece: piece) {
                     checkPositions.append(move)
                 }
             }
@@ -212,10 +212,19 @@ class ChessEngine {
     
     func isKingInCheck(king: Piece, at position: Position, piece: Piece) -> Bool {
         let originalPiecePosition = piece.position
+        let pieceAtPosition = pieces.first { $0.position == position }
+        if let pieceAtPosition = pieceAtPosition {
+            if let index = pieces.firstIndex(of: pieceAtPosition) {
+                pieces.remove(at: index)
+            }
+        }
         // Update piece position temporarily to check if the king is in check after making the move.
         piece.position = position
         defer {
             piece.position = originalPiecePosition
+            if let pieceAtPosition = pieceAtPosition {
+                pieces.append(pieceAtPosition)
+            }
         }
         for aPiece in pieces {
             if possibleMoves(piece: aPiece).contains(king.position) {
@@ -254,6 +263,12 @@ class ChessEngine {
         var checkKingDidNotMoved: Bool
         var checkRookHDidNotMoved: Bool
         var checkRookADidNotMoved: Bool
+        var checkNoPieceAtGFile: Bool
+        var checkNoPieceAtBFile: Bool
+        var checkNoPieceAtFFile: Bool
+        var checkNoPieceAtCFile: Bool
+
+
         
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: true, fileOrRank: false)
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: false, fileOrRank: false)
@@ -272,25 +287,41 @@ class ChessEngine {
             checkRookADidNotMoved = history.first { $0.from == Position(file: .A, rank: .first) } == nil
             
             checkRookHDidNotMoved = history.first { $0.from == Position(file: .H, rank: .first) } == nil
+            
+            checkNoPieceAtGFile = pieces.first { $0.position == Position(file: .G, rank: .first) } == nil
+            
+            checkNoPieceAtBFile = pieces.first { $0.position == Position(file: .B, rank: .first) } == nil
+            
+            checkNoPieceAtCFile = pieces.first { $0.position == Position(file: .C, rank: .first) } == nil
+            
+            checkNoPieceAtFFile = pieces.first { $0.position == Position(file: .F, rank: .first) } == nil
         } else {
             checkKingDidNotMoved = history.first { $0.from == Position(file: .E, rank: .eighth) } == nil
             
             checkRookADidNotMoved = history.first { $0.from == Position(file: .A, rank: .eighth) } == nil
             
             checkRookHDidNotMoved = history.first { $0.from == Position(file: .H, rank: .eighth) } == nil
+            
+            checkNoPieceAtGFile = pieces.first { $0.position == Position(file: .G, rank: .eighth) } == nil
+            
+            checkNoPieceAtBFile = pieces.first { $0.position == Position(file: .B, rank: .eighth) } == nil
+            
+            checkNoPieceAtCFile = pieces.first { $0.position == Position(file: .C, rank: .eighth) } == nil
+            
+            checkNoPieceAtFFile = pieces.first { $0.position == Position(file: .F, rank: .eighth) } == nil
         }
         
         //If the kings and the rooks are at right place for castle and the king hasn't move than its appending castle move
-        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .first)} != nil) && checkKingDidNotMoved && checkRookHDidNotMoved {
+        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .first)} != nil) && checkKingDidNotMoved && checkRookHDidNotMoved && checkNoPieceAtFFile && checkNoPieceAtGFile {
             coordinates.append(Position(file: .G, rank: .first))
         }
-        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .eighth)} != nil) && checkKingDidNotMoved && checkRookHDidNotMoved {
+        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .H, rank: .eighth)} != nil) && checkKingDidNotMoved && checkRookHDidNotMoved && checkNoPieceAtFFile && checkNoPieceAtGFile {
             coordinates.append(Position(file: .G, rank: .eighth))
         }
-        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .first)} != nil) && checkKingDidNotMoved && checkRookADidNotMoved {
+        if king.colour == .white && king.position == Position(file: .E, rank: .first) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .first)} != nil) && checkKingDidNotMoved && checkRookADidNotMoved && checkNoPieceAtBFile && checkNoPieceAtCFile {
             coordinates.append(Position(file: .C, rank: .first))
         }
-        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .eighth)} != nil) && checkKingDidNotMoved && checkRookADidNotMoved {
+        if king.colour == .black && king.position == Position(file: .E, rank: .eighth) && (pieces.first { $0.type == .rook && $0.position == Position(file: .A, rank: .eighth)} != nil) && checkKingDidNotMoved && checkRookADidNotMoved && checkNoPieceAtBFile && checkNoPieceAtCFile {
             coordinates.append(Position(file: .C, rank: .eighth))
         }
         
