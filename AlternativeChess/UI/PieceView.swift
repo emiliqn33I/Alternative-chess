@@ -35,6 +35,11 @@ class PieceView: UIView {
         self.piece = piece
 
     }
+
+    func setup(with position: Position) {
+        let frame = PieceView.rect(for: position, squareSide: squareSide)
+        self.frame = frame
+    }
     
     func setupViewPicture(with piece: Piece) {
         let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
