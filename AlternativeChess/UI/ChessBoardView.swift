@@ -12,7 +12,7 @@ protocol ChessBoardViewDelegate: AnyObject {
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
-    func didMove(piece: Piece, to position: Position) -> Action?
+    func didMove(piece: Piece, to position: Position) -> Action
 }
 
 class ChessBoardView: UIView {
