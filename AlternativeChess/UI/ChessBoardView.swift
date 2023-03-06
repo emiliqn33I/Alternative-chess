@@ -143,9 +143,8 @@ class ChessBoardView: UIView {
                 pieceViews.remove(at: index)
             }
         }
-        pieceView(at: affectedPieceView.piece.position)?.imageView!.removeFromSuperview()
         removeValidMoves()
-        pieceView(at: piece.position)?.setupViewPicture(with: currentSelectedPiece)
+        pieceView(at: piece.position)?.setupViewImage(with: currentSelectedPiece)
     }
 
     // MARK: Drawing

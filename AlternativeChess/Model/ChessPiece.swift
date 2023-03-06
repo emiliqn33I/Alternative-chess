@@ -94,6 +94,23 @@ class Piece {
         self.colour = colour
         self.position = position
     }
+
+    var imageName: String {
+        switch type {
+        case .pawn:
+            return colour == .white ? "w_pawn" : "b_pawn"
+        case .rook:
+            return colour == .white ? "w_rook" : "b_rook"
+        case .bishop:
+            return colour == .white ? "w_bishop" : "b_bishop"
+        case .knight:
+            return colour == .white ? "w_knight" : "b_knight"
+        case .queen:
+            return colour == .white ? "w_queen" : "b_queen"
+        case .king:
+            return colour == .white ? "w_king" : "b_king"
+        }
+    }
 }
 
 extension Piece: Equatable {
