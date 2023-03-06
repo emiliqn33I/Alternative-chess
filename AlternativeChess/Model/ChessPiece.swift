@@ -72,11 +72,13 @@ class Piece {
         case knight
         case queen
         case king
+        case duck
     }
 
     enum Color {
         case white
         case black
+        case yellow
     }
 
     var position: Position
