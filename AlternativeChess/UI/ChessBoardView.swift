@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
+    func giveDuck() -> Piece?
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
@@ -44,7 +45,7 @@ class ChessBoardView: UIView {
             return
         }
         let tappedLocation = gestureRecognizer.location(in: self)
-
+        
         if let selectedPiece = piece(at: tappedLocation) {
             if let delegate = delegate {
                 if selectedPiece.colour == delegate.turn() {
@@ -53,30 +54,30 @@ class ChessBoardView: UIView {
                 }
             }
             if
-               let chosenPosition = position(for: tappedLocation),
-               let currentSelectedPiece = currentSelectedPiece {
-                    if let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition) {
-                        if affectedPiece.colour != currentSelectedPiece.colour {
-                                pieceViewType(at: affectedPiece.position, color: affectedPiece.colour)!.removeFromSuperview()
-                            }
-                    }
-                    
-                    updatePromotedPawnView(chosenPosition: chosenPosition)
-                }
-            
-        } else if
-            let chosenPosition = position(for: tappedLocation),
-            let currentSelectedPiece = currentSelectedPiece {
-                print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
+                let chosenPosition = position(for: tappedLocation),
+                let currentSelectedPiece = currentSelectedPiece {
                 if let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition) {
                     if affectedPiece.colour != currentSelectedPiece.colour {
-                        pieceView(at: affectedPiece.position)!.removeFromSuperview()
-                    } else if affectedPiece.colour == currentSelectedPiece.colour {
-                        pieceView(at: affectedPiece.position)!.setup(with: affectedPiece)
+                        pieceViewType(at: affectedPiece.position, color: affectedPiece.colour)!.removeFromSuperview()
                     }
                 }
                 
                 updatePromotedPawnView(chosenPosition: chosenPosition)
+            }
+            
+        } else if
+            let chosenPosition = position(for: tappedLocation),
+            let currentSelectedPiece = currentSelectedPiece {
+            print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
+            if let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition) {
+                if affectedPiece.colour != currentSelectedPiece.colour {
+                    pieceView(at: affectedPiece.position)!.removeFromSuperview()
+                } else if affectedPiece.colour == currentSelectedPiece.colour {
+                    pieceView(at: affectedPiece.position)!.setup(with: affectedPiece)
+                }
+            }
+            
+            updatePromotedPawnView(chosenPosition: chosenPosition)
         }
         
         if let delegate = delegate {
