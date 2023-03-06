@@ -11,8 +11,14 @@ class ChessBoardViewController: UIViewController {
     @IBOutlet weak var boardView: ChessBoardView!
     let chessEngine: ChessEngine
     
+    init() {
+        self.chessEngine = ChessEngine(pieces: [], turn: .white)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
-        let pieces = [Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
+        let pieces = [Piece(type: .duck, colour: .yellow, position: Position(file: .H, rank: .fourth)),
+                      Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
                       Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .second)),
                       Piece(type: .pawn, colour: .white, position: Position(file: .C, rank: .second)),
                       Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .second)),
@@ -56,6 +62,10 @@ class ChessBoardViewController: UIViewController {
 }
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
+    func giveDuck() -> Piece? {
+        chessEngine.pieces.first { $0.type == .duck }
+    }
+    
     func checkMate() -> Bool {
         chessEngine.checkMate
     }
