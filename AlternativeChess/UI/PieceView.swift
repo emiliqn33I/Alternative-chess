@@ -61,6 +61,8 @@ class PieceView: UIView {
             imageName = piece.colour == .white ? "w_queen" : "b_queen"
         case .king:
             imageName = piece.colour == .white ? "w_king" : "b_king"
+        case .duck:
+            imageName = "fposter,small,wall_texture,product,750x1000"
         }
         let imageView = UIImageView(image: UIImage(named: imageName))
         return imageView
