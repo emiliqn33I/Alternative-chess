@@ -6,6 +6,19 @@
 //
 import Foundation
 
+struct PieceMoveAction {
+    enum Effect {
+        case promotion
+        case take
+        case castle
+        case enPassant
+        case move
+    }
+
+    let effect: Effect
+    let piece: Piece
+}
+
 class ChessEngine {
     var helper = Helper()
     var pieces: [Piece]
@@ -19,7 +32,58 @@ class ChessEngine {
         self.pieces = pieces
         self.turn = turn
     }
-    
+
+    func placeWithEffect(piece: Piece, at position: Position) -> PieceMoveAction? {
+        var effect: PieceMoveAction.Effect?
+
+        var affectedPiece: Piece?
+
+        if let piece = castlePlaceLogic(piece: piece, at: position) {
+            affectedPiece = piece
+            effect = .castle
+        }
+
+        history += [Move(piece: piece, from: piece.position, to: position)]
+
+        let isPromotion = isPromotingPawn(for: piece, and: position)
+
+        if let piece = placePieceAtPosition(piece: piece, position: position) {
+            if isPromotion {
+                effect = .promotion
+            } else {
+                effect = .take
+            }
+            affectedPiece = piece
+        } else {
+            return PieceMoveAction(effect: .move, piece: piece)
+        }
+
+        if let piece = removeLogicEnPassant(position: position, piece: piece) {
+            affectedPiece = piece
+            effect = .enPassant
+        }
+
+        checkMateFunction(piece: piece)
+        turn = helper.reverse(colour: turn)
+
+        if
+            let affectedPiece = affectedPiece,
+            let effect = effect {
+            return PieceMoveAction(effect: effect, piece: affectedPiece)
+        } else {
+            return nil
+        }
+    }
+
+    func isPromotingPawn(for piece: Piece, and position: Position) -> Bool {
+        guard piece.type == .pawn else {
+            return false
+        }
+        let whitePawnPromotion = piece.colour == .white && position.rank == .eighth
+        let blackPawnPromotion = piece.colour == .black && position.rank == .first
+        return whitePawnPromotion || blackPawnPromotion
+    }
+
     func place(piece: Piece, at position: Position) -> Piece? {
         var affectedPiece: Piece?
         

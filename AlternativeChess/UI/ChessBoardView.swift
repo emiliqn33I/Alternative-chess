@@ -12,7 +12,7 @@ protocol ChessBoardViewDelegate: AnyObject {
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
-    func didMove(piece: Piece, to position: Position) -> Piece?
+    func didMove(piece: Piece, to position: Position) -> PieceMoveAction?
 }
 
 class ChessBoardView: UIView {
@@ -22,7 +22,7 @@ class ChessBoardView: UIView {
     var pieceViews: [PieceView] = []
     var currentSelectedPiece: Piece?
     var validMoveViews: [UIView] = []
-    var isCheckMate = 0
+    var isCheckMate = false
  
     weak var delegate: ChessBoardViewDelegate?
 
@@ -46,83 +46,80 @@ class ChessBoardView: UIView {
         let tappedLocation = gestureRecognizer.location(in: self)
 
         if let selectedPiece = piece(at: tappedLocation) {
-            if let delegate = delegate {
-                if selectedPiece.colour == delegate.turn() {
-                    currentSelectedPiece = selectedPiece
-                    drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
-                }
+            // Case 1 - User has tapped on a piece initially
+            if let delegate = delegate, selectedPiece.colour == delegate.turn() {
+                print("You have chosen \(selectedPiece)")
+                currentSelectedPiece = selectedPiece
+                drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
+            } else if
+                // Case 2 - User has selected a piece and has tapped on a square with another piece
+                let chosenPosition = position(for: tappedLocation),
+                let currentSelectedPiece = currentSelectedPiece {
+                performPlacingOnASquareWithPiece(for: currentSelectedPiece, and: chosenPosition)
             }
-            if
-               let chosenPosition = position(for: tappedLocation),
-               let currentSelectedPiece = currentSelectedPiece {
-                    if let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition) {
-                        if affectedPiece.colour != currentSelectedPiece.colour {
-                                pieceViewType(at: affectedPiece.position, color: affectedPiece.colour)!.removeFromSuperview()
-                            }
-                    }
-                    
-                    updatePromotedPawnView(chosenPosition: chosenPosition)
-                }
-            
         } else if
+            // Case 3 - User has selected a piece and has tapped on a square without a piece
             let chosenPosition = position(for: tappedLocation),
             let currentSelectedPiece = currentSelectedPiece {
-                print("You have chosen to move \(currentSelectedPiece.type) to this position \(chosenPosition). ")
-                if let affectedPiece = delegate?.didMove(piece: currentSelectedPiece, to: chosenPosition) {
-                    if affectedPiece.colour != currentSelectedPiece.colour {
-                        pieceView(at: affectedPiece.position)!.removeFromSuperview()
-                    } else if affectedPiece.colour == currentSelectedPiece.colour {
-                        pieceView(at: affectedPiece.position)!.setup(with: affectedPiece)
-                    }
-                }
-                
-                updatePromotedPawnView(chosenPosition: chosenPosition)
+                performPlacingOnASquareWithoutPiece(for: chosenPosition, currentSelectedPiece: currentSelectedPiece)
         }
-        
-        if let delegate = delegate {
-            if delegate.checkMate() == true {
-                isCheckMate += 1
-                checkMateView()
+
+        if let delegate = delegate, delegate.checkMate() {
+            isCheckMate = true
+            checkMateView()
+        }
+    }
+
+    private func performPlacingOnASquareWithPiece(for piece: Piece, and position: Position) {
+        print("You have chosen to take with \(piece) to \(position)")
+        // Get the affected piece view and remove it from screen
+        guard let pieceMoveAction = delegate?.didMove(piece: piece, to: position) else {
+            return
+        }
+        switch pieceMoveAction.effect {
+        case .take, .promotion:
+            performTakeOrPromotion(for: pieceMoveAction.piece, currentSelectedPiece: piece)
+        default:
+            return
+        }
+    }
+
+    private func performPlacingOnASquareWithoutPiece(for position: Position, currentSelectedPiece: Piece) {
+        print("You have chosen to move \(currentSelectedPiece) to \(position)")
+        guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
+            return
+        }
+        switch pieceMoveAction.effect {
+        case .castle:
+            if pieceMoveAction.piece.colour != currentSelectedPiece.colour {
+                pieceView(at: pieceMoveAction.piece.position)!.setup(with: pieceMoveAction.piece)
             }
+        case .promotion:
+            performTakeOrPromotion(for: pieceMoveAction.piece, currentSelectedPiece: currentSelectedPiece)
+        case .enPassant:
+            pieceView(at: pieceMoveAction.piece.position)!.removeFromSuperview()
+            // TODO: update array
+        default:
+            return
         }
     }
-    
-    func checkMateView() {
-        if isCheckMate == 1 {
-            
-            let checkMateOverlay = UIView(frame: bounds)
-            checkMateOverlay.backgroundColor = UIColor.lightGray.withAlphaComponent(0.7)
-            
-            let label = UILabel()
-            label.text = "Checkmate"
-            label.textColor = UIColor.white
-            label.font = UIFont.boldSystemFont(ofSize: 40)
-            label.textAlignment = .center
-            label.translatesAutoresizingMaskIntoConstraints = false
-            checkMateOverlay.addSubview(label)
-            
-            NSLayoutConstraint.activate([
-                label.centerXAnchor.constraint(equalTo: checkMateOverlay.centerXAnchor),
-                label.centerYAnchor.constraint(equalTo: checkMateOverlay.centerYAnchor)
-            ])
-            
-            addSubview(checkMateOverlay)
+
+    private func performTakeOrPromotion(for piece: Piece, currentSelectedPiece: Piece) {
+        guard let affectedPieceView = pieceView(for: piece) else {
+            return
         }
-    }
-    
-    func updatePromotedPawnView(chosenPosition: Position) {
-        if currentSelectedPiece!.type == .pawn && (chosenPosition.rank == .first || chosenPosition.rank == .eighth) {
-            pieceView(at: chosenPosition)?.imageView!.removeFromSuperview()
-            
-            currentSelectedPiece!.type = .queen
-            
-            removeValidMoves()
-            
-            pieceView(at: chosenPosition)?.setupViewPicture(with: currentSelectedPiece!)
-        } else {
-            removeValidMoves()
-            
-            pieceView(at: chosenPosition)?.setup(with: currentSelectedPiece!)
+        print("Removing \(piece) view")
+        affectedPieceView.removeFromSuperview()
+        if let index = pieceViews.firstIndex(of: affectedPieceView) {
+            pieceViews.remove(at: index)
+        }
+
+        removeValidMoves()
+
+        // Get the current selected piece view and update it to the position of the affected piece
+        if let pieceView = pieceView(for: currentSelectedPiece) {
+            print("Updating \(currentSelectedPiece) view to \(piece.position)")
+            pieceView.setup(with: piece.position)
         }
     }
 
@@ -177,11 +174,34 @@ class ChessBoardView: UIView {
         }
     }
 
-    func removeValidMoves() {
+    private func removeValidMoves() {
         for view in validMoveViews {
             view.removeFromSuperview()
         }
         validMoveViews.removeAll()
+    }
+
+    private func checkMateView() {
+        if isCheckMate {
+
+            let checkMateOverlay = UIView(frame: bounds)
+            checkMateOverlay.backgroundColor = UIColor.lightGray.withAlphaComponent(0.7)
+
+            let label = UILabel()
+            label.text = "Checkmate"
+            label.textColor = UIColor.white
+            label.font = UIFont.boldSystemFont(ofSize: 40)
+            label.textAlignment = .center
+            label.translatesAutoresizingMaskIntoConstraints = false
+            checkMateOverlay.addSubview(label)
+
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: checkMateOverlay.centerXAnchor),
+                label.centerYAnchor.constraint(equalTo: checkMateOverlay.centerYAnchor)
+            ])
+
+            addSubview(checkMateOverlay)
+        }
     }
 
     // MARK: Helpers
@@ -193,9 +213,9 @@ class ChessBoardView: UIView {
     private func pieceView(at position: Position) -> PieceView? {
         pieceViews.first { $0.piece.position == position }
     }
-    
-    private func pieceViewType(at position: Position, color: Piece.Color) -> PieceView? {
-        pieceViews.first { $0.piece.position == position &&  $0.piece.colour == color }
+
+    private func pieceView(for piece: Piece) -> PieceView? {
+        pieceViews.first { $0.piece == piece }
     }
     
     private func position(for point: CGPoint) -> Position? {
