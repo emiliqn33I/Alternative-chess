@@ -427,6 +427,8 @@ class ChessEngine {
             return possibleQueenMoves(queen: piece)
         case .king:
             return possibleKingMoves(king: piece)
+        case .duck:
+            return possibleDuckMoves(duck: piece)
         }
     }
     
@@ -534,7 +536,7 @@ class ChessEngine {
     
     func pieceIsOpositeColorAtThatPosition(piece: Piece, fileBishop: Int, rankBishop: Int) -> Position? {
         let newPos = piece.position.changed(fileDelta: fileBishop, rankDelta: rankBishop)
-        let pieceAtThatPos = pieces.filter { $0.position == newPos && $0.colour != piece.colour}
+        let pieceAtThatPos = pieces.filter { $0.position == newPos && $0.colour != piece.colour && $0.colour != .yellow }
         if pieceAtThatPos.count != 0 {
             return newPos
         }
@@ -646,6 +648,30 @@ class ChessEngine {
         
         coordinates += possibleRookMoves(rook: queen)
         coordinates += possibleBishopMoves(bishop: queen)
+        
+        return coordinates
+    }
+    
+    // MARK: Duck method
+    func possibleDuckMoves(duck: Piece) -> [Position] {
+        var coordinates = [Position]()
+        
+        for rank in Position.Rank.allCases {
+            for file in Position.File.allCases {
+                let position = Position(file: file, rank: rank)
+                coordinates.append(position)
+            }
+        }
+        
+        for position in coordinates {
+            for piece in pieces {
+                if piece.position == position {
+                    if let index = coordinates.firstIndex(of: position) {
+                        coordinates.remove(at: index)
+                    }
+                }
+            }
+        }
         
         return coordinates
     }
