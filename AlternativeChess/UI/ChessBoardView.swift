@@ -77,8 +77,10 @@ class ChessBoardView: UIView {
             return
         }
         switch pieceMoveAction.effect {
-        case .take, .promotion:
-            performTakeOrPromotion(for: pieceMoveAction.piece, currentSelectedPiece: piece)
+        case .take:
+            performTakeOrPromotion(for: pieceMoveAction.piece, currentSelectedPiece: piece, effect: .take, takeOrMovePromotion: false)
+        case .promotion:
+            performTakeOrPromotion(for: pieceMoveAction.piece, currentSelectedPiece: piece, effect: .promotion, takeOrMovePromotion: true)
         default:
             return
         }
@@ -89,37 +91,72 @@ class ChessBoardView: UIView {
         guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
             return
         }
+        
         switch pieceMoveAction.effect {
         case .castle:
-            if pieceMoveAction.piece.colour != currentSelectedPiece.colour {
-                pieceView(at: pieceMoveAction.piece.position)!.setup(with: pieceMoveAction.piece)
+            if pieceMoveAction.piece.colour == currentSelectedPiece.colour {
+                pieceView(at: pieceMoveAction.piece.position)?.setup(with: pieceMoveAction.piece)
+                
+                removeValidMoves()
+                
+                pieceView(at: position)?.setup(with: currentSelectedPiece)
             }
         case .promotion:
-            performTakeOrPromotion(for: pieceMoveAction.piece, currentSelectedPiece: currentSelectedPiece)
+            performTakeOrPromotion(for: pieceMoveAction.piece, currentSelectedPiece: currentSelectedPiece, effect: .promotion, takeOrMovePromotion: false)
         case .enPassant:
             pieceView(at: pieceMoveAction.piece.position)!.removeFromSuperview()
-            // TODO: update array
+            
+            if let affectedPieceView = pieceView(at: pieceMoveAction.piece.position) {
+                if let index = pieceViews.firstIndex(of: affectedPieceView) {
+                    pieceViews.remove(at: index)
+                }
+            }
+            
+            removeValidMoves()
+            
+            pieceView(at: position)?.setup(with: currentSelectedPiece)
+        case .move:
+            removeValidMoves()
+            
+            pieceView(at: position)?.setup(with: currentSelectedPiece)
         default:
             return
         }
     }
 
-    private func performTakeOrPromotion(for piece: Piece, currentSelectedPiece: Piece) {
+    private func performTakeOrPromotion(for piece: Piece, currentSelectedPiece: Piece, effect: PieceMoveAction.Effect, takeOrMovePromotion: Bool) {
         guard let affectedPieceView = pieceView(for: piece) else {
             return
         }
-        print("Removing \(piece) view")
-        affectedPieceView.removeFromSuperview()
-        if let index = pieceViews.firstIndex(of: affectedPieceView) {
-            pieceViews.remove(at: index)
-        }
-
-        removeValidMoves()
-
-        // Get the current selected piece view and update it to the position of the affected piece
-        if let pieceView = pieceView(for: currentSelectedPiece) {
-            print("Updating \(currentSelectedPiece) view to \(piece.position)")
-            pieceView.setup(with: piece.position)
+        
+        if effect == .promotion && takeOrMovePromotion == false {
+            pieceView(at: affectedPieceView.piece.position)?.imageView!.removeFromSuperview()
+            
+            removeValidMoves()
+            
+            pieceView(at: piece.position)?.setupViewPicture(with: currentSelectedPiece)
+        } else if effect == .promotion && takeOrMovePromotion {
+            pieceView(at: affectedPieceView.piece.position)?.imageView!.removeFromSuperview()
+            affectedPieceView.removeFromSuperview()
+            if let index = pieceViews.firstIndex(of: affectedPieceView) {
+                pieceViews.remove(at: index)
+            }
+            
+            removeValidMoves()
+            
+            pieceView(at: piece.position)?.setupViewPicture(with: currentSelectedPiece)
+        } else {
+            print("Removing \(piece) view")
+            if let affectedView = pieceView(for: piece) {
+                affectedView.removeFromSuperview()
+                if let index = pieceViews.firstIndex(of: affectedView) {
+                    pieceViews.remove(at: index)
+                }
+            }
+            
+            removeValidMoves()
+            
+            pieceView(for: currentSelectedPiece)?.setup(with: piece.position)
         }
     }
 
