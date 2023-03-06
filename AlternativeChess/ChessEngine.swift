@@ -76,7 +76,6 @@ class ChessEngine {
         }
     }
 
-
     func isPromotingPawn(for piece: Piece, and position: Position) -> Bool {
         guard piece.type == .pawn else {
             return false
@@ -86,29 +85,6 @@ class ChessEngine {
         return whitePawnPromotion || blackPawnPromotion
     }
 
-    func place(piece: Piece, at position: Position) -> Piece? {
-        var affectedPiece: Piece?
-        
-        if let piece = castlePlaceLogic(piece: piece, at: position) {
-            affectedPiece = piece
-        }
-        
-        history += [Move(piece: piece, from: piece.position, to: position)]
-        
-        if let piece = placePieceAtPosition(piece: piece, position: position) {
-            affectedPiece = piece
-        }
-        
-        if let piece = removeLogicEnPassant(position: position, piece: piece) {
-            affectedPiece = piece
-        }
-        
-        checkMateFunction(piece: piece)
-        turn = helper.reverse(colour: turn)
-        
-        return affectedPiece
-    }
-    
     func validMoves(for piece: Piece) -> [Position] {
         let possibleMoves = possibleMoves(piece: piece)
         let kingCheckMoves = kingCheckMoves(for: possibleMoves, piece: piece)
