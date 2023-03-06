@@ -12,7 +12,7 @@ protocol ChessBoardViewDelegate: AnyObject {
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
-    func didMove(piece: Piece, to position: Position) -> PieceMoveAction?
+    func didMove(piece: Piece, to position: Position) -> Action?
 }
 
 class ChessBoardView: UIView {
@@ -76,7 +76,7 @@ class ChessBoardView: UIView {
         guard let pieceMoveAction = delegate?.didMove(piece: piece, to: position) else {
             return
         }
-        switch pieceMoveAction.effect {
+        switch pieceMoveAction.moveType {
         case .take:
             performTake(for: pieceMoveAction.piece, currentSelectedPiece: piece)
         case .promotion:
@@ -91,7 +91,7 @@ class ChessBoardView: UIView {
         guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
             return
         }
-        switch pieceMoveAction.effect {
+        switch pieceMoveAction.moveType {
         case .castle:
             if pieceMoveAction.piece.colour == currentSelectedPiece.colour {
                 pieceView(at: pieceMoveAction.piece.position)?.setup(with: pieceMoveAction.piece)

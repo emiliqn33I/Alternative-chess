@@ -6,8 +6,8 @@
 //
 import Foundation
 
-struct PieceMoveAction {
-    enum Effect {
+struct Action {
+    enum MoveType {
         case promotion
         case take
         case castle
@@ -15,8 +15,14 @@ struct PieceMoveAction {
         case move
     }
 
-    let effect: Effect
+    enum KingEffect {
+        case check
+        case mate
+    }
+
     let piece: Piece
+    let moveType: MoveType
+    let kingEffect: KingEffect? = nil
 }
 
 class ChessEngine {
@@ -33,13 +39,13 @@ class ChessEngine {
         self.turn = turn
     }
 
-    func placeWithEffect(piece: Piece, at position: Position) -> PieceMoveAction {
-        var effect: PieceMoveAction.Effect?
+    func place(piece: Piece, at position: Position) -> Action {
+        var moveType: Action.MoveType?
         var affectedPiece: Piece?
 
         if let piece = castlePlaceLogic(piece: piece, at: position) {
             affectedPiece = piece
-            effect = .castle
+            moveType = .castle
         }
 
         history += [Move(piece: piece, from: piece.position, to: position)]
@@ -48,25 +54,25 @@ class ChessEngine {
 
         if let piece = placePieceAtPosition(piece: piece, position: position) {
             if isPromotion {
-                effect = .promotion
+                moveType = .promotion
             } else {
-                effect = .take
+                moveType = .take
             }
             affectedPiece = piece
         }
 
         if let piece = removeLogicEnPassant(position: position, piece: piece) {
             affectedPiece = piece
-            effect = .enPassant
+            moveType = .enPassant
         }
 
         checkMateFunction(piece: piece)
         turn = helper.reverse(colour: turn)
 
-        if let effect = effect, let affectedPiece = affectedPiece {
-            return PieceMoveAction(effect: effect, piece: affectedPiece)
+        if let moveType = moveType, let affectedPiece = affectedPiece {
+            return Action(piece: affectedPiece, moveType: moveType)
         } else {
-            return PieceMoveAction(effect: .move, piece: piece)
+            return Action(piece: piece, moveType: .move)
         }
     }
 
