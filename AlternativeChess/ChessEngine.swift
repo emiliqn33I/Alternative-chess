@@ -33,9 +33,8 @@ class ChessEngine {
         self.turn = turn
     }
 
-    func placeWithEffect(piece: Piece, at position: Position) -> PieceMoveAction? {
+    func placeWithEffect(piece: Piece, at position: Position) -> PieceMoveAction {
         var effect: PieceMoveAction.Effect?
-
         var affectedPiece: Piece?
 
         if let piece = castlePlaceLogic(piece: piece, at: position) {
@@ -54,8 +53,6 @@ class ChessEngine {
                 effect = .take
             }
             affectedPiece = piece
-        } else {
-            return PieceMoveAction(effect: .move, piece: piece)
         }
 
         if let piece = removeLogicEnPassant(position: position, piece: piece) {
@@ -66,14 +63,13 @@ class ChessEngine {
         checkMateFunction(piece: piece)
         turn = helper.reverse(colour: turn)
 
-        if
-            let affectedPiece = affectedPiece,
-            let effect = effect {
+        if let effect = effect, let affectedPiece = affectedPiece {
             return PieceMoveAction(effect: effect, piece: affectedPiece)
         } else {
-            return nil
+            return PieceMoveAction(effect: .move, piece: piece)
         }
     }
+
 
     func isPromotingPawn(for piece: Piece, and position: Position) -> Bool {
         guard piece.type == .pawn else {
@@ -140,8 +136,12 @@ class ChessEngine {
     func placePieceAtPosition(piece: Piece, position: Position) -> Piece? {
         var affectedPiece: Piece?
         
-        if self.piece(at: position) == nil {
+        if self.piece(at: position) == nil && isPromotingPawn(for: piece, and: position) == false {
             piece.position = position
+        } else if isPromotingPawn(for: piece, and: position) {
+            affectedPiece = piece
+            affectedPiece?.type = .queen
+            affectedPiece?.position = position
         } else {
             let takablePiece = pieces.first { $0 == self.piece(at: position) }
             affectedPiece = takablePiece
