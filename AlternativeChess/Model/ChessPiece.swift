@@ -64,6 +64,12 @@ extension Position: Equatable {
     }
 }
 
+extension Position: CustomStringConvertible {
+    var description: String {
+        "(\(file)\(rank))"
+    }
+}
+
 class Piece {
     enum PieceType {
         case pawn
@@ -92,6 +98,12 @@ class Piece {
 
 extension Piece: Equatable {
     static func == (lhs: Piece, rhs: Piece) -> Bool {
-        return lhs.position.file == rhs.position.file && lhs.position.rank == rhs.position.rank
+        return lhs.position == rhs.position && lhs.type == rhs.type && lhs.colour == rhs.colour
+    }
+}
+
+extension Piece: CustomStringConvertible {
+    var description: String {
+        "(\(type), \(colour), \(position))"
     }
 }
