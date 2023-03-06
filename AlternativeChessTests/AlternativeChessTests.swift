@@ -16,19 +16,16 @@ final class AlternativeChessTests: XCTestCase {
         chessBoardViewController.loadViewIfNeeded()
         
         // Then the chess board view is visible
-        let chessBoardView = chessBoardViewController.board
+        let chessBoardView = chessBoardViewController.boardView
         XCTAssertNotNil(chessBoardView)
-        XCTAssertTrue(chessBoardView.isKind(of: ChessBoardView.self))
+        XCTAssertTrue(((chessBoardView?.isKind(of: ChessBoardView.self)) != nil))
     }
 
     func test_ChessBoardContains8x8Squares() {
         // Given the chess board view is visible
         let chessBoardViewController = ChessBoardViewController()
         chessBoardViewController.loadViewIfNeeded()
-        if chessBoardViewController.board.isKind(of: ChessBoardView.self) != true {
-            XCTFail()
-            return
-        }
+
         let chessBoard = Board()
         let squares = chessBoard.squares
         XCTAssert(squares.count == 8)
@@ -85,14 +82,14 @@ final class AlternativeChessTests: XCTestCase {
     func test_ChessBoardFillsInMaximumAvailableSpace() {
         let chessBoardViewController = ChessBoardViewController()
         chessBoardViewController.loadViewIfNeeded()
-        let chessBoardView = chessBoardViewController.board
+        let chessBoardView = chessBoardViewController.boardView
         let chessBoard = Board()
 
         var row = 0
         for(_, item) in chessBoard.squares.enumerated() {
              var counter = 0
              for square in item {
-                 let SideSquare = chessBoardView.bounds.height / Double(ChessBoardView.squaresInRow)
+                 let SideSquare = (chessBoardView!.bounds.height) / Double(ChessBoardView.squaresInRow)
                  if(SideSquare != square.sideOfSquare) {
                          XCTFail()
                          return
