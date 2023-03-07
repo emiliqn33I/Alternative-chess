@@ -25,7 +25,7 @@ final class PieceTakeTests: XCTestCase {
         let move = validMoves.first!
     
 //         When the user places the piece at any of the valid moves
-        chessEngine.place(piece: pieces[1], at: move)
+        let _ = chessEngine.place(piece: pieces[1], at: move)
             
 //         And the board will contain the piece at its new position
         let pieceAtNewPosition = chessEngine.piece(at: move)

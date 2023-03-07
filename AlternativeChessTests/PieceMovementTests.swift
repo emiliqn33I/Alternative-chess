@@ -36,6 +36,16 @@ final class PieceMovementTests: XCTestCase {
         XCTAssert(validMovesB3.count == 1)
         XCTAssert((validMovesB3[0].file == .B) && (validMovesB3[0].rank == .fourth))
     }
+    
+    func testWhitePawnAtF7() {
+        let whitePawn = Piece(type: .pawn, colour: .white, position: Position(file: .F, rank: .seventh))
+        let chessEngine = createSUT(piece: whitePawn)
+        
+        let validMovesForWhitePawn = chessEngine.validMoves(for: whitePawn)
+
+        XCTAssertTrue(validMovesForWhitePawn.count == 1, "Expected 1 got: \(validMovesForWhitePawn.count)")
+        XCTAssertTrue(validMovesForWhitePawn.first! == Position(file: .F, rank: .eighth))
+    }
 
     func testWhiteRookMovesStartingPosition() {
         // Given the user is on the board screen
