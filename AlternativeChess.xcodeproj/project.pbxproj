@@ -22,6 +22,9 @@
 		BDCC22E8298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC22E7298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift */; };
 		BDCC22EA298AE034008133FB /* BothColoursPossibleMovesPiecesStartingPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC22E9298AE034008133FB /* BothColoursPossibleMovesPiecesStartingPosition.swift */; };
 		BDCC22EC298BA490008133FB /* PieceTakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC22EB298BA490008133FB /* PieceTakeTests.swift */; };
+		BDCC22EE29915A18008133FB /* PieceValidMovesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */; };
+		BDCF52B4299A876D00FF5944 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCF52B3299A876D00FF5944 /* Move.swift */; };
+		BDCF52B6299A957000FF5944 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCF52B5299A957000FF5944 /* Helper.swift */; };
 		BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +57,9 @@
 		BDCC22E7298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitePiecesAtRandomPositonPossibleMoves.swift; sourceTree = "<group>"; };
 		BDCC22E9298AE034008133FB /* BothColoursPossibleMovesPiecesStartingPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BothColoursPossibleMovesPiecesStartingPosition.swift; sourceTree = "<group>"; };
 		BDCC22EB298BA490008133FB /* PieceTakeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceTakeTests.swift; sourceTree = "<group>"; };
+		BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceValidMovesTests.swift; sourceTree = "<group>"; };
+		BDCF52B3299A876D00FF5944 /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		BDCF52B5299A957000FF5944 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRandomPositionMovementTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +107,8 @@
 				90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */,
 				BD505F4A2974273900890A77 /* ChessPiece.swift */,
 				BD505F482974270A00890A77 /* ChessEngine.swift */,
+				BDCF52B5299A957000FF5944 /* Helper.swift */,
+				BDCF52B3299A876D00FF5944 /* Move.swift */,
 				BD505F4C2974276C00890A77 /* ChessBoard.swift */,
 				90A8CFD6294BB40100229742 /* Main.storyboard */,
 				90A8CFD9294BB40300229742 /* Assets.xcassets */,
@@ -120,6 +128,7 @@
 				BDCC22E7298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift */,
 				BDCC22E9298AE034008133FB /* BothColoursPossibleMovesPiecesStartingPosition.swift */,
 				BDCC22EB298BA490008133FB /* PieceTakeTests.swift */,
+				BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */,
 			);
 			path = AlternativeChessTests;
 			sourceTree = "<group>";
@@ -225,7 +234,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDCF52B4299A876D00FF5944 /* Move.swift in Sources */,
 				BD505F492974270A00890A77 /* ChessEngine.swift in Sources */,
+				BDCF52B6299A957000FF5944 /* Helper.swift in Sources */,
 				BD505F4D2974276C00890A77 /* ChessBoard.swift in Sources */,
 				90A8CFD5294BB40100229742 /* ChessBoardViewController.swift in Sources */,
 				90A8CFD1294BB40100229742 /* AppDelegate.swift in Sources */,
@@ -238,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDCC22EE29915A18008133FB /* PieceValidMovesTests.swift in Sources */,
 				BDCC22EA298AE034008133FB /* BothColoursPossibleMovesPiecesStartingPosition.swift in Sources */,
 				BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */,
 				90A8CFE8294BB40300229742 /* AlternativeChessTests.swift in Sources */,

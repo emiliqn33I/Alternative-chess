@@ -11,7 +11,27 @@ import XCTest
 final class PieceTakeTests: XCTestCase {
 
     func createSUT(pieces: [Piece]) -> ChessEngine {
-        return ChessEngine(pieces: pieces)
+        return ChessEngine(pieces: pieces, turn: .white)
+    }
+    
+    func testPlacePiece() {
+        // Given the user has obtained a certain set of VALID moves
+        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
+                      Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .second)),
+                      Piece(type: .queen, colour: .white, position: Position(file: .B, rank: .fourth))]
+        let chessEngine = createSUT(pieces: pieces)
+        let validMoves = chessEngine.validMoves(for: pieces[1])
+
+        let move = validMoves.first!
+    
+//         When the user places the piece at any of the valid moves
+        chessEngine.place(piece: pieces[1], at: move)
+            
+//         And the board will contain the piece at its new position
+        let pieceAtNewPosition = chessEngine.piece(at: move)
+        XCTAssertNotNil(pieceAtNewPosition)
+        XCTAssertTrue(pieceAtNewPosition!.type == pieces[1].type)
+        XCTAssertTrue(pieceAtNewPosition!.colour == pieces[1].colour)
     }
 
     func testWhitePawnTakes() {

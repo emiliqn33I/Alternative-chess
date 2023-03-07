@@ -11,11 +11,11 @@ import XCTest
 final class WhitePiecesAtRandomPositonPossibleMoves: XCTestCase {
 
     func createSUT(piece: Piece) -> ChessEngine {
-        return ChessEngine(pieces: [piece])
+        return ChessEngine(pieces: [piece], turn: .white)
     }
     
     func createSUT(pieces: [Piece]) -> ChessEngine {
-        return ChessEngine(pieces: pieces)
+        return ChessEngine(pieces: pieces, turn: .white)
     }
     
     func testWhitePiecesRandomPosition() {
