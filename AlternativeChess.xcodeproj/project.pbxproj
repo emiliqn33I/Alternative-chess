@@ -29,6 +29,7 @@
 		BDCF52BA29B10ECB00FF5944 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCF52B929B10ECB00FF5944 /* PieceView.swift */; };
 		BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */; };
 		BDE9DDD429B5D46B004E9986 /* DuckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD329B5D46B004E9986 /* DuckTests.swift */; };
+		BDE9DDD629B734FA004E9986 /* InCheckCantMovePieces.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		BDCF52B929B10ECB00FF5944 /* PieceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
 		BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRandomPositionMovementTests.swift; sourceTree = "<group>"; };
 		BDE9DDD329B5D46B004E9986 /* DuckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckTests.swift; sourceTree = "<group>"; };
+		BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InCheckCantMovePieces.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				BDCC22EB298BA490008133FB /* PieceTakeTests.swift */,
 				BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */,
 				BDE9DDD329B5D46B004E9986 /* DuckTests.swift */,
+				BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */,
 			);
 			path = AlternativeChessTests;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				BDCC22E8298AAFF1008133FB /* WhitePiecesAtRandomPositonPossibleMoves.swift in Sources */,
 				90DCD11A2982F5D30026B65D /* PieceMovementTests.swift in Sources */,
 				BDCC22EC298BA490008133FB /* PieceTakeTests.swift in Sources */,
+				BDE9DDD629B734FA004E9986 /* InCheckCantMovePieces.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

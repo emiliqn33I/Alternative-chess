@@ -11,7 +11,7 @@ import UIKit
 class PieceView: UIView {
     var piece: Piece
     private let squareSide: CGFloat
-    var imageView: UIImageView?
+    private var imageView: UIImageView
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -21,51 +21,31 @@ class PieceView: UIView {
         self.piece = piece
         self.squareSide = squareSide
         let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
-         
-        super.init(frame: frame)
-        let imageView = imageView(for: piece)
-        self.imageView = imageView
+        self.imageView = UIImageView(image: UIImage(named: piece.imageName))
         imageView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+
+        super.init(frame: frame)
         addSubview(imageView)
     }
-    
+
     func setup(with piece: Piece) {
         let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
         self.frame = frame
         self.piece = piece
+    }
 
+    func setup(with position: Position) {
+        let frame = PieceView.rect(for: position, squareSide: squareSide)
+        self.frame = frame
     }
     
-    func setupViewPicture(with piece: Piece) {
-        let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
-        self.frame = frame
+    func setupViewImage(with piece: Piece) {
         self.piece = piece
-
-        let imageView = imageView(for: piece)
-        imageView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
-        addSubview(imageView)
+        imageView.image = UIImage(named: piece.imageName)
     }
 
     private func imageView(for piece: Piece) -> UIImageView {
-        var imageName: String = ""
-        switch piece.type {
-        case .pawn:
-            imageName = piece.colour == .white ? "w_pawn" : "b_pawn"
-        case .rook:
-            imageName = piece.colour == .white ? "w_rook" : "b_rook"
-        case .bishop:
-            imageName = piece.colour == .white ? "w_bishop" : "b_bishop"
-        case .knight:
-            imageName = piece.colour == .white ? "w_knight" : "b_knight"
-        case .queen:
-            imageName = piece.colour == .white ? "w_queen" : "b_queen"
-        case .king:
-            imageName = piece.colour == .white ? "w_king" : "b_king"
-        case .duck:
-            imageName = "fposter,small,wall_texture,product,750x1000"
-        }
-        let imageView = UIImageView(image: UIImage(named: imageName))
-        return imageView
+        UIImageView(image: UIImage(named: piece.imageName))
     }
     
     private static func rect(for position: Position, squareSide: CGFloat) -> CGRect {

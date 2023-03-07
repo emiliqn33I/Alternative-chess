@@ -78,7 +78,7 @@ extension ChessBoardViewController: ChessBoardViewDelegate {
         chessEngine.validMoves(for: piece)
     }
 
-    func didMove(piece: Piece, to position: Position) -> Piece? {
+    func didMove(piece: Piece, to position: Position) -> Action {
         chessEngine.place(piece: piece, at: position)
     }
 }

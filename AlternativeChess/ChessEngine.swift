@@ -6,6 +6,25 @@
 //
 import Foundation
 
+struct Action {
+    enum MoveType {
+        case promotion
+        case take
+        case castle
+        case enPassant
+        case move
+    }
+
+    enum KingEffect {
+        case check
+        case mate
+    }
+
+    let piece: Piece
+    let moveType: MoveType
+    let kingEffect: KingEffect? = nil
+}
+
 class ChessEngine {
     var helper = Helper()
     var pieces: [Piece]
@@ -19,30 +38,53 @@ class ChessEngine {
         self.pieces = pieces
         self.turn = turn
     }
-    
-    func place(piece: Piece, at position: Position) -> Piece? {
+
+    func place(piece: Piece, at position: Position) -> Action {
+        var moveType: Action.MoveType?
         var affectedPiece: Piece?
-        
+
         if let piece = castlePlaceLogic(piece: piece, at: position) {
             affectedPiece = piece
+            moveType = .castle
         }
-        
+
         history += [Move(piece: piece, from: piece.position, to: position)]
-        
+
+        let isPromotion = isPromotingPawn(for: piece, and: position)
+
         if let piece = placePieceAtPosition(piece: piece, position: position) {
+            if isPromotion {
+                moveType = .promotion
+            } else {
+                moveType = .take
+            }
             affectedPiece = piece
         }
-        
+
         if let piece = removeLogicEnPassant(position: position, piece: piece) {
             affectedPiece = piece
+            moveType = .enPassant
         }
-        
+
         checkMateFunction(piece: piece)
         turn = helper.reverse(colour: turn)
-        
-        return affectedPiece
+
+        if let moveType = moveType, let affectedPiece = affectedPiece {
+            return Action(piece: affectedPiece, moveType: moveType)
+        } else {
+            return Action(piece: piece, moveType: .move)
+        }
     }
-    
+
+    func isPromotingPawn(for piece: Piece, and position: Position) -> Bool {
+        guard piece.type == .pawn else {
+            return false
+        }
+        let whitePawnPromotion = piece.colour == .white && position.rank == .eighth
+        let blackPawnPromotion = piece.colour == .black && position.rank == .first
+        return whitePawnPromotion || blackPawnPromotion
+    }
+
     func validMoves(for piece: Piece) -> [Position] {
         let possibleMoves = possibleMoves(piece: piece)
         let kingCheckMoves = kingCheckMoves(for: possibleMoves, piece: piece)
@@ -76,8 +118,12 @@ class ChessEngine {
     func placePieceAtPosition(piece: Piece, position: Position) -> Piece? {
         var affectedPiece: Piece?
         
-        if self.piece(at: position) == nil {
+        if self.piece(at: position) == nil && isPromotingPawn(for: piece, and: position) == false {
             piece.position = position
+        } else if isPromotingPawn(for: piece, and: position) {
+            affectedPiece = piece
+            affectedPiece?.type = .queen
+            affectedPiece?.position = position
         } else {
             let takablePiece = pieces.first { $0 == self.piece(at: position) }
             affectedPiece = takablePiece
@@ -218,14 +264,17 @@ class ChessEngine {
                 pieces.remove(at: index)
             }
         }
+        
         // Update piece position temporarily to check if the king is in check after making the move.
         piece.position = position
+  
         defer {
             piece.position = originalPiecePosition
             if let pieceAtPosition = pieceAtPosition {
                 pieces.append(pieceAtPosition)
             }
         }
+        
         for aPiece in pieces {
             if possibleMoves(piece: aPiece).contains(king.position) {
                 return true
@@ -332,8 +381,8 @@ class ChessEngine {
     func enPassantLogic(pawn: Piece, changeFileWith: Int, changeRankWith: Int, enPassantlastRank: Int) -> [Position] {
         var coordinates = [Position]()
         let enPassantPawn = piece(at: Position(file: pawn.position.file.changed(with: changeFileWith), rank: pawn.position.rank))
-        let enPassantPawnLastPosition = history.last!.from
-        let enPassantPawnCurrentPosition = history.last!.to
+        let enPassantPawnLastPosition = history.last?.from
+        let enPassantPawnCurrentPosition = history.last?.to
         let ifLastPositionIsRight = (enPassantPawnLastPosition == changedPositionFileAndRank(for: pawn, fileDelta: changeFileWith, rankDelta: enPassantlastRank))
         let ifCurrentPositionIsRight = (enPassantPawnCurrentPosition == Position(file: pawn.position.file.changed(with: changeFileWith), rank: pawn.position.rank))
         
@@ -348,7 +397,7 @@ class ChessEngine {
     func possiblePawnMoves(pawn: Piece) -> [Position] {
         var coordinates = [Position]()
         
-        if pawn.colour == .white && turn == .white {
+        if pawn.colour == .white {
             // If the pawn is at the second rank then she is able to move to the fourth rank.
             if pawn.position.rank == .second {
                 for i in 1...2 {
