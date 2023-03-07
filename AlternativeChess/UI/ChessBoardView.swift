@@ -71,7 +71,6 @@ class ChessBoardView: UIView {
     }
 
     private func performPlacingOnASquareWithPiece(for piece: Piece, and position: Position) {
-        print("You have chosen to take with \(piece) to \(position)")
         // Get the affected piece view and remove it from screen
         guard let pieceMoveAction = delegate?.didMove(piece: piece, to: position) else {
             return
@@ -87,7 +86,6 @@ class ChessBoardView: UIView {
     }
 
     private func performPlacingOnASquareWithoutPiece(for position: Position, currentSelectedPiece: Piece) {
-        print("You have chosen to move \(currentSelectedPiece) to \(position)")
         guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
             return
         }
@@ -120,7 +118,6 @@ class ChessBoardView: UIView {
     }
 
     private func performTake(for piece: Piece, currentSelectedPiece: Piece) {
-        print("Removing \(piece) view")
         if let affectedView = pieceView(for: piece) {
             affectedView.removeFromSuperview()
             if let index = pieceViews.firstIndex(of: affectedView) {

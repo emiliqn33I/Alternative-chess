@@ -264,14 +264,17 @@ class ChessEngine {
                 pieces.remove(at: index)
             }
         }
+        
         // Update piece position temporarily to check if the king is in check after making the move.
         piece.position = position
+  
         defer {
             piece.position = originalPiecePosition
             if let pieceAtPosition = pieceAtPosition {
                 pieces.append(pieceAtPosition)
             }
         }
+        
         for aPiece in pieces {
             if possibleMoves(piece: aPiece).contains(king.position) {
                 return true
@@ -378,8 +381,8 @@ class ChessEngine {
     func enPassantLogic(pawn: Piece, changeFileWith: Int, changeRankWith: Int, enPassantlastRank: Int) -> [Position] {
         var coordinates = [Position]()
         let enPassantPawn = piece(at: Position(file: pawn.position.file.changed(with: changeFileWith), rank: pawn.position.rank))
-        let enPassantPawnLastPosition = history.last!.from
-        let enPassantPawnCurrentPosition = history.last!.to
+        let enPassantPawnLastPosition = history.last?.from
+        let enPassantPawnCurrentPosition = history.last?.to
         let ifLastPositionIsRight = (enPassantPawnLastPosition == changedPositionFileAndRank(for: pawn, fileDelta: changeFileWith, rankDelta: enPassantlastRank))
         let ifCurrentPositionIsRight = (enPassantPawnCurrentPosition == Position(file: pawn.position.file.changed(with: changeFileWith), rank: pawn.position.rank))
         
@@ -394,7 +397,7 @@ class ChessEngine {
     func possiblePawnMoves(pawn: Piece) -> [Position] {
         var coordinates = [Position]()
         
-        if pawn.colour == .white && turn == .white {
+        if pawn.colour == .white {
             // If the pawn is at the second rank then she is able to move to the fourth rank.
             if pawn.position.rank == .second {
                 for i in 1...2 {
