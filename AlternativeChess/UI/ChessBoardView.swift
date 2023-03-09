@@ -24,6 +24,7 @@ class ChessBoardView: UIView {
     var currentSelectedPiece: Piece?
     var validMoveViews: [UIView] = []
     var isCheckMate = false
+    var pieceMoved = false
  
     weak var delegate: ChessBoardViewDelegate?
 
@@ -46,23 +47,42 @@ class ChessBoardView: UIView {
         }
         let tappedLocation = gestureRecognizer.location(in: self)
         
-        if let selectedPiece = piece(at: tappedLocation) {
-            // Case 1 - User has tapped on a piece initially
-            if let delegate = delegate, selectedPiece.colour == delegate.turn() {
-                print("You have chosen \(selectedPiece)")
-                currentSelectedPiece = selectedPiece
-                drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
+        if pieceMoved {
+            if let selectedPiece = piece(at: tappedLocation) {
+                // Case 1 - User has tapped on duck initially
+                if let delegate = delegate, selectedPiece.colour == .yellow {
+                    print("You have chosen \(selectedPiece)")
+                    currentSelectedPiece = selectedPiece
+                    drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
+                }
             } else if
-                // Case 2 - User has selected a piece and has tapped on a square with another piece
+                // Case 2 - User has selected duck and has tapped on a square to place the duck
                 let chosenPosition = position(for: tappedLocation),
                 let currentSelectedPiece = currentSelectedPiece {
-                performPlacingOnASquareWithPiece(for: currentSelectedPiece, and: chosenPosition)
-            }
-        } else if
-            // Case 3 - User has selected a piece and has tapped on a square without a piece
-            let chosenPosition = position(for: tappedLocation),
-            let currentSelectedPiece = currentSelectedPiece {
                 performPlacingOnASquareWithoutPiece(for: chosenPosition, currentSelectedPiece: currentSelectedPiece)
+                pieceMoved = false
+            }
+        } else {
+            if let selectedPiece = piece(at: tappedLocation) {
+                // Case 1 - User has tapped on a piece initially
+                if let delegate = delegate, selectedPiece.colour == delegate.turn() {
+                    print("You have chosen \(selectedPiece)")
+                    currentSelectedPiece = selectedPiece
+                    drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
+                } else if
+                    // Case 2 - User has selected a piece and has tapped on a square with another piece
+                    let chosenPosition = position(for: tappedLocation),
+                    let currentSelectedPiece = currentSelectedPiece {
+                    performPlacingOnASquareWithPiece(for: currentSelectedPiece, and: chosenPosition)
+                    pieceMoved = true
+                }
+            } else if
+                // Case 3 - User has selected a piece and has tapped on a square without a piece
+                let chosenPosition = position(for: tappedLocation),
+                let currentSelectedPiece = currentSelectedPiece {
+                performPlacingOnASquareWithoutPiece(for: chosenPosition, currentSelectedPiece: currentSelectedPiece)
+                pieceMoved = true
+            }
         }
 
         if let delegate = delegate, delegate.checkMate() {
