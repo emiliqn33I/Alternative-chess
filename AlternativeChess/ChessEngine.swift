@@ -66,6 +66,11 @@ class ChessEngine {
             moveType = .enPassant
         }
 
+        if affectedPiece?.type == .king {
+            checkMate = true
+            winner = piece.colour
+        }
+        
         checkMateFunction(piece: piece)
         
         if piece.colour != .yellow {
