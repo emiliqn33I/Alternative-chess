@@ -102,5 +102,4 @@ final class AlternativeChessTests: XCTestCase {
 //            row += 1
 //        }
 //    }
->>>>>>> board-ui
 }
