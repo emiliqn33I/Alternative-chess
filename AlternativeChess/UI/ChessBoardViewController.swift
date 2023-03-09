@@ -17,7 +17,7 @@ class ChessBoardViewController: UIViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        let pieces = [Piece(type: .duck, colour: .yellow, position: Position(file: .H, rank: .fourth)),
+        let pieces = [Piece(type: .duck, colour: .yellow, position: Position(file: .H, rank: .sixth)),
                       Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
                       Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .second)),
                       Piece(type: .pawn, colour: .white, position: Position(file: .C, rank: .second)),
