@@ -34,7 +34,7 @@ final class PieceValidMovesTests: XCTestCase {
                       Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first))]
         let chessEngine = createSUT(pieces: pieces, turn: .black)
         // And the black have moved pawn form F7 to F5
-        chessEngine.place(piece: pieces[1], at: Position(file: .F, rank: .fifth))
+        let _ = chessEngine.place(piece: pieces[1], at: Position(file: .F, rank: .fifth))
         // And it's turn to the user(as white) to move
         if chessEngine.turn != .white {
             XCTFail()
@@ -47,7 +47,7 @@ final class PieceValidMovesTests: XCTestCase {
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .F, rank: .sixth)))
         
-        chessEngine.place(piece: pieces[0], at: Position(file: .F, rank: .sixth))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .F, rank: .sixth))
         pieces = chessEngine.pieces
         XCTAssertTrue(pieces[0].position == Position(file: .F, rank: .sixth))
         XCTAssertNil((pieces.first { $0.position == Position(file: .F, rank: .fifth)}))
@@ -60,7 +60,7 @@ final class PieceValidMovesTests: XCTestCase {
                       Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first))]
         let chessEngine = createSUT(pieces: pieces, turn: .black)
         // And the black have moved pawn form D7 to D5
-        chessEngine.place(piece: pieces[1], at: Position(file: .D, rank: .fifth))
+        let _ = chessEngine.place(piece: pieces[1], at: Position(file: .D, rank: .fifth))
         // And it's turn to the user(as white) to move
         if chessEngine.turn != .white {
             XCTFail()
@@ -73,7 +73,7 @@ final class PieceValidMovesTests: XCTestCase {
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .D, rank: .sixth)))
         
-        chessEngine.place(piece: pieces[0], at: Position(file: .D, rank: .sixth))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .D, rank: .sixth))
         pieces = chessEngine.pieces
         XCTAssertTrue(pieces[0].position == Position(file: .D, rank: .sixth))
         XCTAssertNil((pieces.first { $0.position == Position(file: .D, rank: .fifth)}))
@@ -86,7 +86,7 @@ final class PieceValidMovesTests: XCTestCase {
                       Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         // And the white have moved pawn form F2 to F4
-        chessEngine.place(piece: pieces[1], at: Position(file: .F, rank: .fourth))
+        let _ = chessEngine.place(piece: pieces[1], at: Position(file: .F, rank: .fourth))
         // And it's turn to the user(as black) to move
         if chessEngine.turn != .black {
             XCTFail()
@@ -99,7 +99,7 @@ final class PieceValidMovesTests: XCTestCase {
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .F, rank: .third)))
         
-        chessEngine.place(piece: pieces[0], at: Position(file: .F, rank: .third))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .F, rank: .third))
         pieces = chessEngine.pieces
         XCTAssertTrue(pieces[0].position == Position(file: .F, rank: .third))
         XCTAssertNil((pieces.first { $0.position == Position(file: .F, rank: .fourth)}))
@@ -112,7 +112,7 @@ final class PieceValidMovesTests: XCTestCase {
                       Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         // And the white have moved pawn form D2 to D4
-        chessEngine.place(piece: pieces[1], at: Position(file: .D, rank: .fourth))
+        let _ = chessEngine.place(piece: pieces[1], at: Position(file: .D, rank: .fourth))
         // And it's turn to the user(as black) to move
         if chessEngine.turn != .black {
             XCTFail()
@@ -125,7 +125,7 @@ final class PieceValidMovesTests: XCTestCase {
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .D, rank: .third)))
         
-        chessEngine.place(piece: pieces[0], at: Position(file: .D, rank: .third))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .D, rank: .third))
         pieces = chessEngine.pieces
         XCTAssertTrue(pieces[0].position == Position(file: .D, rank: .third))
         XCTAssertNil((pieces.first { $0.position == Position(file: .D, rank: .fourth)}))
@@ -139,7 +139,7 @@ final class PieceValidMovesTests: XCTestCase {
                       Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         // And the queen move to E2 checking the white king at E1
-        chessEngine.place(piece: pieces[1], at: Position(file: .E, rank: .second))
+        let _ = chessEngine.place(piece: pieces[1], at: Position(file: .E, rank: .second))
         // And there are no pieces that can take the queen
         XCTAssertTrue(chessEngine.validMovesDefendingKing(king: pieces[0]).isEmpty)
         // Then the white king will be checkMated, and white wins
@@ -156,7 +156,7 @@ final class PieceValidMovesTests: XCTestCase {
         // And there are no pieces that are attacking the king between the rook
         // Then the white king can castle kingside and will have G1 as a valid move
         XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .G, rank: .first)))
-        chessEngine.place(piece: pieces[0], at: Position(file: .G, rank: .first))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .G, rank: .first))
         //And the rook will be at F1
         
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .white, position: Position(file: .F, rank: .first))))
@@ -171,7 +171,7 @@ final class PieceValidMovesTests: XCTestCase {
         // And there are no pieces that are attacking the king between the rook
         // Then the white king can castle queenside and will have G1 as a valid move
         XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .C, rank: .first)))
-        chessEngine.place(piece: pieces[0], at: Position(file: .C, rank: .first))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .C, rank: .first))
         //And the rook will be at D1
         
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .white, position: Position(file: .D, rank: .first))))
@@ -186,7 +186,7 @@ final class PieceValidMovesTests: XCTestCase {
         // And there are no pieces that are attacking the king between the rook
         // Then the black king can castle kingside and will have G8 as a valid move
         XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .G, rank: .eighth)))
-        chessEngine.place(piece: pieces[0], at: Position(file: .G, rank: .eighth))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .G, rank: .eighth))
         //And the rook will be at F8
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .black, position: Position(file: .F, rank: .eighth))))
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .king, colour: .black, position: Position(file: .G, rank: .eighth))))
@@ -200,7 +200,7 @@ final class PieceValidMovesTests: XCTestCase {
         // And there are no pieces that are attacking the king between the rook
         // Then the black king can castle queenside and will have G8 as a valid move
         XCTAssertTrue(chessEngine.validMoves(for: pieces[0]).contains(Position(file: .C, rank: .eighth)))
-        chessEngine.place(piece: pieces[0], at: Position(file: .C, rank: .eighth))
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .C, rank: .eighth))
         //And the rook will be at D8
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .rook, colour: .black, position: Position(file: .D, rank: .eighth))))
         XCTAssertTrue(chessEngine.pieces.contains(Piece(type: .king, colour: .black, position: Position(file: .C, rank: .eighth))))
