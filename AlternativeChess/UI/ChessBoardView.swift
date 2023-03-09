@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
-    func giveDuck() -> Piece?
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
