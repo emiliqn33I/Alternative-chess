@@ -67,7 +67,10 @@ class ChessEngine {
         }
 
         checkMateFunction(piece: piece)
-        turn = helper.reverse(colour: turn)
+        
+        if piece.colour != .yellow {
+            turn = helper.reverse(colour: turn)
+        }
 
         if let moveType = moveType, let affectedPiece = affectedPiece {
             return Action(piece: affectedPiece, moveType: moveType)
