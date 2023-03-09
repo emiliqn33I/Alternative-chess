@@ -78,11 +78,13 @@ class Piece {
         case knight
         case queen
         case king
+        case duck
     }
 
     enum Color {
         case white
         case black
+        case yellow
     }
 
     var position: Position
@@ -109,6 +111,8 @@ class Piece {
             return colour == .white ? "w_queen" : "b_queen"
         case .king:
             return colour == .white ? "w_king" : "b_king"
+        case .duck:
+            return "fposter,small,wall_texture,product,750x1000"
         }
     }
 }
