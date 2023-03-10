@@ -48,7 +48,9 @@ class ChessEngine {
             moveType = .castle
         }
 
-        history += [Move(piece: piece, from: piece.position, to: position)]
+        if piece.colour != .yellow {
+            history += [Move(piece: piece, from: piece.position, to: position)]
+        }
 
         let isPromotion = isPromotingPawn(for: piece, and: position)
 
