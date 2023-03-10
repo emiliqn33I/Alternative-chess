@@ -16,9 +16,9 @@ final class PieceTakeTests: XCTestCase {
     
     func testPlacePiece() {
         // Given the user has obtained a certain set of VALID moves
-        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .second)),
-                      Piece(type: .queen, colour: .white, position: Position(file: .B, rank: .fourth))]
+        let pieces = [Piece(.king, .white, Position(file: .E, rank: .first)),
+                      Piece(.pawn, .white, Position(file: .D, rank: .second)),
+                      Piece(.queen, .white, Position(file: .B, rank: .fourth))]
         let chessEngine = createSUT(pieces: pieces)
         let validMoves = chessEngine.validMoves(for: pieces[1])
 
@@ -37,9 +37,9 @@ final class PieceTakeTests: XCTestCase {
     func testWhitePawnTakes() {
         // Given the user is on the board screen
         // And there is white pawn at B2 and black pawns at B3 and A3
-        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .third)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .second)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .A, rank: .third))]
+        let pieces = [Piece(.pawn, .black, Position(file: .C, rank: .third)),
+                      Piece(.pawn, .white, Position(file: .B, rank: .second)),
+                      Piece(.pawn, .black, Position(file: .A, rank: .third))]
         let chessEngine = createSUT(pieces: pieces)
         // When they tap the B2 pawn
         // Then the C3 and A3 will be highlighted
@@ -52,11 +52,11 @@ final class PieceTakeTests: XCTestCase {
     func testWhiteRookTakes() {
         // Given the user is on the board screen
         // And there is white rook at D4 and black pawns at B4, D6, D2 and F4
-        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .sixth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .B, rank: .fourth)),
-                      Piece(type: .rook, colour: .white, position: Position(file: .D, rank: .fourth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .second)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .fourth))]
+        let pieces = [Piece(.pawn, .black, Position(file: .D, rank: .sixth)),
+                      Piece(.pawn, .black, Position(file: .B, rank: .fourth)),
+                      Piece(.rook, .white, Position(file: .D, rank: .fourth)),
+                      Piece(.pawn, .black, Position(file: .D, rank: .second)),
+                      Piece(.pawn, .black, Position(file: .F, rank: .fourth))]
         let chessEngine = createSUT(pieces: pieces)
         // When they tap the D4 rook
         // Then the B4, D6, D2 and F4 will be highlighted
@@ -71,11 +71,11 @@ final class PieceTakeTests: XCTestCase {
     func testWhiteBishopTakes() {
         // Given the user is on the board screen
         // And there is white rook at D4 and black pawns at B4, D6, D2 and F4
-        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .B, rank: .sixth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .B, rank: .second)),
-                      Piece(type: .bishop, colour: .white, position: Position(file: .D, rank: .fourth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .second)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .sixth))]
+        let pieces = [Piece(.pawn, .black, Position(file: .B, rank: .sixth)),
+                      Piece(.pawn, .black, Position(file: .B, rank: .second)),
+                      Piece(.bishop, .white, Position(file: .D, rank: .fourth)),
+                      Piece(.pawn, .black, Position(file: .F, rank: .second)),
+                      Piece(.pawn, .black, Position(file: .F, rank: .sixth))]
         let chessEngine = createSUT(pieces: pieces)
         // When they tap the D4 bishop
         // Then the B4, D6, D2 and F4 will be highlighted
@@ -90,15 +90,15 @@ final class PieceTakeTests: XCTestCase {
     func testWhiteQueenTakes() {
         // Given the user is on the board screen
         // And there is white queen at D4 and black pawns at C5, C3, E3, E5, D2, D6, A4 and F6
-        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .fifth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .third)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .fifth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .third)),
-                      Piece(type: .queen, colour: .white, position: Position(file: .D, rank: .fourth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .second)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .sixth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .A, rank: .fourth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .fourth))]
+        let pieces = [Piece(.pawn, .black, Position(file: .C, rank: .fifth)),
+                      Piece(.pawn, .black, Position(file: .C, rank: .third)),
+                      Piece(.pawn, .black, Position(file: .E, rank: .fifth)),
+                      Piece(.pawn, .black, Position(file: .E, rank: .third)),
+                      Piece(.queen, .white, Position(file: .D, rank: .fourth)),
+                      Piece(.pawn, .black, Position(file: .D, rank: .second)),
+                      Piece(.pawn, .black, Position(file: .D, rank: .sixth)),
+                      Piece(.pawn, .black, Position(file: .A, rank: .fourth)),
+                      Piece(.pawn, .black, Position(file: .F, rank: .fourth))]
         let chessEngine = createSUT(pieces: pieces)
         // When they tap the D4 queen
         // Then the C5, C3, E3, E5, D2, D6, A4 and F6 will be highlighted
@@ -117,14 +117,14 @@ final class PieceTakeTests: XCTestCase {
     func testWhiteKingTakes() {
         // Given the user is on the board screen
         // And there is white king at D4 and black pawns at C5, D5, E5, C3, E3, D3
-        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .fifth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .fifth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .fifth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .third)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .third)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .third)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .D, rank: .third)),
-                      Piece(type: .king, colour: .white, position: Position(file: .D, rank: .fourth))]
+        let pieces = [Piece(.pawn, .black, Position(file: .C, rank: .fifth)),
+                      Piece(.pawn, .black, Position(file: .D, rank: .fifth)),
+                      Piece(.pawn, .black, Position(file: .E, rank: .fifth)),
+                      Piece(.pawn, .black, Position(file: .C, rank: .third)),
+                      Piece(.pawn, .black, Position(file: .D, rank: .third)),
+                      Piece(.pawn, .black, Position(file: .E, rank: .third)),
+                      Piece(.pawn, .black, Position(file: .D, rank: .third)),
+                      Piece(.king, .white, Position(file: .D, rank: .fourth))]
         let chessEngine = createSUT(pieces: pieces)
         // When they tap the D4 king
         // Then the C5, D5, E5, C3, E3, D3 will be highlighted
@@ -141,15 +141,15 @@ final class PieceTakeTests: XCTestCase {
     func testWhiteKnightTakes() {
         // Given the user is on the board screen
         // And there is white knight at D4 and black pawns at C6, C2, E2, E6, B3, B5, F3 and F5
-        let pieces = [Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .sixth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .C, rank: .second)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .second)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .E, rank: .sixth)),
-                      Piece(type: .knight, colour: .white, position: Position(file: .D, rank: .fourth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .B, rank: .third)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .B, rank: .fifth)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .third)),
-                      Piece(type: .pawn, colour: .black, position: Position(file: .F, rank: .fifth))]
+        let pieces = [Piece(.pawn, .black, Position(file: .C, rank: .sixth)),
+                      Piece(.pawn, .black, Position(file: .C, rank: .second)),
+                      Piece(.pawn, .black, Position(file: .E, rank: .second)),
+                      Piece(.pawn, .black, Position(file: .E, rank: .sixth)),
+                      Piece(.knight, .white, Position(file: .D, rank: .fourth)),
+                      Piece(.pawn, .black, Position(file: .B, rank: .third)),
+                      Piece(.pawn, .black, Position(file: .B, rank: .fifth)),
+                      Piece(.pawn, .black, Position(file: .F, rank: .third)),
+                      Piece(.pawn, .black, Position(file: .F, rank: .fifth))]
         let chessEngine = createSUT(pieces: pieces)
         // When they tap the D4 queen
         // Then the C5, C3, E3, E5, D2, D6, A4 and F6 will be highlighted

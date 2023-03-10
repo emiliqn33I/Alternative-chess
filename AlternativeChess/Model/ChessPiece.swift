@@ -91,7 +91,7 @@ class Piece {
     var type: PieceType
     var colour: Color
 
-    init(type: PieceType, colour: Color, position: Position) {
+    init(_ type: PieceType, _ colour: Color, _ position: Position) {
         self.type = type
         self.colour = colour
         self.position = position

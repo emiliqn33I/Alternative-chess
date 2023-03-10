@@ -16,7 +16,7 @@ final class PieceRandomPositionMovementTests: XCTestCase {
     func testWhitePawnMovesRandomPosition() {
         // Given the user is on the board screen
         // And there is a pawn at the D5
-        let piece = Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .fifth))
+        let piece = Piece(.pawn, .white, Position(file: .D, rank: .fifth))
         let chessEngine = createSUT(piece: piece)
         // When they tap the pawn D5
         // Then the D6 square on the board will be highlighted
@@ -28,7 +28,7 @@ final class PieceRandomPositionMovementTests: XCTestCase {
     func testWhiteRookMovesRandomPosition() {
         // Given the user is on the board screen
         // And there is a rook at the E4
-        let piece = Piece(type: .rook, colour: .white, position: Position(file: .E, rank: .fourth))
+        let piece = Piece(.rook, .white, Position(file: .E, rank: .fourth))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the rook at E4
         let validMovesE4 = chessEngine.possibleMoves(piece: piece)
@@ -54,7 +54,7 @@ final class PieceRandomPositionMovementTests: XCTestCase {
     func testWhiteBishopMovesRandomPosition() {
         // Given the user is on the board screen
         // And there is a bishop at the G3
-        let piece = Piece(type: .bishop, colour: .white, position: Position(file: .G, rank: .third))
+        let piece = Piece(.bishop, .white, Position(file: .G, rank: .third))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the bishop at G3
         let validMovesG3 = chessEngine.possibleMoves(piece: piece)
@@ -75,7 +75,7 @@ final class PieceRandomPositionMovementTests: XCTestCase {
     func testWhiteKnightMovesRandomPosition() {
         // Given the user is on the board screen
         // And there is a knight at the B6
-        let piece = Piece(type: .knight, colour: .white, position: Position(file: .B, rank: .sixth))
+        let piece = Piece(.knight, .white, Position(file: .B, rank: .sixth))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the knight at B6
         let validMovesB6 = chessEngine.possibleMoves(piece: piece)
@@ -93,7 +93,7 @@ final class PieceRandomPositionMovementTests: XCTestCase {
     func testWhiteQueenMovesRandomPosition() {
         // Given the user is on the board
         // And there is a queen at the E3
-        let piece = Piece(type: .queen, colour: .white, position: Position(file: .E, rank: .third))
+        let piece = Piece(.queen, .white, Position(file: .E, rank: .third))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the queen at E3
         let validMovesE3 = chessEngine.possibleMoves(piece: piece)
@@ -130,7 +130,7 @@ final class PieceRandomPositionMovementTests: XCTestCase {
     func testWhiteKingMovesRandomPosition() {
         // Given the user is on the board screen
         // And there is a queen at the E6
-        let piece = Piece(type: .king, colour: .white, position: Position(file: .E, rank: .sixth))
+        let piece = Piece(.king, .white, Position(file: .E, rank: .sixth))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the king at E6
         let validMovesE6 = chessEngine.possibleMoves(piece: piece)

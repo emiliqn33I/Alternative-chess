@@ -21,22 +21,22 @@ final class WhitePiecesAtRandomPositonPossibleMoves: XCTestCase {
     func testWhitePiecesRandomPosition() {
         // Given the user is on the board screen
         // And there are every white piece
-        let pieces = [Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .second)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .C, rank: .second)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .D, rank: .seventh)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .E, rank: .fourth)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .F, rank: .third)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .G, rank: .third)),
-                      Piece(type: .pawn, colour: .white, position: Position(file: .H, rank: .second)),
-                      Piece(type: .rook, colour: .white, position: Position(file: .D, rank: .fifth)),
-                      Piece(type: .knight, colour: .white, position: Position(file: .C, rank: .third)),
-                      Piece(type: .bishop, colour: .white, position: Position(file: .E, rank: .third)),
-                      Piece(type: .queen, colour: .white, position: Position(file: .B, rank: .fourth)),
-                      Piece(type: .king, colour: .white, position: Position(file: .F, rank: .second)),
-                      Piece(type: .bishop, colour: .white, position: Position(file: .H, rank: .third)),
-                      Piece(type: .knight, colour: .white, position: Position(file: .E, rank: .second)),
-                      Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first))]
+        let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .second)),
+                      Piece(.pawn, .white, Position(file: .B, rank: .second)),
+                      Piece(.pawn, .white, Position(file: .C, rank: .second)),
+                      Piece(.pawn, .white, Position(file: .D, rank: .seventh)),
+                      Piece(.pawn, .white, Position(file: .E, rank: .fourth)),
+                      Piece(.pawn, .white, Position(file: .F, rank: .third)),
+                      Piece(.pawn, .white, Position(file: .G, rank: .third)),
+                      Piece(.pawn, .white, Position(file: .H, rank: .second)),
+                      Piece(.rook, .white, Position(file: .D, rank: .fifth)),
+                      Piece(.knight, .white, Position(file: .C, rank: .third)),
+                      Piece(.bishop, .white, Position(file: .E, rank: .third)),
+                      Piece(.queen, .white, Position(file: .B, rank: .fourth)),
+                      Piece(.king, .white, Position(file: .F, rank: .second)),
+                      Piece(.bishop, .white, Position(file: .H, rank: .third)),
+                      Piece(.knight, .white, Position(file: .E, rank: .second)),
+                      Piece(.rook, .white, Position(file: .H, rank: .first))]
         let chessEngine = createSUT(pieces: pieces)
         // When they tap the a piece
         // Then the the piece squares will be shown on the board

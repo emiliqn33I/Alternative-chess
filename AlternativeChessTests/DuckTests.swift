@@ -16,9 +16,9 @@ final class DuckTests: XCTestCase {
 
     func testDuckCantBeTakenByWhite() {
         // Given the user has obtained a certain set of VALID moves
-        let pieces = [Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
-                      Piece(type: .duck, colour: .yellow, position: Position(file: .H, rank: .fourth)),
-                      Piece(type: .queen, colour: .white, position: Position(file: .B, rank: .fourth))]
+        let pieces = [Piece(.king, .white, Position(file: .E, rank: .first)),
+                      Piece(.duck, .yellow, Position(file: .H, rank: .fourth)),
+                      Piece(.queen, .white, Position(file: .B, rank: .fourth))]
         let chessEngine = createSUT(pieces: pieces)
         let validMoves = chessEngine.validMoves(for: pieces[2])
         
@@ -27,9 +27,9 @@ final class DuckTests: XCTestCase {
     
     func testDuckCantBeTakenByBlack() {
         // Given the user has obtained a certain set of VALID moves
-        let pieces = [Piece(type: .king, colour: .black, position: Position(file: .E, rank: .first)),
-                      Piece(type: .duck, colour: .yellow, position: Position(file: .H, rank: .fourth)),
-                      Piece(type: .queen, colour: .black, position: Position(file: .B, rank: .fourth))]
+        let pieces = [Piece(.king, .black, Position(file: .E, rank: .first)),
+                      Piece(.duck, .yellow, Position(file: .H, rank: .fourth)),
+                      Piece(.queen, .black, Position(file: .B, rank: .fourth))]
         let chessEngine = createSUT(pieces: pieces)
         let validMoves = chessEngine.validMoves(for: pieces[2])
         
@@ -38,9 +38,9 @@ final class DuckTests: XCTestCase {
     
     func testDuckPossibleMoves() {
         // Given the user has obtained a certain set of VALID moves
-        let pieces = [Piece(type: .king, colour: .black, position: Position(file: .E, rank: .first)),
-                      Piece(type: .duck, colour: .yellow, position: Position(file: .H, rank: .fourth)),
-                      Piece(type: .queen, colour: .black, position: Position(file: .B, rank: .fourth))]
+        let pieces = [Piece(.king, .black, Position(file: .E, rank: .first)),
+                      Piece(.duck, .yellow, Position(file: .H, rank: .fourth)),
+                      Piece(.queen, .black, Position(file: .B, rank: .fourth))]
         let chessEngine = createSUT(pieces: pieces)
         let validMoves = chessEngine.validMoves(for: pieces[1])
         print(validMoves.count)
