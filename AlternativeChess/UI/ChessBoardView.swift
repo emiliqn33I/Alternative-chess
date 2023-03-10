@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
+    func kingInCheck(piece: Piece) -> Piece?
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
@@ -50,6 +51,13 @@ class ChessBoardView: UIView {
         let tappedLocation = gestureRecognizer.location(in: self)
         
         removeHighlight()
+        
+        if
+            let delegate = delegate,
+            let tappedPiece = piece(at: tappedLocation),
+            let inCheckKing = delegate.kingInCheck(piece: tappedPiece) {
+                drawKingHighlight(for: inCheckKing)
+        }
         
         if pieceMoved {
             if let selectedPiece = piece(at: tappedLocation) {
@@ -196,6 +204,18 @@ class ChessBoardView: UIView {
         let rankRaw = CGFloat(PieceView.rankReversed(rank: piece.position.rank).rawValue) * side
         let highlight = UIView(frame: CGRect(x: fileRaw + 5, y: rankRaw + 5, width: side - 10, height: side - 10))
         highlight.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
+        highlight.tag = 1
+        
+        addSubview(highlight)
+    }
+    
+    private func drawKingHighlight(for piece: Piece) {
+        let side = bounds.width / CGFloat(Position.File.allCases.count)
+        
+        let fileRaw = CGFloat(piece.position.file.rawValue) * side
+        let rankRaw = CGFloat(PieceView.rankReversed(rank: piece.position.rank).rawValue) * side
+        let highlight = UIView(frame: CGRect(x: fileRaw + 5, y: rankRaw + 5, width: side - 10, height: side - 10))
+        highlight.backgroundColor = UIColor.red.withAlphaComponent(0.5)
         highlight.tag = 1
         
         addSubview(highlight)
