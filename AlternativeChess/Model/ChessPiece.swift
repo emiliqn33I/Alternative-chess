@@ -26,7 +26,7 @@ struct Position {
         }
     }
 
-    enum File: Int , CaseIterable{
+    enum File: Int , CaseIterable {
         case A
         case B
         case C
