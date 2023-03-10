@@ -6,25 +6,6 @@
 //
 import Foundation
 
-struct Action {
-    enum MoveType {
-        case promotion
-        case take
-        case castle
-        case enPassant
-        case move
-    }
-
-    enum KingEffect {
-        case check
-        case mate
-    }
-
-    let piece: Piece
-    let moveType: MoveType
-    let kingEffect: KingEffect? = nil
-}
-
 class ChessEngine {
     var helper = Helper()
     var pieces: [Piece]
@@ -39,51 +20,37 @@ class ChessEngine {
         self.turn = turn
     }
 
-    func place(piece: Piece, at position: Position) -> Action {
-        var moveType: Action.MoveType?
-        var affectedPiece: Piece?
-
+    func place(piece: Piece, at position: Position) -> Move {
+        let originalPosition = piece.position
+        var moveType: Move.MoveType?
         if let piece = castlePlaceLogic(piece: piece, at: position) {
-            affectedPiece = piece
-            moveType = .castle
+            moveType = .castle(rook: piece)
         }
-
-        if piece.colour != .yellow {
-            history += [Move(piece: piece, from: piece.position, to: position)]
-        }
-
-        let isPromotion = isPromotingPawn(for: piece, and: position)
 
         if let piece = placePieceAtPosition(piece: piece, position: position) {
-            if isPromotion {
-                moveType = .promotion
+            if isPromotingPawn(for: piece, and: position) {
+                moveType = .promotion(promoted: piece)
             } else {
-                moveType = .take
+                moveType = .take(taken: piece)
+                // Duck piece can take king
+                if piece.type == .king {
+                    checkMate = true
+                    winner = piece.colour
+                }
             }
-            affectedPiece = piece
         }
-
         if let piece = removeLogicEnPassant(position: position, piece: piece) {
-            affectedPiece = piece
-            moveType = .enPassant
+            moveType = .enPassant(takenPawn: piece)
         }
-
-        if affectedPiece?.type == .king {
-            checkMate = true
-            winner = piece.colour
-        }
-        
         checkMateFunction(piece: piece)
-        
         if piece.colour != .yellow {
             turn = helper.reverse(colour: turn)
         }
-
-        if let moveType = moveType, let affectedPiece = affectedPiece {
-            return Action(piece: affectedPiece, moveType: moveType)
-        } else {
-            return Action(piece: piece, moveType: .move)
+        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move)
+        if piece.colour != .yellow {
+            history.append(move)
         }
+        return move
     }
 
     func isPromotingPawn(for piece: Piece, and position: Position) -> Bool {

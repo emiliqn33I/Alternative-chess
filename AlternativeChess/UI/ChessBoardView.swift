@@ -13,7 +13,7 @@ protocol ChessBoardViewDelegate: AnyObject {
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
-    func didMove(piece: Piece, to position: Position) -> Action
+    func didMove(piece: Piece, to position: Position) -> Move
 }
 
 class ChessBoardView: UIView {
@@ -107,14 +107,14 @@ class ChessBoardView: UIView {
     
     private func performPlacingOnASquareWithPiece(for piece: Piece, and position: Position) {
         // Get the affected piece view and remove it from screen
-        guard let pieceMoveAction = delegate?.didMove(piece: piece, to: position) else {
+        guard let pieceMove = delegate?.didMove(piece: piece, to: position) else {
             return
         }
-        switch pieceMoveAction.moveType {
-        case .take:
-            performTake(for: pieceMoveAction.piece, currentSelectedPiece: piece)
-        case .promotion:
-            performPromotion(for: pieceMoveAction.piece, currentSelectedPiece: piece, takeOrMovePromotion: true)
+        switch pieceMove.type {
+        case let .take(taken):
+            performTake(for: taken, currentSelectedPiece: piece)
+        case let .promotion(promoted):
+            performPromotion(for: promoted, currentSelectedPiece: piece, takeOrMovePromotion: true)
         default:
             return
         }
@@ -124,17 +124,17 @@ class ChessBoardView: UIView {
         guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
             return
         }
-        switch pieceMoveAction.moveType {
-        case .castle:
-            if pieceMoveAction.piece.colour == currentSelectedPiece.colour {
-                pieceView(at: pieceMoveAction.piece.position)?.setup(with: pieceMoveAction.piece)
+        switch pieceMoveAction.type {
+        case let .castle(rook):
+            if rook.colour == currentSelectedPiece.colour {
+                pieceView(at: rook.position)?.setup(with: rook)
                 performAfterPlacement(for: currentSelectedPiece, and: position)
             }
-        case .promotion:
-            performPromotion(for: pieceMoveAction.piece, currentSelectedPiece: currentSelectedPiece, takeOrMovePromotion: false)
-        case .enPassant:
-            pieceView(at: pieceMoveAction.piece.position)!.removeFromSuperview()
-            if let affectedPieceView = pieceView(at: pieceMoveAction.piece.position) {
+        case let .promotion(promoted):
+            performPromotion(for: promoted, currentSelectedPiece: currentSelectedPiece, takeOrMovePromotion: false)
+        case let .enPassant(takenPawn):
+            pieceView(at: takenPawn.position)?.removeFromSuperview()
+            if let affectedPieceView = pieceView(at: takenPawn.position) {
                 if let index = pieceViews.firstIndex(of: affectedPieceView) {
                     pieceViews.remove(at: index)
                 }

@@ -30,6 +30,7 @@
 		BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */; };
 		BDE9DDD429B5D46B004E9986 /* DuckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD329B5D46B004E9986 /* DuckTests.swift */; };
 		BDE9DDD629B734FA004E9986 /* InCheckCantMovePieces.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */; };
+		BDE9DDD829BB396D004E9986 /* ChessNotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD729BB396D004E9986 /* ChessNotationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		BDDA77E629898E010068C2CE /* PieceRandomPositionMovementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRandomPositionMovementTests.swift; sourceTree = "<group>"; };
 		BDE9DDD329B5D46B004E9986 /* DuckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckTests.swift; sourceTree = "<group>"; };
 		BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InCheckCantMovePieces.swift; sourceTree = "<group>"; };
+		BDE9DDD729BB396D004E9986 /* ChessNotationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessNotationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 				BDCC22ED29915A18008133FB /* PieceValidMovesTests.swift */,
 				BDE9DDD329B5D46B004E9986 /* DuckTests.swift */,
 				BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */,
+				BDE9DDD729BB396D004E9986 /* ChessNotationTests.swift */,
 			);
 			path = AlternativeChessTests;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			files = (
 				BDCC22EE29915A18008133FB /* PieceValidMovesTests.swift in Sources */,
 				BDCC22EA298AE034008133FB /* BothColoursPossibleMovesPiecesStartingPosition.swift in Sources */,
+				BDE9DDD829BB396D004E9986 /* ChessNotationTests.swift in Sources */,
 				BDDA77E729898E010068C2CE /* PieceRandomPositionMovementTests.swift in Sources */,
 				90A8CFE8294BB40300229742 /* AlternativeChessTests.swift in Sources */,
 				BDE9DDD429B5D46B004E9986 /* DuckTests.swift in Sources */,
