@@ -20,6 +20,10 @@ struct Position {
         func changed(with delta: Int) -> Rank {
             return Rank(rawValue: rawValue + delta) ?? .first
         }
+
+        var notation: String {
+            return "\(rawValue + 1)"
+        }
     }
 
     enum File: Int , CaseIterable{
@@ -34,6 +38,27 @@ struct Position {
 
         func changed(with delta: Int) -> File {
             return File(rawValue: rawValue + delta) ?? .A
+        }
+
+        var notation: String {
+            switch self {
+            case .A:
+                return "a"
+            case .B:
+                return "b"
+            case .C:
+                return "c"
+            case .D:
+                return "d"
+            case .E:
+                return "e"
+            case .F:
+                return "f"
+            case .G:
+                return "g"
+            case .H:
+                return "h"
+            }
         }
     }
 
@@ -55,6 +80,10 @@ struct Position {
 
     func changed(fileDelta: Int, rankDelta: Int) -> Position {
         return Position(file: file.changed(with: fileDelta), rank: rank.changed(with: rankDelta))
+    }
+
+    var notation: String {
+        return "\(file.notation)\(rank.notation)"
     }
 }
 
@@ -90,6 +119,24 @@ class Piece {
     var position: Position
     var type: PieceType
     var colour: Color
+    var notation: String {
+        switch type {
+        case .pawn:
+            return position.notation
+        case .rook:
+            return "R\(position.notation)"
+        case .bishop:
+            return "B\(position.notation)"
+        case .knight:
+            return "N\(position.notation)"
+        case .queen:
+            return "Q\(position.notation)"
+        case .king:
+            return "K\(position.notation)"
+        case .duck:
+            return "D\(position.notation)"
+        }
+    }
 
     init(type: PieceType, colour: Color, position: Position) {
         self.type = type
