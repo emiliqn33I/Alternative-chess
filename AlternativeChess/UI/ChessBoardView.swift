@@ -202,7 +202,7 @@ class ChessBoardView: UIView {
         
         let fileRaw = CGFloat(piece.position.file.rawValue) * side
         let rankRaw = CGFloat(PieceView.rankReversed(rank: piece.position.rank).rawValue) * side
-        let highlight = UIView(frame: CGRect(x: fileRaw + 5, y: rankRaw + 5, width: side - 10, height: side - 10))
+        let highlight = UIView(frame: CGRect(x: fileRaw, y: rankRaw, width: side, height: side))
         highlight.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
         highlight.tag = 1
         
@@ -214,7 +214,7 @@ class ChessBoardView: UIView {
         
         let fileRaw = CGFloat(piece.position.file.rawValue) * side
         let rankRaw = CGFloat(PieceView.rankReversed(rank: piece.position.rank).rawValue) * side
-        let highlight = UIView(frame: CGRect(x: fileRaw + 5, y: rankRaw + 5, width: side - 10, height: side - 10))
+        let highlight = UIView(frame: CGRect(x: fileRaw, y: rankRaw, width: side, height: side))
         highlight.backgroundColor = UIColor.red.withAlphaComponent(0.5)
         highlight.tag = 1
         
