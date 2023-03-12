@@ -57,14 +57,8 @@ class ChessBoardViewController: UIViewController {
 }
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
-    func kingInCheck(piece: Piece) -> Piece? {
-        if let king = chessEngine.king(color: piece.colour) {
-            if chessEngine.isKingInCheck(king: king, at: piece.position, piece: piece) {
-                return king
-            }
-        }
-        
-        return nil
+    func checkedKing(piece: Piece) -> Piece? {
+        chessEngine.kingInCheck(piece: piece)
     }
     
     func checkMate() -> Bool {
