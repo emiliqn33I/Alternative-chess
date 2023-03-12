@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
-    func kingInCheck(piece: Piece) -> Piece?
+    func checkedKing(piece: Piece) -> Piece?
     func checkMate() -> Bool
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
@@ -55,7 +55,7 @@ class ChessBoardView: UIView {
         if
             let delegate = delegate,
             let tappedPiece = piece(at: tappedLocation),
-            let inCheckKing = delegate.kingInCheck(piece: tappedPiece) {
+            let inCheckKing = delegate.checkedKing(piece: tappedPiece) {
                 drawKingHighlight(for: inCheckKing)
         }
         
