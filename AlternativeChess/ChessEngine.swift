@@ -23,6 +23,7 @@ class ChessEngine {
     func place(piece: Piece, at position: Position) -> Move {
         let originalPosition = piece.position
         var moveType: Move.MoveType?
+        var kingEffect: Move.KingEffect?
         if let piece = castlePlaceLogic(piece: piece, at: position) {
             moveType = .castle(rook: piece)
         }
@@ -34,6 +35,7 @@ class ChessEngine {
                 moveType = .take(taken: piece)
                 // Duck piece can take king
                 if piece.type == .king {
+                    kingEffect = .mate(matedKing: piece)
                     checkMate = true
                     winner = piece.colour
                 }
@@ -46,7 +48,7 @@ class ChessEngine {
         if piece.colour != .yellow {
             turn = helper.reverse(colour: turn)
         }
-        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move)
+        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect)
         if piece.colour != .yellow {
             history.append(move)
         }
@@ -231,6 +233,16 @@ class ChessEngine {
             }
         }
         return checkPositions
+    }
+    
+    func kingInCheck(piece: Piece) -> Piece? {
+        if let king = king(color: piece.colour) {
+            if isKingInCheck(king: king, at: piece.position, piece: piece) {
+                return king
+            }
+        }
+        
+        return nil
     }
     
     func isKingInCheck(king: Piece, at position: Position, piece: Piece) -> Bool {

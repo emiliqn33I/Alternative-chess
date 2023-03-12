@@ -116,6 +116,7 @@
 				90A8CFD2294BB40100229742 /* SceneDelegate.swift */,
 				BDCF52BB29B10F7800FF5944 /* UI */,
 				BD505F482974270A00890A77 /* ChessEngine.swift */,
+				BDCF52B5299A957000FF5944 /* Helper.swift */,
 				BDCF52BC29B10FBC00FF5944 /* Model */,
 				90A8CFD6294BB40100229742 /* Main.storyboard */,
 				90A8CFD9294BB40300229742 /* Assets.xcassets */,
@@ -149,7 +150,6 @@
 				BDCF52B929B10ECB00FF5944 /* PieceView.swift */,
 				BDCF52B729B10E7400FF5944 /* ChessBoardView.swift */,
 				90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */,
-				BDCF52B5299A957000FF5944 /* Helper.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
