@@ -17,8 +17,8 @@ struct Move {
     }
 
     enum KingEffect {
-        case check
-        case mate
+        case check(checkedKing: Piece)
+        case mate(matedKing: Piece)
     }
 
     let piece: Piece
