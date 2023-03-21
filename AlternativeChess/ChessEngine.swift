@@ -11,7 +11,7 @@ class ChessEngine {
     var pieces: [Piece]
     var history: [Move] = []
     var turn: Piece.Color
-    var checkMate = false
+    var kingEffect: Move.KingEffect?
     var winner = Piece.Color.white
     var enPassantMoves: [Position] = []
     
@@ -23,11 +23,11 @@ class ChessEngine {
     func place(piece: Piece, at position: Position) -> Move {
         let originalPosition = piece.position
         var moveType: Move.MoveType?
-        var kingEffect: Move.KingEffect?
+        
         if let piece = castlePlaceLogic(piece: piece, at: position) {
             moveType = .castle(rook: piece)
         }
-
+        
         if let piece = placePieceAtPosition(piece: piece, position: position) {
             if isPromotingPawn(for: piece, and: position) {
                 moveType = .promotion(promoted: piece)
@@ -36,7 +36,6 @@ class ChessEngine {
                 // Duck piece can take king
                 if piece.type == .king {
                     kingEffect = .mate(matedKing: piece)
-                    checkMate = true
                     winner = piece.colour
                 }
             }
@@ -44,6 +43,7 @@ class ChessEngine {
         if let piece = removeLogicEnPassant(position: position, piece: piece) {
             moveType = .enPassant(takenPawn: piece)
         }
+        
         checkMateFunction(piece: piece)
         if piece.colour != .yellow {
             turn = helper.reverse(colour: turn)
@@ -145,7 +145,7 @@ class ChessEngine {
         let kingOpositeColour = king(color: colour)!
         
         if validMoves(for: kingOpositeColour).isEmpty && validMovesDefendingKing(king: kingOpositeColour).isEmpty {
-            checkMate = true
+            kingEffect = .mate(matedKing: kingOpositeColour)
             
             if piece.colour == .white {
                 winner = .white
@@ -235,14 +235,17 @@ class ChessEngine {
         return checkPositions
     }
     
-    func kingInCheck(piece: Piece) -> Piece? {
+    func kingInCheck(piece: Piece, position: Position) -> Move {
+        var move = Move(piece: piece, from: position, to: position, type: .move, kingEffect: kingEffect)
+        
         if let king = king(color: piece.colour) {
-            if isKingInCheck(king: king, at: piece.position, piece: piece) {
-                return king
+            if isKingInCheck(king: king, at: position, piece: piece) {
+                move.kingEffect = .check(checkedKing: king)
+                return move
             }
         }
         
-        return nil
+        return move
     }
     
     func isKingInCheck(king: Piece, at position: Position, piece: Piece) -> Bool {
