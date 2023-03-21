@@ -57,12 +57,12 @@ class ChessBoardViewController: UIViewController {
 }
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
-    func checkedKing(piece: Piece) -> Piece? {
-        chessEngine.kingInCheck(piece: piece)
+    func checkedKing(piece: Piece) -> Move {
+        chessEngine.kingInCheck(piece: piece, position: piece.position)
     }
     
-    func checkMate() -> Bool {
-        chessEngine.checkMate
+    func checkMate() -> Move.KingEffect? {
+        chessEngine.kingEffect
     }
     
     func turn() -> Piece.Color {
