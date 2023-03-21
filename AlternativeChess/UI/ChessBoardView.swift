@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
-    func checkedKing(piece: Piece) -> Piece?
-    func checkMate() -> Bool
+    func checkedKing(piece: Piece) -> Move
+    func checkMate() -> Move.KingEffect?
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
     func didMove(piece: Piece, to position: Position) -> Move
@@ -47,21 +47,24 @@ class ChessBoardView: UIView {
         guard let gestureRecognizer = sender else {
             return
         }
-        
         let tappedLocation = gestureRecognizer.location(in: self)
         
         removeHighlight()
         
         if
             let delegate = delegate,
-            let tappedPiece = piece(at: tappedLocation),
-            let inCheckKing = delegate.checkedKing(piece: tappedPiece) {
-                drawKingHighlight(for: inCheckKing)
+            let tappedPiece = piece(at: tappedLocation) {
+            let move = delegate.checkedKing(piece: tappedPiece)
+            switch move.kingEffect {
+            case let .check(checkedKing):
+                drawKingHighlight(for: checkedKing)
+            default:
+                print("Not under check")
+            }
         }
         
         if pieceMoved {
             if let selectedPiece = piece(at: tappedLocation) {
-                drawSelectedPieceHighlight(for: selectedPiece)
                 // Case 1 - User has tapped on duck initially
                 if let delegate = delegate, selectedPiece.colour == .yellow {
                     print("You have chosen \(selectedPiece)")
@@ -79,7 +82,6 @@ class ChessBoardView: UIView {
             if let selectedPiece = piece(at: tappedLocation) {
                 // Case 1 - User has tapped on a piece initially
                 if let delegate = delegate, selectedPiece.colour == delegate.turn() {
-                    drawSelectedPieceHighlight(for: selectedPiece)
                     print("You have chosen \(selectedPiece)")
                     currentSelectedPiece = selectedPiece
                     drawValidMoves(validMoves: delegate.validMoves(for: selectedPiece))
@@ -99,9 +101,16 @@ class ChessBoardView: UIView {
             }
         }
         
-        if let delegate = delegate, delegate.checkMate() {
-            isCheckMate = true
-            checkMateView()
+        if
+            let delegate = delegate,
+            let effect = delegate.checkMate() {
+            switch effect {
+            case .mate(_):
+                isCheckMate = true
+                checkMateView()
+            default:
+                return
+            }
         }
     }
     
