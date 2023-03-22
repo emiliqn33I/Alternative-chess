@@ -26,12 +26,14 @@ struct Move {
     let to: Position
     let type: MoveType
     var kingEffect: KingEffect?
+    var notationOfMove: String?
 
-    init(piece: Piece, from: Position, to: Position, type: MoveType = .move, kingEffect: KingEffect? = nil) {
+    init(piece: Piece, from: Position, to: Position, type: MoveType = .move, kingEffect: KingEffect? = nil, notationOfMove: String? = nil) {
         self.piece = piece
         self.from = from
         self.to = to
         self.type = type
         self.kingEffect = kingEffect
+        self.notationOfMove = notationOfMove
     }
 }
