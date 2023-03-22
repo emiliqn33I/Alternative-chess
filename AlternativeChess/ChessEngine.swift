@@ -12,7 +12,7 @@ class ChessEngine {
     var history: [Move] = []
     var turn: Piece.Color
     var kingEffect: Move.KingEffect?
-    var winner = Piece.Color.white
+    var winner: Piece.Color?
     var enPassantMoves: [Position] = []
     
     init(pieces: [Piece], turn: Piece.Color) {
@@ -23,34 +23,107 @@ class ChessEngine {
     func place(piece: Piece, at position: Position) -> Move {
         let originalPosition = piece.position
         var moveType: Move.MoveType?
+        var notationOfMove: String?
         
         if let piece = castlePlaceLogic(piece: piece, at: position) {
             moveType = .castle(rook: piece)
-        }
-        
-        if let piece = placePieceAtPosition(piece: piece, position: position) {
-            if isPromotingPawn(for: piece, and: position) {
-                moveType = .promotion(promoted: piece)
+            if piece.position.file == .F {
+                notationOfMove = "O-O"
             } else {
-                moveType = .take(taken: piece)
-                // Duck piece can take king
-                if piece.type == .king {
-                    kingEffect = .mate(matedKing: piece)
-                    winner = piece.colour
-                }
+                notationOfMove = "O-O-O"
             }
         }
+        
+        let originalType = piece.type
+        let originalColor = piece.colour
+        let originalNotation = piece.notation
+        if let aPiece = placePieceAtPosition(piece: piece, position: position) {
+            if originalType == .pawn && aPiece.type == .queen && aPiece.colour == originalColor {
+                moveType = .promotion(promoted: aPiece)
+                if let pieceType = aPiece.notation.first {
+                    notationOfMove = "\(aPiece.position.notation)\(pieceType)"
+                }
+            } else {
+                moveType = .take(taken: aPiece)
+                if let pieceType = String(describing:originalNotation).first {
+                    notationOfMove = "\(pieceType)x\(aPiece.position.notation)"
+                }
+                // Because of duck piece, king can be taken
+                if aPiece.type == .king {
+                    kingEffect = .mate(matedKing: aPiece)
+                    notationOfMove? += "#"
+                    winner = aPiece.colour
+                }
+            }
+        } else if originalNotation != piece.notation && notationOfMove == nil {
+            if pieces.filter({ $0.type == originalType && $0.position.rank == originalPosition.rank && $0.colour == originalColor }).count > 1 && position.rank == originalPosition.rank {
+                if let pieceType = String(describing:originalNotation).first {
+                    notationOfMove = "\(pieceType)\(originalPosition.file.notation)\(position.notation)"
+                }
+            } else if pieces.filter({ $0.type == originalType && $0.position.file == originalPosition.file && $0.colour == originalColor }).count > 1 && position.file == originalPosition.file {
+                if let pieceType = String(describing:originalNotation).first {
+                    notationOfMove = "\(pieceType)\(originalPosition.rank.notation)\(position.notation)"
+                }
+            } else {
+                notationOfMove = piece.notation
+            }
+        }
+        
         if let piece = removeLogicEnPassant(position: position, piece: piece) {
             moveType = .enPassant(takenPawn: piece)
         }
         
-        checkMateFunction(piece: piece)
+        if piece.colour == .white {
+            if let king = king(color: .black) {
+                let whitePieces = pieces.filter { $0.colour == .white }
+                var counter = 0
+                for whitePiece in whitePieces {
+                    if possibleMoves(piece: whitePiece).contains(king.position) {
+                        counter += 1
+                        if counter == 1 {
+                            notationOfMove? += "+"
+                        }
+                        if counter == 2 {
+                            notationOfMove? += "+"
+                        }
+                    }
+                }
+            }
+        } else if piece.colour == .black {
+            if let king = king(color: .white) {
+                let blackPieces = pieces.filter { $0.colour == .black }
+                for blackPiece in blackPieces {
+                    if possibleMoves(piece: blackPiece).contains(king.position) {
+                        notationOfMove? += "+"
+                    }
+                }
+            }
+        }
+        
+        if isCheckMated(piece: piece) {
+            if let str = notationOfMove?.dropLast() {
+                notationOfMove? = String(str)
+                notationOfMove? += "#"
+            }
+        }
         if piece.colour != .yellow {
             turn = helper.reverse(colour: turn)
         }
-        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect)
+        print(notationOfMove)
+        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect, notationOfMove: notationOfMove)
         if piece.colour != .yellow {
             history.append(move)
+        }
+        if let notation = notationOfMove {
+            if notation.contains("#") {
+                if winner == .white {
+                    notationOfMove = "1-0"
+                } else {
+                    notationOfMove = "0-1"
+                }
+                let aMove = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect, notationOfMove: notationOfMove)
+                history.append(aMove)
+            }
         }
         return move
     }
@@ -141,28 +214,35 @@ class ChessEngine {
     }
     
     // MARK: CheckMate methods
-    func checkMateLogic(piece: Piece, colour: Piece.Color) {
+    func checkMateLogic(piece: Piece, colour: Piece.Color) -> Bool {
         let kingOpositeColour = king(color: colour)!
+        var flag = false
         
         if validMoves(for: kingOpositeColour).isEmpty && validMovesDefendingKing(king: kingOpositeColour).isEmpty {
             kingEffect = .mate(matedKing: kingOpositeColour)
-            
+            flag = true
             if piece.colour == .white {
                 winner = .white
             } else {
                 winner = .black
             }
         }
+        return flag
     }
     
-    func checkMateFunction(piece: Piece) {
+    func isCheckMated(piece: Piece) -> Bool {
         if piece.colour == .white && king(color: .black) != nil {
-            checkMateLogic(piece: piece, colour: .black)
+            if checkMateLogic(piece: piece, colour: .black) {
+                return true
+            }
             
         }
         if piece.colour == .black && king(color: .white) != nil {
-            checkMateLogic(piece: piece, colour: .white)
+            if checkMateLogic(piece: piece, colour: .white) {
+                return true
+            }
         }
+        return false
     }
     
     // MARK: Remove methods
