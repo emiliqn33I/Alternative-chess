@@ -100,7 +100,7 @@ extension Position: CustomStringConvertible {
 }
 
 class Piece {
-    enum PieceType {
+    enum PieceType: CaseIterable {
         case pawn
         case rook
         case bishop
