@@ -243,6 +243,23 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(chessEngine.history.last?.notationOfMove == "1-0")
     }
     
+    func testNotationToMove() {
+        var pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
+                      Piece(.queen, .white, Position(file: .H, rank: .seventh)),
+                      Piece(.king, .white, Position(file: .E, rank: .first)),
+                      Piece(.king, .black, Position(file: .E, rank: .eighth))]
+        let chessEngine = createSUT(pieces: pieces, turn: .white)
+        let validMoves = chessEngine.validMoves(for: pieces[1])
+        XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
+        
+        let _ = chessEngine.place(piece: pieces[1], at: Position(file: .E, rank: .seventh))
+        pieces = chessEngine.pieces
+        XCTAssertTrue(chessEngine.history[0].notationOfMove == "Qe7#")
+        
+        let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), to: Position(file: .E, rank: .seventh), type: .take(taken: pieces[0]), kingEffect: .mate(matedKing: pieces[3]), notationOfMove: "Qe7#")
+        XCTAssertTrue(aMove.makeMove(notation: chessEngine.history[0].notationOfMove!) == aMove)
+    }
+    
     private func createSUT(pieces: [Piece], turn: Piece.Color) -> ChessEngine {
         ChessEngine(pieces: pieces, turn: turn)
     }
