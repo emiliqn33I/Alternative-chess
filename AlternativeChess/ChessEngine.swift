@@ -81,9 +81,11 @@ class ChessEngine {
                     if possibleMoves(piece: whitePiece).contains(king.position) {
                         counter += 1
                         if counter == 1 {
+                            kingEffect = .check(checkedKing: king)
                             notationOfMove? += "+"
                         }
                         if counter == 2 {
+                            kingEffect = .check(checkedKing: king)
                             notationOfMove? += "+"
                         }
                     }
@@ -94,6 +96,7 @@ class ChessEngine {
                 let blackPieces = pieces.filter { $0.colour == .black }
                 for blackPiece in blackPieces {
                     if possibleMoves(piece: blackPiece).contains(king.position) {
+                        kingEffect = .check(checkedKing: king)
                         notationOfMove? += "+"
                     }
                 }
@@ -102,6 +105,7 @@ class ChessEngine {
         
         if isCheckMated(piece: piece) {
             if let str = notationOfMove?.dropLast() {
+                kingEffect = .mate(matedKing: piece)
                 notationOfMove? = String(str)
                 notationOfMove? += "#"
             }
@@ -109,7 +113,6 @@ class ChessEngine {
         if piece.colour != .yellow {
             turn = helper.reverse(colour: turn)
         }
-        print(notationOfMove)
         let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect, notationOfMove: notationOfMove)
         if piece.colour != .yellow {
             history.append(move)
