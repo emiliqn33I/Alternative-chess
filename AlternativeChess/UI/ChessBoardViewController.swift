@@ -10,6 +10,7 @@ import UIKit
 class ChessBoardViewController: UIViewController {
     @IBOutlet weak var boardView: ChessBoardView!
     let chessEngine: ChessEngine
+    var move = Move()
     
     required init?(coder aDecoder: NSCoder) {
         let pieces = [Piece(.duck, .yellow, Position(file: .H, rank: .sixth)),
@@ -53,10 +54,30 @@ class ChessBoardViewController: UIViewController {
         super.viewDidLoad()
         boardView.pieces = chessEngine.pieces
         boardView.delegate = self
+        move.delegate = self
     }
 }
 
-extension ChessBoardViewController: ChessBoardViewDelegate {
+extension ChessBoardViewController: ChessBoardViewDelegate, MoveDelegate {
+    func getPiece(at position: Position) -> Piece? {
+        if let piece = chessEngine.piece(at: position) {
+            return piece
+        }
+        return nil
+    }
+    
+    func getHistory() -> [Move] {
+        chessEngine.history
+    }
+    
+    func getPieces() -> [Piece] {
+        chessEngine.pieces
+    }
+    
+    func getPossibleMoves(for piece: Piece) -> [Position] {
+        chessEngine.possibleMoves(piece: piece)
+    }
+    
     func checkedKing(piece: Piece) -> Move {
         chessEngine.kingInCheck(piece: piece, position: piece.position)
     }
