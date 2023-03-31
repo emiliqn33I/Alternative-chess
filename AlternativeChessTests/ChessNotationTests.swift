@@ -245,13 +245,14 @@ final class ChessNotationTests: XCTestCase {
                       Piece(.rook, .black, Position(file: .E, rank: .seventh)),
                       Piece(.queen, .white, Position(file: .H, rank: .seventh)),
                       Piece(.king, .white, Position(file: .E, rank: .first)),
-                      Piece(.king, .black, Position(file: .E, rank: .eighth))]
+                      Piece(.king, .black, Position(file: .E, rank: .eighth)),
+                      Piece(.queen, .white, Position(file: .A, rank: .seventh))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         let validMoves = chessEngine.validMoves(for: pieces[2])
         XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
 
-        let notation = "Qxe7#"
-        let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), to: Position(file: .E, rank: .seventh), type: .take(taken: pieces[1]), kingEffect: .mate(matedKing: pieces[4]), notationOfMove: "Qxe7#")
+        let notation = "Qaxe7#"
+        let aMove = Move(piece: Piece(.queen, .white, Position(file: .A, rank: .seventh)), from: Position(file: .A, rank: .seventh), to: Position(file: .E, rank: .seventh), type: .take(taken: pieces[1]), kingEffect: .mate(matedKing: pieces[4]), notationOfMove: "Qaxe7#")
         XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
@@ -259,13 +260,14 @@ final class ChessNotationTests: XCTestCase {
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.queen, .white, Position(file: .H, rank: .seventh)),
                       Piece(.king, .white, Position(file: .E, rank: .first)),
-                      Piece(.king, .black, Position(file: .E, rank: .eighth))]
+                      Piece(.king, .black, Position(file: .E, rank: .eighth)),
+                      Piece(.queen, .white, Position(file: .H, rank: .sixth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
 
-        let notation = "Qh8+"
-        let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), to: Position(file: .H, rank: .eighth), type: .move, kingEffect: .check(checkedKing: pieces[3]), notationOfMove: "Qh8+")
+        let notation = "Q6h8+"
+        let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), to: Position(file: .H, rank: .eighth), type: .move, kingEffect: .check(checkedKing: pieces[3]), notationOfMove: "Q6h8+")
         XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
@@ -317,9 +319,9 @@ final class ChessNotationTests: XCTestCase {
                       Piece(.bishop, .white, Position(file: .H, rank: .fifth)),
                       Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
-        let chessEngine = createSUT(pieces: pieces, turn: .white)
+        let chessEngine = createSUT(pieces: pieces, turn: .black)
         let _ = chessEngine.place(piece: pieces[1], at: Position(file: .B, rank: .fifth))
-
+        print(chessEngine.turn, chessEngine.history.count)
         let notation = "axb6"
         let aMove = Move(piece: Piece(.pawn, .white, Position(file: .A, rank: .fifth)), from: Position(file: .A, rank: .fifth), to: Position(file: .B, rank: .sixth), type: .enPassant(takenPawn: pieces[1]), kingEffect: nil, notationOfMove: "axb6")
         XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
