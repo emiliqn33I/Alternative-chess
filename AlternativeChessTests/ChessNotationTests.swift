@@ -237,7 +237,7 @@ final class ChessNotationTests: XCTestCase {
 
         let notation = "Qe7#"
         let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), to: Position(file: .E, rank: .seventh), type: .move, kingEffect: .mate(matedKing: pieces[3]), notationOfMove: "Qe7#")
-        XCTAssertTrue(chessEngine.makeMove(notation: notation) == aMove)
+        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
     func testNotationToMoveTakingAndMate() {
@@ -252,7 +252,7 @@ final class ChessNotationTests: XCTestCase {
 
         let notation = "Qxe7#"
         let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), to: Position(file: .E, rank: .seventh), type: .take(taken: pieces[1]), kingEffect: .mate(matedKing: pieces[4]), notationOfMove: "Qxe7#")
-        XCTAssertTrue(chessEngine.makeMove(notation: notation) == aMove)
+        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
     func testNotationToMoveCheck() {
@@ -266,7 +266,7 @@ final class ChessNotationTests: XCTestCase {
 
         let notation = "Qh8+"
         let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), to: Position(file: .H, rank: .eighth), type: .move, kingEffect: .check(checkedKing: pieces[3]), notationOfMove: "Qh8+")
-        XCTAssertTrue(chessEngine.makeMove(notation: notation) == aMove)
+        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
     func testNotationToMovePromotionWithCheck() {
@@ -280,7 +280,7 @@ final class ChessNotationTests: XCTestCase {
 
         let notation = "a8Q+"
         let aMove = Move(piece: Piece(.pawn, .white, Position(file: .A, rank: .seventh)), from: Position(file: .A, rank: .seventh), to: Position(file: .A, rank: .eighth), type: .promotion(promoted: pieces[0]), kingEffect: .check(checkedKing: pieces[3]), notationOfMove: "a8Q+")
-        XCTAssertTrue(chessEngine.makeMove(notation: notation) == aMove)
+        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
     func testNotationToMoveCastleKingSide() {
@@ -294,7 +294,7 @@ final class ChessNotationTests: XCTestCase {
 
         let notation = "O-O"
         let aMove = Move(piece: Piece(.king, .white, Position(file: .E, rank: .first)), from: Position(file: .E, rank: .first), to: Position(file: .G, rank: .first), type: .castle(rook: pieces[1]), kingEffect: nil, notationOfMove: "O-O")
-        XCTAssertTrue(chessEngine.makeMove(notation: notation) == aMove)
+        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
     func testNotationToMoveCastleQueenSide() {
@@ -308,7 +308,7 @@ final class ChessNotationTests: XCTestCase {
 
         let notation = "O-O-O"
         let aMove = Move(piece: Piece(.king, .white, Position(file: .E, rank: .first)), from: Position(file: .E, rank: .first), to: Position(file: .C, rank: .first), type: .castle(rook: pieces[1]), kingEffect: nil, notationOfMove: "O-O-O")
-        XCTAssertTrue(chessEngine.makeMove(notation: notation) == aMove)
+        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
     
     func testNotationToMoveEnPassant() {
@@ -322,7 +322,7 @@ final class ChessNotationTests: XCTestCase {
 
         let notation = "axb6"
         let aMove = Move(piece: Piece(.pawn, .white, Position(file: .A, rank: .fifth)), from: Position(file: .A, rank: .fifth), to: Position(file: .B, rank: .sixth), type: .enPassant(takenPawn: pieces[1]), kingEffect: nil, notationOfMove: "axb6")
-        XCTAssertTrue(chessEngine.makeMove(notation: notation) == aMove)
+        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
     }
 
     
