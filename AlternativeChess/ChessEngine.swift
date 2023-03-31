@@ -19,7 +19,7 @@ class ChessEngine {
         self.pieces = pieces
         self.turn = turn
     }
-
+    
     func place(piece: Piece, at position: Position) -> Move {
         let originalPosition = piece.position
         var moveType: Move.MoveType?
@@ -130,7 +130,7 @@ class ChessEngine {
         }
         return move
     }
-
+    
     func isPromotingPawn(for piece: Piece, and position: Position) -> Bool {
         guard piece.type == .pawn else {
             return false
@@ -139,7 +139,7 @@ class ChessEngine {
         let blackPawnPromotion = piece.colour == .black && position.rank == .first
         return whitePawnPromotion || blackPawnPromotion
     }
-
+    
     func validMoves(for piece: Piece) -> [Position] {
         let possibleMoves = possibleMoves(piece: piece)
         let kingCheckMoves = kingCheckMoves(for: possibleMoves, piece: piece)
@@ -199,7 +199,7 @@ class ChessEngine {
         let checkIfWhiteRookAtA1DidntMoved = history.first { $0.from == Position(file: .A, rank: .first) } == nil
         let checkIfBlackRookAtH8DidntMoved = history.first { $0.from == Position(file: .H, rank: .eighth) } == nil
         let checkIfBlackRookAtA8DidntMoved = history.first { $0.from == Position(file: .A, rank: .eighth) } == nil
-
+        
         
         if piece.type == .king && checkIfWhiteKingDidntMoved && checkIfWhiteRookAtH1DidntMoved && position == Position(file: .G, rank: .first) {
             affectedPiece = placeRookWhenCastle(position: Position(file: .H, rank: .first), kingsideOrQueenside: true)
@@ -305,6 +305,10 @@ class ChessEngine {
         pieces.first { $0.type == .king && color == $0.colour }
     }
     
+    func getKing(ofColor color: Piece.Color) -> Piece? {
+        return pieces.first { $0.type == .king && $0.colour != color }
+    }
+    
     func kingCheckMoves(for possibleMoves: [Position], piece: Piece) -> [Position] {
         var checkPositions = [Position]()
         let king = king(color: piece.colour)
@@ -342,7 +346,7 @@ class ChessEngine {
         
         // Update piece position temporarily to check if the king is in check after making the move.
         piece.position = position
-  
+        
         defer {
             piece.position = originalPiecePosition
             if let pieceAtPosition = pieceAtPosition {
@@ -391,8 +395,6 @@ class ChessEngine {
         var checkNoPieceAtBFile: Bool
         var checkNoPieceAtFFile: Bool
         var checkNoPieceAtCFile: Bool
-
-
         
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: true, fileOrRank: false)
         coordinates += appendKingRookLikeMoves(king: king, upOrlower: false, fileOrRank: false)
@@ -402,8 +404,6 @@ class ChessEngine {
         coordinates += appendKingBishopLikeMoves(king: king, upOrlower: false, fileOrRank: false)
         coordinates += appendKingBishopLikeMoves(king: king, upOrlower: false, fileOrRank: true)
         coordinates += appendKingBishopLikeMoves(king: king, upOrlower: true, fileOrRank: true)
-        
-        
         
         if king.colour == .white {
             checkKingDidNotMoved = history.first { $0.from == Position(file: .E, rank: .first) } == nil
@@ -798,5 +798,192 @@ class ChessEngine {
         }
         
         return coordinates
+    }
+    
+    // MARK: Notation to move
+    
+    func makeMove(from notation: String) -> Move? {
+        // Determine the move type based on the notation
+        var moveType: Move.MoveType = .move
+        var kingEffect: Move.KingEffect?
+        var pieceFrom: Piece?
+        var move: Move
+        
+        
+        // Make sure the notation is at least two characters long
+        guard notation.count >= 2 else {
+            return nil
+        }
+        
+        // Get the from and to positions from the notation
+        let fromPosition = giveFromAndTo(for: notation).0
+        let toPosition = giveFromAndTo(for: notation).1
+        
+        // Get the piece at the from position
+        if let pieceFromPosition = piece(at: fromPosition) {
+            pieceFrom = pieceFromPosition
+        } else {
+            return nil
+        }
+        
+        if notation.contains("x") {
+            // Taking move for en passant pawn
+            if let firstChar = notation.first, firstChar.isLowercase {
+                if piece(at: toPosition) == nil {
+                    let rankDelta = (pieceFrom?.colour == .white) ? -1 : 1
+                    if
+                        let rank = Position.Rank(rawValue: toPosition.rank.rawValue + rankDelta),
+                        let pieceForTaking = piece(at: Position(file: toPosition.file, rank: rank)) {
+                        moveType = .enPassant(takenPawn: pieceForTaking)
+                    }
+                }
+            }
+            // Taking move for piece other than en passant pawn
+            if let pieceForTaking = piece(at: toPosition) {
+                moveType = .take(taken: pieceForTaking)
+            }
+        }
+        if notation.prefix(1) != "Q" && notation.contains("Q") {
+            // Pawn promotion move
+            if let pieceFrom = pieceFrom {
+                moveType = .promotion(promoted: pieceFrom)
+            }
+        }
+        if notation == "O-O" || notation == "O-O-O" {
+            // Castle move
+            let file = (notation == "O-O") ? Position.File.H : Position.File.A
+            let rank = (pieceFrom?.colour == .white) ? Position.Rank.first : Position.Rank.eighth
+            let castleRook = pieces.first {
+                $0.type == .rook && $0.colour == pieceFrom?.colour && $0.position == Position(file: file, rank: rank)
+            }
+            if let castleRook = castleRook {
+                moveType = .castle(rook:castleRook)
+            }
+        }
+        if notation.last == "#" {
+            // Mate effect
+            if let matedKing = getKing(ofColor: pieceFrom!.colour) {
+                kingEffect = .mate(matedKing: matedKing)
+            }
+        } else if notation.last == "+" {
+            // Check effect
+            if let checkedKing = getKing(ofColor: pieceFrom!.colour) {
+                kingEffect = .check(checkedKing: checkedKing)
+            }
+        }
+        
+        // Create the move object
+        if let pieceFrom = pieceFrom {
+            move = Move(piece: pieceFrom, from: fromPosition, to: toPosition, type: moveType, kingEffect: kingEffect)
+            
+            // Add notation if available
+            move.notationOfMove = notation
+        } else {
+            return nil
+        }
+        
+        return move
+    }
+    
+    func giveFromAndTo(for notation: String) -> (Position, Position) {
+        var turn: Piece.Color
+        var fromFile: Position.File = .A
+        var fromRank: Position.Rank = .first
+        var toFile: Position.File = .A
+        var toRank: Position.Rank = .first
+        var fromAndToPositions: (Position, Position) = (Position(file: .A, rank: .first), Position(file: .A, rank: .first))
+        let pattern = "[a-z]\\d" // Matches a lowercase letter followed by a digit
+        let patternFile = "[a-h]"
+        let patternRank = "\\d"
+        
+        if history.count == 0 {
+            turn = .white
+        } else if history.count % 2 == 0 {
+            turn = .white
+        } else {
+            turn = .black
+        }
+        if notation == "O-O" || notation == "O-O-O" {
+            if notation == "O-O" {
+                toFile = .G
+                toRank = (turn == .white) ? .first : .eighth
+            } else if notation == "O-O-O" {
+                toFile = .C
+                toRank = (turn == .white) ? .first : .eighth
+            }
+            fromFile = .E
+            fromRank = (turn == .white) ? .first : .eighth
+        } else {
+            for type in Piece.PieceType.allCases {
+                var stringType = String(describing: type).uppercased()
+                
+                if let firstChar = notation.first {
+                    if firstChar.isLowercase && stringType.prefix(1) == "P" {
+                        stringType = notation
+                    }
+                }
+                
+                if stringType.prefix(1) == notation.prefix(1) {
+                    if let range = notation.range(of: pattern, options: .regularExpression) {
+                        let matchedSubstring = notation[range]
+                        
+                        var matchingCaseFile: Position.File = .A
+                        var matchingCaseRank: Position.Rank = .first
+                        
+                        for aFile in Position.File.allCases {
+                            let stringFile = String(describing: aFile).lowercased()
+                            if stringFile.prefix(1) == matchedSubstring.prefix(1) {
+                                matchingCaseFile = aFile
+                            }
+                        }
+                        for aRank in Position.Rank.allCases {
+                            let stringRank = String(aRank.rawValue + 1)
+                            if stringRank == matchedSubstring.suffix(1) {
+                                matchingCaseRank = aRank
+                            }
+                        }
+                        
+                        let possiblePieces = pieces.filter { $0.type == type && possibleMoves(piece: $0).contains(Position(file: matchingCaseFile, rank: matchingCaseRank)) && $0.colour == turn }
+                        
+                        if possiblePieces.count > 1, let range = notation.range(of: pattern, options: .regularExpression) {
+                            let extractedString = String(notation[..<range.lowerBound])
+                            
+                            if let _ = extractedString.range(of: patternFile, options: .regularExpression) {
+                                // String contains pattern file
+                                for aFile in Position.File.allCases {
+                                    let stringFile = String(describing: aFile).lowercased()
+                                    if extractedString.contains(String(stringFile.prefix(1))) {
+                                        fromFile = aFile
+                                        fromRank = possiblePieces[0].position.rank
+                                        break
+                                    }
+                                }
+                            } else if let _ = extractedString.range(of: patternRank, options: .regularExpression) {
+                                // String contains rank pattern
+                                for aRank in Position.Rank.allCases {
+                                    let stringRank = String(aRank.rawValue + 1)
+                                    if extractedString.contains(String(stringRank)) {
+                                        fromFile = possiblePieces[0].position.file
+                                        fromRank = aRank
+                                        break
+                                    }
+                                }
+                            }
+                            toFile = matchingCaseFile
+                            toRank = matchingCaseRank
+                        } else if possiblePieces.count == 1 {
+                            toFile = matchingCaseFile
+                            toRank = matchingCaseRank
+                            fromFile = possiblePieces[0].position.file
+                            fromRank = possiblePieces[0].position.rank
+                        }
+                    }
+                }
+            }
+        }
+        fromAndToPositions.0 = Position(file: fromFile, rank: fromRank)
+        fromAndToPositions.1 = Position(file: toFile, rank: toRank)
+        
+        return fromAndToPositions
     }
 }
