@@ -58,6 +58,8 @@ class ChessBoardView: UIView {
             switch move.kingEffect {
             case let .check(checkedKing):
                 drawKingHighlight(for: checkedKing)
+            case let .doubleCheck(checkedKing):
+                drawKingHighlight(for: checkedKing)
             default:
                 print("Not under check")
             }
