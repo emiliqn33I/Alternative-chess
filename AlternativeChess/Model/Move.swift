@@ -19,6 +19,7 @@ struct Move {
     enum KingEffect: Equatable {
         case check(checkedKing: Piece)
         case mate(matedKing: Piece)
+        case doubleCheck(checkedKing: Piece)
     }
     
     let piece: Piece
@@ -26,24 +27,90 @@ struct Move {
     let to: Position
     let type: MoveType
     var kingEffect: KingEffect?
-    var notationOfMove: String?
+    var disambiguas: Character?
     
-    init(piece: Piece, from: Position, to: Position, type: MoveType = .move, kingEffect: KingEffect? = nil, notationOfMove: String? = nil) {
+    init(piece: Piece, from: Position, to: Position, type: MoveType = .move, kingEffect: KingEffect? = nil, disambiguas: Character?) {
         self.piece = piece
         self.from = from
         self.to = to
         self.type = type
         self.kingEffect = kingEffect
-        self.notationOfMove = notationOfMove
+        self.disambiguas = disambiguas
     }
     
-    func makeNotation(from move: Move) -> String? {
-        return "zdr"
+    func makeNotation() -> String? {
+        var notationOfMove: String?
+        
+        switch type {
+        case .take(_):
+                if piece.type == .pawn {
+                    if let _ = String(describing:piece.type).first {
+                        notationOfMove = "\(from.file.notation)x\(to.notation)"
+                    }
+                } else {
+                    if disambiguas == "r" {
+                        if let pieceType = String(describing:piece.type).first {
+                            notationOfMove = "\(pieceType.uppercased())\(from.file.notation)x\(to.notation)"
+                        }
+                    } else if disambiguas == "f" {
+                        if let pieceType = String(describing:piece.type).first {
+                            notationOfMove = "\(pieceType.uppercased())\(from.rank.notation)x\(to.notation)"
+                        }
+                    } else {
+                        if let pieceType = String(describing:piece.type).first {
+                            notationOfMove = "\(pieceType.uppercased())x\(to.notation)"
+                        }
+                    }
+                }
+            break
+        case .promotion(_):
+            notationOfMove = "\(to.notation)Q"
+            break
+        case .castle(_):
+            if piece.position.file == .G {
+                notationOfMove = "O-O"
+            } else {
+                notationOfMove = "O-O-O"
+            }
+            break
+        case .enPassant(_):
+            notationOfMove = "\(from.file.notation)x\(to.notation)"
+            break
+        case .move:
+            if disambiguas == "r" {
+                if let pieceType = String(describing:piece.type).first {
+                    notationOfMove = "\(pieceType.uppercased())\(from.file.notation)\(to.notation)"
+                }
+            } else if disambiguas == "f" {
+                if let pieceType = String(describing:piece.type).first {
+                    notationOfMove = "\(pieceType.uppercased())\(from.rank.notation)\(to.notation)"
+                }
+            } else {
+                if let pieceType = String(describing:piece.type).first {
+                    notationOfMove = "\(pieceType.uppercased())\(to.notation)"
+                }
+            }
+        }
+        if notationOfMove != nil {
+            switch kingEffect {
+            case .mate(_):
+                notationOfMove! += "#"
+                break
+            case .check(_):
+                notationOfMove! += "+"
+            case .doubleCheck(_):
+                notationOfMove! += "++"
+            case .none:
+                break
+            }
+        }
+            
+        return notationOfMove
     }
 }
 
 extension Move: Equatable {
     static func == (lhs: Move, rhs: Move) -> Bool {
-        return lhs.piece == rhs.piece && lhs.from == rhs.from && lhs.to == rhs.to && lhs.type == rhs.type && lhs.kingEffect == rhs.kingEffect && lhs.notationOfMove == rhs.notationOfMove
+        return lhs.piece == rhs.piece && lhs.from == rhs.from && lhs.to == rhs.to && lhs.type == rhs.type && lhs.kingEffect == rhs.kingEffect
     }
 }
