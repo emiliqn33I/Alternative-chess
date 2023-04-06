@@ -22,14 +22,27 @@ class ChessEngine {
     
     func place(piece: Piece, at position: Position) -> Move {
         let originalPosition = piece.position
+        let originalType = piece.type
+        let originalColor = piece.colour
         var moveType: Move.MoveType?
+        var disambiguas: Character?
+        
+        if piece.type != .pawn {
+            let sameRankPawn = pieces.filter { $0.type == piece.type && $0.colour == piece.colour && $0.position.rank == originalPosition.rank }
+            let sameFilePawn = pieces.filter { $0.type == piece.type && $0.colour == piece.colour && $0.position.file == originalPosition.file }
+            if sameRankPawn.count > 1 {
+                disambiguas = "r"
+            } else if sameFilePawn.count > 1 {
+                disambiguas = "f"
+            } else {
+                disambiguas = nil
+            }
+        }
         
         if let piece = castlePlaceLogic(piece: piece, at: position) {
             moveType = .castle(rook: piece)
         }
         
-        let originalType = piece.type
-        let originalColor = piece.colour
         if let aPiece = placePieceAtPosition(piece: piece, position: position) {
             if originalType == .pawn && aPiece.type == .queen && aPiece.colour == originalColor {
                 moveType = .promotion(promoted: aPiece)
@@ -49,9 +62,16 @@ class ChessEngine {
         
         if let king = king(color: piece.colour == .white ? .black : .white) {
             let sameColorPieces = pieces.filter { $0.colour == piece.colour }
+            var counter = 0
             for sameColorPiece in sameColorPieces {
                 if possibleMoves(piece: sameColorPiece).contains(king.position) {
-                    kingEffect = .check(checkedKing: king)
+                    counter += 1
+                    if counter == 1 {
+                        kingEffect = .check(checkedKing: king)
+                    }
+                    if counter == 2 {
+                        kingEffect = .doubleCheck(checkedKing: king)
+                    }
                 }
             }
         }
@@ -62,7 +82,7 @@ class ChessEngine {
         if piece.colour != .yellow {
             turn = helper.reverse(colour: turn)
         }
-        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect)
+        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect, disambiguas: disambiguas)
         if piece.colour != .yellow {
             history.append(move)
         }
@@ -260,9 +280,8 @@ class ChessEngine {
         }
         return checkPositions
     }
-    
     func kingInCheck(piece: Piece, position: Position) -> Move {
-        var move = Move(piece: piece, from: position, to: position, type: .move, kingEffect: kingEffect)
+        var move = Move(piece: piece, from: position, to: position, type: .move, kingEffect: kingEffect, disambiguas: nil)
         
         if let king = king(color: piece.colour) {
             if isKingInCheck(king: king, at: position, piece: piece) {
@@ -813,10 +832,7 @@ class ChessEngine {
         
         // Create the move object
         if let pieceFrom = pieceFrom {
-            move = Move(piece: pieceFrom, from: fromPosition, to: toPosition, type: moveType, kingEffect: kingEffect)
-            
-            // Add notation if available
-            move.notationOfMove = notation
+            move = Move(piece: pieceFrom, from: fromPosition, to: toPosition, type: moveType, kingEffect: kingEffect, disambiguas: nil)
         } else {
             return nil
         }
