@@ -77,12 +77,14 @@ class ChessEngine {
         }
         
         if isCheckMated(piece: piece) {
-            kingEffect = .mate(matedKing: piece)
+            if let matedKing = getKing(ofOppositeColor: piece.colour) {
+                kingEffect = .mate(matedKing: matedKing)
+            }
         }
         if piece.colour != .yellow {
             turn = helper.reverse(colour: turn)
         }
-        let move = Move(piece: piece, from: originalPosition, to: position, type: moveType ?? .move, kingEffect: kingEffect, disambiguas: disambiguas)
+        let move = Move(piece: piece, from: originalPosition, type: moveType ?? .move, kingEffect: kingEffect, disambiguas: disambiguas)
         if piece.colour != .yellow {
             history.append(move)
         }
@@ -264,7 +266,7 @@ class ChessEngine {
         pieces.first { $0.type == .king && color == $0.colour }
     }
     
-    func getKing(ofColor color: Piece.Color) -> Piece? {
+    func getKing(ofOppositeColor color: Piece.Color) -> Piece? {
         return pieces.first { $0.type == .king && $0.colour != color }
     }
     
@@ -281,7 +283,7 @@ class ChessEngine {
         return checkPositions
     }
     func kingInCheck(piece: Piece, position: Position) -> Move {
-        var move = Move(piece: piece, from: position, to: position, type: .move, kingEffect: kingEffect, disambiguas: nil)
+        var move = Move(piece: piece, from: position, type: .move, kingEffect: kingEffect, disambiguas: nil)
         
         if let king = king(color: piece.colour) {
             if isKingInCheck(king: king, at: position, piece: piece) {
@@ -820,19 +822,19 @@ class ChessEngine {
         }
         if notation.last == "#" {
             // Mate effect
-            if let matedKing = getKing(ofColor: pieceFrom!.colour) {
+            if let matedKing = getKing(ofOppositeColor: pieceFrom!.colour) {
                 kingEffect = .mate(matedKing: matedKing)
             }
         } else if notation.last == "+" {
             // Check effect
-            if let checkedKing = getKing(ofColor: pieceFrom!.colour) {
+            if let checkedKing = getKing(ofOppositeColor: pieceFrom!.colour) {
                 kingEffect = .check(checkedKing: checkedKing)
             }
         }
         
         // Create the move object
         if let pieceFrom = pieceFrom {
-            move = Move(piece: pieceFrom, from: fromPosition, to: toPosition, type: moveType, kingEffect: kingEffect, disambiguas: nil)
+            move = Move(piece: pieceFrom, from: fromPosition, type: moveType, kingEffect: kingEffect, disambiguas: nil)
         } else {
             return nil
         }
