@@ -834,6 +834,7 @@ class ChessEngine {
         
         // Create the move object
         if let pieceFrom = pieceFrom {
+            let _ = place(piece: pieceFrom, at: toPosition)
             move = Move(piece: pieceFrom, from: fromPosition, type: moveType, kingEffect: kingEffect, disambiguas: nil)
         } else {
             return nil
