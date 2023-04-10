@@ -233,8 +233,10 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
         
         let notation = "Qe7#"
-        let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), type: .move, kingEffect: .mate(matedKing: pieces[3]), disambiguas: nil)
-        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
+        let madeMove = chessEngine.makeMove(from: notation)
+        let aMove = Move(piece: Piece(.queen, .white, Position(file: .E, rank: .seventh)), from: Position(file: .H, rank: .seventh), type: .move, kingEffect: .mate(matedKing: pieces[3]), disambiguas: nil)
+        XCTAssertTrue(madeMove == aMove)
+        XCTAssertTrue(chessEngine.pieces[3].position == Position(file: .E, rank: .seventh))
     }
     
     func testNotationToMoveTakingAndMate() {
@@ -249,8 +251,11 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
         
         let notation = "Qaxe7#"
-        let aMove = Move(piece: Piece(.queen, .white, Position(file: .A, rank: .seventh)), from: Position(file: .A, rank: .seventh), type: .take(taken: pieces[1]), kingEffect: .mate(matedKing: pieces[4]), disambiguas: nil)
-        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
+        let madeMove = chessEngine.makeMove(from: notation)
+        XCTAssertTrue(madeMove?.piece == Piece(.queen, .white, Position(file: .E, rank: .seventh)))
+        XCTAssertTrue(madeMove?.from == Position(file: .A, rank: .seventh))
+        XCTAssertTrue(madeMove?.type == .take(taken: Piece(.rook, .black, Position(file: .E, rank: .seventh))))
+        XCTAssertTrue(madeMove?.kingEffect == .mate(matedKing: Piece(.king, .black, Position(file: .E, rank: .eighth))))
     }
     
     func testNotationToMoveCheck() {
@@ -264,8 +269,11 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
         
         let notation = "Q6h8+"
-        let aMove = Move(piece: Piece(.queen, .white, Position(file: .H, rank: .seventh)), from: Position(file: .H, rank: .seventh), type: .move, kingEffect: .check(checkedKing: pieces[3]), disambiguas: nil)
-        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
+        let madeMove = chessEngine.makeMove(from: notation)
+        XCTAssertTrue(madeMove?.piece == Piece(.queen, .white, Position(file: .H, rank: .eighth)))
+        XCTAssertTrue(madeMove?.from == Position(file: .H, rank: .seventh))
+        XCTAssertTrue(madeMove?.type == .move)
+        XCTAssertTrue(madeMove?.kingEffect == .check(checkedKing: Piece(.king, .black, Position(file: .E, rank: .eighth))))
     }
     
     func testNotationToMovePromotionWithCheck() {
@@ -278,8 +286,11 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(validMoves.contains(Position(file: .A, rank: .eighth)))
         
         let notation = "a8Q+"
-        let aMove = Move(piece: Piece(.pawn, .white, Position(file: .A, rank: .seventh)), from: Position(file: .A, rank: .seventh), type: .promotion(promoted: pieces[0]), kingEffect: .check(checkedKing: pieces[3]), disambiguas: nil)
-        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
+        let madeMove = chessEngine.makeMove(from: notation)
+        XCTAssertTrue(madeMove?.piece == Piece(.queen, .white, Position(file: .A, rank: .eighth)))
+        XCTAssertTrue(madeMove?.from == Position(file: .A, rank: .seventh))
+        XCTAssertTrue(madeMove?.type == .promotion(promoted: Piece(.queen, .white, Position(file: .A, rank: .eighth))))
+        XCTAssertTrue(madeMove?.kingEffect == .check(checkedKing: Piece(.king, .black, Position(file: .E, rank: .eighth))))
     }
     
     func testNotationToMoveCastleKingSide() {
@@ -292,8 +303,11 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(validMoves.contains(Position(file: .G, rank: .first)))
         
         let notation = "O-O"
-        let aMove = Move(piece: Piece(.king, .white, Position(file: .E, rank: .first)), from: Position(file: .E, rank: .first), type: .castle(rook: pieces[1]), kingEffect: nil, disambiguas: nil)
-        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
+        let madeMove = chessEngine.makeMove(from: notation)
+        XCTAssertTrue(madeMove?.piece == Piece(.king, .white, Position(file: .G, rank: .first)))
+        XCTAssertTrue(madeMove?.from == Position(file: .E, rank: .first))
+        XCTAssertTrue(madeMove?.type == .castle(rook: Piece(.rook, .white, Position(file: .F, rank: .first))))
+        XCTAssertTrue(madeMove?.kingEffect == nil)
     }
     
     func testNotationToMoveCastleQueenSide() {
@@ -306,8 +320,11 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(validMoves.contains(Position(file: .C, rank: .first)))
         
         let notation = "O-O-O"
-        let aMove = Move(piece: Piece(.king, .white, Position(file: .E, rank: .first)), from: Position(file: .E, rank: .first), type: .castle(rook: pieces[1]), kingEffect: nil, disambiguas: nil)
-        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
+        let madeMove = chessEngine.makeMove(from: notation)
+        XCTAssertTrue(madeMove?.piece == Piece(.king, .white, Position(file: .C, rank: .first)))
+        XCTAssertTrue(madeMove?.from == Position(file: .E, rank: .first))
+        XCTAssertTrue(madeMove?.type == .castle(rook: Piece(.rook, .white, Position(file: .D, rank: .first))))
+        XCTAssertTrue(madeMove?.kingEffect == nil)
     }
     
     func testNotationToMoveEnPassant() {
