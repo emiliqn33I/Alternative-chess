@@ -29,10 +29,10 @@ struct Move {
     var kingEffect: KingEffect?
     var disambiguas: Character?
     
-    init(piece: Piece, from: Position, to: Position, type: MoveType = .move, kingEffect: KingEffect? = nil, disambiguas: Character?) {
+    init(piece: Piece, from: Position, type: MoveType = .move, kingEffect: KingEffect? = nil, disambiguas: Character?) {
         self.piece = piece
         self.from = from
-        self.to = to
+        self.to = piece.position
         self.type = type
         self.kingEffect = kingEffect
         self.disambiguas = disambiguas
@@ -98,9 +98,11 @@ struct Move {
                 break
             case .check(_):
                 notationOfMove! += "+"
+                break
             case .doubleCheck(_):
                 notationOfMove! += "++"
-            case .none:
+                break
+            default:
                 break
             }
         }
