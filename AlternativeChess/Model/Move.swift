@@ -67,11 +67,7 @@ struct Move {
             notationOfMove = "\(to.notation)Q"
             break
         case .castle(_):
-            if piece.position.file == .G {
-                notationOfMove = "O-O"
-            } else {
-                notationOfMove = "O-O-O"
-            }
+            notationOfMove = piece.position.file == .G ? "O-O" : "O-O-O"
             break
         case .enPassant(_):
             notationOfMove = "\(from.file.notation)x\(to.notation)"
@@ -95,13 +91,10 @@ struct Move {
             switch kingEffect {
             case .mate(_):
                 notationOfMove! += "#"
-                break
             case .check(_):
                 notationOfMove! += "+"
-                break
             case .doubleCheck(_):
                 notationOfMove! += "++"
-                break
             default:
                 break
             }
