@@ -44,8 +44,7 @@ final class ChessNotationTests: XCTestCase {
     
     func testPawnTakesNotation() {
         let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .fifth)),
-                      Piece(.pawn, .black, Position(file: .B, rank: .sixth)),
-                      Piece(.king, .white, Position(file: .E, rank: .first))]
+                      Piece(.pawn, .black, Position(file: .B, rank: .sixth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .B, rank: .sixth)))
@@ -56,8 +55,7 @@ final class ChessNotationTests: XCTestCase {
     
     func testPieceDifferentThanPawnTakesNotation() {
         let pieces = [Piece(.bishop, .white, Position(file: .E, rank: .fifth)),
-                      Piece(.pawn, .black, Position(file: .F, rank: .sixth)),
-                      Piece(.king, .white, Position(file: .E, rank: .first))]
+                      Piece(.pawn, .black, Position(file: .F, rank: .sixth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .F, rank: .sixth)))
@@ -68,8 +66,7 @@ final class ChessNotationTests: XCTestCase {
     
     func testDisambiguatingRankNotation() {
         let pieces = [Piece(.rook, .white, Position(file: .D, rank: .eighth)),
-                      Piece(.rook, .white, Position(file: .H, rank: .eighth)),
-                      Piece(.king, .white, Position(file: .E, rank: .first))]
+                      Piece(.rook, .white, Position(file: .H, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .F, rank: .eighth)))
@@ -79,12 +76,9 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testDisambiguatingFileNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .A, rank: .fifth)),
-                      Piece(.rook, .white, Position(file: .A, rank: .first)),
-                      Piece(.king, .white, Position(file: .E, rank: .first))]
+                      Piece(.rook, .white, Position(file: .A, rank: .first))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .A, rank: .third)))
         
@@ -93,11 +87,8 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testPromotionNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
-        let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .seventh)),
-                      Piece(.king, .white, Position(file: .E, rank: .first))]
+        let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .seventh))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .A, rank: .eighth)))
         
@@ -106,11 +97,9 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testCastleKingSideNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .H, rank: .first)),
                       Piece(.king, .white, Position(file: .E, rank: .first))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .G, rank: .first)))
         
@@ -120,11 +109,9 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testCastleQueenSideNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .A, rank: .first)),
                       Piece(.king, .white, Position(file: .E, rank: .first))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .C, rank: .first)))
         
@@ -133,13 +120,10 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testCheckTakeNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .A, rank: .first)),
                       Piece(.rook, .black, Position(file: .A, rank: .eighth)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .A, rank: .eighth)))
         
@@ -148,12 +132,9 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testCheckMoveNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .A, rank: .first)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[0])
         XCTAssertTrue(validMoves.contains(Position(file: .A, rank: .eighth)))
         
@@ -162,13 +143,10 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testDoubleCheckMoveNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.bishop, .white, Position(file: .E, rank: .fourth)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .C, rank: .sixth)))
         
@@ -177,14 +155,11 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testDoubleCheckTakeNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.bishop, .white, Position(file: .E, rank: .fourth)),
                       Piece(.pawn, .black, Position(file: .C, rank: .sixth)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .C, rank: .sixth)))
         
@@ -193,14 +168,11 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testMateTakeNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.queen, .white, Position(file: .E, rank: .fourth)),
                       Piece(.pawn, .black, Position(file: .E, rank: .seventh)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
         
@@ -209,13 +181,10 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testMateMoveNotation() {
-        // Given the user has a white pawn at E5 and black pawn at F5, and king at E1 for validating moves
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.queen, .white, Position(file: .H, rank: .seventh)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        // Then the user will be able to take the pawn at F5 while moveing to F6 with the white pawn, and the pawn at F5 will be removed
         let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
         
@@ -226,7 +195,6 @@ final class ChessNotationTests: XCTestCase {
     func testNotationToMoveMovingAndMate() {
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.queen, .white, Position(file: .H, rank: .seventh)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         let validMoves = chessEngine.validMoves(for: pieces[1])
@@ -234,16 +202,15 @@ final class ChessNotationTests: XCTestCase {
         
         let notation = "Qe7#"
         let madeMove = chessEngine.makeMove(from: notation)
-        let aMove = Move(piece: Piece(.queen, .white, Position(file: .E, rank: .seventh)), from: Position(file: .H, rank: .seventh), type: .move, kingEffect: .mate(matedKing: pieces[3]), disambiguas: nil)
+        let _ = chessEngine.place(piece: pieces[1], at: Position(file: .E, rank: .seventh))
+        let aMove = Move(piece: Piece(.queen, .white, Position(file: .E, rank: .seventh)), from: Position(file: .H, rank: .seventh), type: .move, kingEffect: .mate(matedKing: pieces[2]), disambiguas: nil)
         XCTAssertTrue(madeMove == aMove)
-        XCTAssertTrue(chessEngine.pieces[3].position == Position(file: .E, rank: .seventh))
     }
     
     func testNotationToMoveTakingAndMate() {
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.rook, .black, Position(file: .E, rank: .seventh)),
                       Piece(.queen, .white, Position(file: .H, rank: .seventh)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth)),
                       Piece(.queen, .white, Position(file: .A, rank: .seventh))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
@@ -252,6 +219,7 @@ final class ChessNotationTests: XCTestCase {
         
         let notation = "Qaxe7#"
         let madeMove = chessEngine.makeMove(from: notation)
+        let _ = chessEngine.place(piece: pieces[2], at: Position(file: .E, rank: .seventh))
         XCTAssertTrue(madeMove?.piece == Piece(.queen, .white, Position(file: .E, rank: .seventh)))
         XCTAssertTrue(madeMove?.from == Position(file: .A, rank: .seventh))
         XCTAssertTrue(madeMove?.type == .take(taken: Piece(.rook, .black, Position(file: .E, rank: .seventh))))
@@ -259,27 +227,24 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testNotationToMoveCheck() {
-        let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
-                      Piece(.queen, .white, Position(file: .H, rank: .seventh)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
+        let pieces = [Piece(.queen, .white, Position(file: .H, rank: .second)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth)),
                       Piece(.queen, .white, Position(file: .H, rank: .sixth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        let validMoves = chessEngine.validMoves(for: pieces[1])
-        XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
+        let validMoves = chessEngine.validMoves(for: pieces[2])
+        XCTAssertTrue(validMoves.contains(Position(file: .H, rank: .fifth)))
         
-        let notation = "Q6h8+"
+        let notation = "Q6h5+"
         let madeMove = chessEngine.makeMove(from: notation)
-        XCTAssertTrue(madeMove?.piece == Piece(.queen, .white, Position(file: .H, rank: .eighth)))
-        XCTAssertTrue(madeMove?.from == Position(file: .H, rank: .seventh))
+        let _ = chessEngine.place(piece: pieces[2], at: Position(file: .H, rank: .fifth))
+        XCTAssertTrue(madeMove?.piece == Piece(.queen, .white, Position(file: .H, rank: .fifth)))
+        XCTAssertTrue(madeMove?.from == Position(file: .H, rank: .sixth))
         XCTAssertTrue(madeMove?.type == .move)
         XCTAssertTrue(madeMove?.kingEffect == .check(checkedKing: Piece(.king, .black, Position(file: .E, rank: .eighth))))
     }
     
     func testNotationToMovePromotionWithCheck() {
         let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .seventh)),
-                      Piece(.queen, .white, Position(file: .H, rank: .seventh)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
                       Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
         let validMoves = chessEngine.validMoves(for: pieces[0])
@@ -294,12 +259,10 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testNotationToMoveCastleKingSide() {
-        let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .seventh)),
-                      Piece(.rook, .white, Position(file: .H, rank: .first)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
-                      Piece(.king, .black, Position(file: .E, rank: .eighth))]
+        let pieces = [Piece(.rook, .white, Position(file: .H, rank: .first)),
+                      Piece(.king, .white, Position(file: .E, rank: .first))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        let validMoves = chessEngine.validMoves(for: pieces[2])
+        let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .G, rank: .first)))
         
         let notation = "O-O"
@@ -311,12 +274,10 @@ final class ChessNotationTests: XCTestCase {
     }
     
     func testNotationToMoveCastleQueenSide() {
-        let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .seventh)),
-                      Piece(.rook, .white, Position(file: .A, rank: .first)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
-                      Piece(.king, .black, Position(file: .E, rank: .eighth))]
+        let pieces = [Piece(.rook, .white, Position(file: .A, rank: .first)),
+                      Piece(.king, .white, Position(file: .E, rank: .first))]
         let chessEngine = createSUT(pieces: pieces, turn: .white)
-        let validMoves = chessEngine.validMoves(for: pieces[2])
+        let validMoves = chessEngine.validMoves(for: pieces[1])
         XCTAssertTrue(validMoves.contains(Position(file: .C, rank: .first)))
         
         let notation = "O-O-O"
@@ -329,15 +290,15 @@ final class ChessNotationTests: XCTestCase {
     
     func testNotationToMoveEnPassant() {
         let pieces = [Piece(.pawn, .white, Position(file: .A, rank: .fifth)),
-                      Piece(.pawn, .black, Position(file: .B, rank: .seventh)),
-                      Piece(.bishop, .white, Position(file: .H, rank: .fifth)),
-                      Piece(.king, .white, Position(file: .E, rank: .first)),
-                      Piece(.king, .black, Position(file: .E, rank: .eighth))]
+                      Piece(.pawn, .black, Position(file: .B, rank: .seventh))]
         let chessEngine = createSUT(pieces: pieces, turn: .black)
         let _ = chessEngine.place(piece: pieces[1], at: Position(file: .B, rank: .fifth))
         let notation = "axb6"
-        let aMove = Move(piece: Piece(.pawn, .white, Position(file: .A, rank: .fifth)), from: Position(file: .A, rank: .fifth), type: .enPassant(takenPawn: pieces[1]), kingEffect: nil, disambiguas: nil)
-        XCTAssertTrue(chessEngine.makeMove(from: notation) == aMove)
+        let madeMove = chessEngine.makeMove(from: notation)
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .B, rank: .sixth))
+        XCTAssertTrue(madeMove?.piece == Piece(.pawn, .white, Position(file: .B, rank: .sixth)))
+        XCTAssertTrue(madeMove?.from == Position(file: .A, rank: .fifth))
+        XCTAssertTrue(madeMove?.type == .enPassant(takenPawn: Piece(.pawn, .black, Position(file: .B, rank: .fifth))))
     }
     
     private func createSUT(pieces: [Piece], turn: Piece.Color) -> ChessEngine {
