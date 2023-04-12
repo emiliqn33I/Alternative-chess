@@ -834,7 +834,6 @@ class ChessEngine {
         
         // Create the move object
         if let pieceFrom = pieceFrom {
-            let _ = place(piece: pieceFrom, at: toPosition)
             move = Move(piece: pieceFrom, from: fromPosition, type: moveType, kingEffect: kingEffect, disambiguas: nil)
         } else {
             return nil
@@ -844,7 +843,6 @@ class ChessEngine {
     }
     
     func giveFromAndTo(for notation: String) -> (Position, Position) {
-        var turn: Piece.Color
         var fromFile: Position.File = .A
         var fromRank: Position.Rank = .first
         var toFile: Position.File = .A
@@ -853,14 +851,7 @@ class ChessEngine {
         let pattern = "[a-z]\\d" // Matches a lowercase letter followed by a digit
         let patternFile = "[a-h]"
         let patternRank = "\\d"
-        
-        if history.count == 0 {
-            turn = .white
-        } else if history.count % 2 == 0 {
-            turn = .white
-        } else {
-            turn = .black
-        }
+
         if notation == "O-O" || notation == "O-O-O" {
             if notation == "O-O" {
                 toFile = .G
