@@ -192,6 +192,17 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(move.makeNotation() == "Qe7#")
     }
     
+    func testDuckNotation() {
+        let pieces = [Piece(.duck, .yellow, Position(file: .E, rank: .second)),
+                      Piece(.pawn, .white, Position(file: .E, rank: .third))]
+        let chessEngine = createSUT(pieces: pieces, turn: .white)
+        let validMoves = chessEngine.validMoves(for: pieces[0])
+        XCTAssertTrue(validMoves.contains(Position(file: .E, rank: .seventh)))
+        
+        let move = chessEngine.place(piece: pieces[0], at: Position(file: .E, rank: .seventh))
+        XCTAssertTrue(move.makeNotation() == "De7")
+    }
+    
     func testNotationToMoveMovingAndMate() {
         let pieces = [Piece(.rook, .white, Position(file: .E, rank: .second)),
                       Piece(.queen, .white, Position(file: .H, rank: .seventh)),
@@ -304,6 +315,21 @@ final class ChessNotationTests: XCTestCase {
         XCTAssertTrue(madeMove?.piece == Piece(.pawn, .white, Position(file: .B, rank: .sixth)))
         XCTAssertTrue(madeMove?.from == Position(file: .A, rank: .fifth))
         XCTAssertTrue(madeMove?.type == .enPassant(takenPawn: Piece(.pawn, .black, Position(file: .B, rank: .fifth))))
+    }
+    
+    func testNotationToMoveDuckMove() {
+        let pieces = [Piece(.duck, .yellow, Position(file: .A, rank: .first))]
+        let chessEngine = createSUT(pieces: pieces, turn: .white)
+        let validMoves = chessEngine.validMoves(for: pieces[0])
+        XCTAssertTrue(validMoves.contains(Position(file: .C, rank: .first)))
+        
+        let notation = "Dc1"
+        let madeMove = chessEngine.makeMove(from: notation)
+        let _ = chessEngine.place(piece: pieces[0], at: Position(file: .C, rank: .first))
+        XCTAssertTrue(madeMove?.piece == Piece(.duck, .yellow, Position(file: .C, rank: .first)))
+        XCTAssertTrue(madeMove?.from == Position(file: .A, rank: .first))
+        XCTAssertTrue(madeMove?.type == .move)
+        XCTAssertTrue(madeMove?.kingEffect == nil)
     }
     
     private func createSUT(pieces: [Piece], turn: Piece.Color) -> ChessEngine {
