@@ -73,17 +73,23 @@ struct Move {
             notationOfMove = "\(from.file.notation)x\(to.notation)"
             break
         case .move:
-            if disambiguas == "r" {
-                if let pieceType = String(describing:piece.type).first {
-                    notationOfMove = "\(pieceType.uppercased())\(from.file.notation)\(to.notation)"
-                }
-            } else if disambiguas == "f" {
-                if let pieceType = String(describing:piece.type).first {
-                    notationOfMove = "\(pieceType.uppercased())\(from.rank.notation)\(to.notation)"
+            if piece.type == .pawn {
+                if let _ = String(describing:piece.type).first {
+                    notationOfMove = "\(to.notation)"
                 }
             } else {
-                if let pieceType = String(describing:piece.type).first {
-                    notationOfMove = "\(pieceType.uppercased())\(to.notation)"
+                if disambiguas == "r" {
+                    if let pieceType = String(describing:piece.type).first {
+                        notationOfMove = "\(pieceType.uppercased())\(from.file.notation)\(to.notation)"
+                    }
+                } else if disambiguas == "f" {
+                    if let pieceType = String(describing:piece.type).first {
+                        notationOfMove = "\(pieceType.uppercased())\(from.rank.notation)\(to.notation)"
+                    }
+                } else {
+                    if let pieceType = String(describing:piece.type).first {
+                        notationOfMove = "\(pieceType.uppercased())\(to.notation)"
+                    }
                 }
             }
         }
