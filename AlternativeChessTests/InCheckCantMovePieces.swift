@@ -11,11 +11,11 @@ import XCTest
 final class InCheckCantMovePieces: XCTestCase {
     
     func testKingInChecKWithPawn() {
-        let blackPawn = Piece(type: .pawn, colour: .black, position: Position(file: .A, rank: .seventh))
-        let pieces = [Piece(type: .pawn, colour: .white, position: Position(file: .F, rank: .seventh)),
+        let blackPawn = Piece(.pawn, .black, Position(file: .A, rank: .seventh))
+        let pieces = [Piece(.pawn, .white, Position(file: .F, rank: .seventh)),
                       blackPawn,
-                      Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first)),
-                      Piece(type: .king, colour: .black, position: Position(file: .E, rank: .eighth))]
+                      Piece(.king, .white, Position(file: .E, rank: .first)),
+                      Piece(.king, .black, Position(file: .E, rank: .eighth))]
         let chessEngine = createSUT(pieces: pieces, turn: .black)
         
         let validMovesForBlackPawn = chessEngine.validMoves(for: blackPawn)

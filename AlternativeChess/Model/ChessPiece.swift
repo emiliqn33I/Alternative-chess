@@ -100,7 +100,7 @@ extension Position: CustomStringConvertible {
 }
 
 class Piece {
-    enum PieceType {
+    enum PieceType: CaseIterable {
         case pawn
         case rook
         case bishop
@@ -138,7 +138,7 @@ class Piece {
         }
     }
 
-    init(type: PieceType, colour: Color, position: Position) {
+    init(_ type: PieceType, _ colour: Color, _ position: Position) {
         self.type = type
         self.colour = colour
         self.position = position

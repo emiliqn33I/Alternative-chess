@@ -16,7 +16,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhitePawnMoves2Squares() {
         // Given the user is on the board screen
         // And there is a pawn at the A2
-        let piece = Piece(type: .pawn, colour: .white, position: Position(file: .A, rank: .second))
+        let piece = Piece(.pawn, .white, Position(file: .A, rank: .second))
         let chessEngine = createSUT(piece: piece)
 
         // When they tap the pawn A2
@@ -28,7 +28,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhitePawnMoves1Squares() {
         // Given the user is on the board screen
         // And there is a pawn at the B3
-        let piece = Piece(type: .pawn, colour: .white, position: Position(file: .B, rank: .third))
+        let piece = Piece(.pawn, .white, Position(file: .B, rank: .third))
         let chessEngine = createSUT(piece: piece)
         // When they tap the pawn B3
         // Then the B4 squares on the board will be highlighted
@@ -38,7 +38,7 @@ final class PieceMovementTests: XCTestCase {
     }
     
     func testWhitePawnAtF7() {
-        let whitePawn = Piece(type: .pawn, colour: .white, position: Position(file: .F, rank: .seventh))
+        let whitePawn = Piece(.pawn, .white, Position(file: .F, rank: .seventh))
         let chessEngine = createSUT(piece: whitePawn)
         
         let validMovesForWhitePawn = chessEngine.validMoves(for: whitePawn)
@@ -50,7 +50,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhiteRookMovesStartingPosition() {
         // Given the user is on the board screen
         // And there is a rook at the H1
-        let piece = Piece(type: .rook, colour: .white, position: Position(file: .H, rank: .first))
+        let piece = Piece(.rook, .white, Position(file: .H, rank: .first))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the rook at H1
         let validMovesH1 = chessEngine.possibleMoves(piece: piece)
@@ -76,7 +76,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhiteBishopMovesStartingPosition() {
         // Given the user is on the board screen
         // And there is a bishop at the F1
-        let piece = Piece(type: .bishop, colour: .white, position: Position(file: .F, rank: .first))
+        let piece = Piece(.bishop, .white, Position(file: .F, rank: .first))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the bishop at F1
         let validMovesF1 = chessEngine.possibleMoves(piece: piece)
@@ -95,7 +95,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhiteKnightMovesStartingPosition() {
         // Given the user is on the board screen
         // And there is a knight at the G1
-        let piece = Piece(type: .knight, colour: .white, position: Position(file: .G, rank: .first))
+        let piece = Piece(.knight, .white, Position(file: .G, rank: .first))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the knight at G1
         let validMovesG1 = chessEngine.possibleMoves(piece: piece)
@@ -110,7 +110,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhiteQueenMovesStartingPosition() {
         // Given the user is on the board screen
         // And there is a queen at the D1
-        let piece = Piece(type: .queen, colour: .white, position: Position(file: .D, rank: .first))
+        let piece = Piece(.queen, .white, Position(file: .D, rank: .first))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the queen at D1
         let validMovesD1 = chessEngine.possibleMoves(piece: piece)
@@ -143,7 +143,7 @@ final class PieceMovementTests: XCTestCase {
     func testWhiteKingMovesStartingPosition() {
         // Given the user is on the board screen
         // And there is a king at the E1
-        let piece = Piece(type: .king, colour: .white, position: Position(file: .E, rank: .first))
+        let piece = Piece(.king, .white, Position(file: .E, rank: .first))
         let chessEngine = createSUT(piece: piece)
         // And there is no piece on the way of the king at E1
         let validMovesE1 = chessEngine.possibleMoves(piece: piece)

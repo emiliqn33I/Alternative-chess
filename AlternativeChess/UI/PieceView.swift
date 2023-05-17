@@ -21,8 +21,9 @@ class PieceView: UIView {
         self.piece = piece
         self.squareSide = squareSide
         let frame = PieceView.rect(for: piece.position, squareSide: squareSide)
+        let padding: CGFloat = 5
         self.imageView = UIImageView(image: UIImage(named: piece.imageName))
-        imageView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+        imageView.frame = CGRect(x: padding, y: padding, width: frame.width - (2 * padding), height: frame.height - (2 * padding))
 
         super.init(frame: frame)
         addSubview(imageView)

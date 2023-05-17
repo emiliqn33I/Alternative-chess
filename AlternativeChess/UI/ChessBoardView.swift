@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 protocol ChessBoardViewDelegate: AnyObject {
-    func checkMate() -> Bool
+    func checkedKing(piece: Piece) -> Move
+    func checkMate() -> Move.KingEffect?
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
     func didMove(piece: Piece, to position: Position) -> Move
@@ -20,31 +21,49 @@ class ChessBoardView: UIView {
     let board = Board()
     var pieces: [Piece] = []
     var pieceViews: [PieceView] = []
-    var currentSelectedPiece: Piece?
-    var validMoveViews: [UIView] = []
-    var isCheckMate = false
-    var pieceMoved = false
- 
+    private var currentSelectedPiece: Piece?
+    private var validMoveViews: [UIView] = []
+    private var isCheckMate = false
+    private var pieceMoved = false
+    private let selectedBorderWidth: CGFloat = 5.0
+    private let selectedBorderColor: UIColor = .blue
+    
     weak var delegate: ChessBoardViewDelegate?
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView(_:)))
         self.addGestureRecognizer(gestureRecognizer)
     }
-
+    
     override func draw(_ rect: CGRect) {
         drawBoard()
         drawPieces(pieces: pieces)
     }
-
+    
     // MARK: UI Action Events
-
+    
     @objc private func didTapView(_ sender: UITapGestureRecognizer? = nil) {
         guard let gestureRecognizer = sender else {
             return
         }
         let tappedLocation = gestureRecognizer.location(in: self)
+        
+        removeHighlight()
+        
+        if
+            let delegate = delegate,
+            let tappedPiece = piece(at: tappedLocation) {
+            let move = delegate.checkedKing(piece: tappedPiece)
+            switch move.kingEffect {
+            case let .check(checkedKing):
+                drawKingHighlight(for: checkedKing)
+            case let .doubleCheck(checkedKing):
+                drawKingHighlight(for: checkedKing)
+            default:
+                print("Not under check")
+            }
+        }
         
         if pieceMoved {
             if let selectedPiece = piece(at: tappedLocation) {
@@ -83,13 +102,20 @@ class ChessBoardView: UIView {
                 pieceMoved = true
             }
         }
-
-        if let delegate = delegate, delegate.checkMate() {
-            isCheckMate = true
-            checkMateView()
+        
+        if
+            let delegate = delegate,
+            let effect = delegate.checkMate() {
+            switch effect {
+            case .mate(_):
+                isCheckMate = true
+                checkMateView()
+            default:
+                return
+            }
         }
     }
-
+    
     private func performPlacingOnASquareWithPiece(for piece: Piece, and position: Position) {
         // Get the affected piece view and remove it from screen
         guard let pieceMove = delegate?.didMove(piece: piece, to: position) else {
@@ -104,7 +130,7 @@ class ChessBoardView: UIView {
             return
         }
     }
-
+    
     private func performPlacingOnASquareWithoutPiece(for position: Position, currentSelectedPiece: Piece) {
         guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
             return
@@ -131,12 +157,12 @@ class ChessBoardView: UIView {
             return
         }
     }
-
+    
     private func performAfterPlacement(for piece: Piece, and position: Position) {
         removeValidMoves()
         pieceView(at: position)?.setup(with: piece)
     }
-
+    
     private func performTake(for piece: Piece, currentSelectedPiece: Piece) {
         if let affectedView = pieceView(for: piece) {
             affectedView.removeFromSuperview()
@@ -144,12 +170,12 @@ class ChessBoardView: UIView {
                 pieceViews.remove(at: index)
             }
         }
-
+        
         removeValidMoves()
-
+        
         pieceView(for: currentSelectedPiece)?.setup(with: piece.position)
     }
-
+    
     private func performPromotion(for piece: Piece, currentSelectedPiece: Piece, takeOrMovePromotion: Bool) {
         guard let affectedPieceView = pieceView(for: piece) else {
             return
@@ -163,25 +189,49 @@ class ChessBoardView: UIView {
         removeValidMoves()
         pieceView(at: piece.position)?.setupViewImage(with: currentSelectedPiece)
     }
-
+    
     // MARK: Drawing
-
+    
     private func drawValidMoves(validMoves: [Position]) {
         let side = bounds.width / CGFloat(Position.File.allCases.count)
-
+        
         removeValidMoves()
-
+        
         for position in validMoves {
             let fileRaw = CGFloat(position.file.rawValue)
             let y = CGFloat(PieceView.rankReversed(rank: position.rank).rawValue) * side
             let validMoveView = UIView(frame: CGRect(x: fileRaw * side, y: y, width: side, height: side))
             validMoveView.backgroundColor = UIColor.green.withAlphaComponent(0.5)
             addSubview(validMoveView)
-        
+            
             validMoveViews.append(validMoveView)
         }
     }
-
+    
+    private func drawSelectedPieceHighlight(for piece: Piece) {
+        let side = bounds.width / CGFloat(Position.File.allCases.count)
+        
+        let fileRaw = CGFloat(piece.position.file.rawValue) * side
+        let rankRaw = CGFloat(PieceView.rankReversed(rank: piece.position.rank).rawValue) * side
+        let highlight = UIView(frame: CGRect(x: fileRaw, y: rankRaw, width: side, height: side))
+        highlight.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
+        highlight.tag = 1
+        
+        addSubview(highlight)
+    }
+    
+    private func drawKingHighlight(for piece: Piece) {
+        let side = bounds.width / CGFloat(Position.File.allCases.count)
+        
+        let fileRaw = CGFloat(piece.position.file.rawValue) * side
+        let rankRaw = CGFloat(PieceView.rankReversed(rank: piece.position.rank).rawValue) * side
+        let highlight = UIView(frame: CGRect(x: fileRaw, y: rankRaw, width: side, height: side))
+        highlight.backgroundColor = UIColor.red.withAlphaComponent(0.5)
+        highlight.tag = 1
+        
+        addSubview(highlight)
+    }
+    
     private func drawPieces(pieces: [Piece]) {
         for piece in pieces {
             let pieceView = PieceView(piece: piece, squareSide: frame.width / 8)
@@ -220,6 +270,14 @@ class ChessBoardView: UIView {
             view.removeFromSuperview()
         }
         validMoveViews.removeAll()
+    }
+    
+    private func removeHighlight() {
+        for subview in subviews {
+            if subview.tag == 1 {
+                subview.removeFromSuperview()
+            }
+        }
     }
 
     private func checkMateView() {
