@@ -15,6 +15,7 @@
 		90A8CFDD294BB40300229742 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A8CFDB294BB40300229742 /* LaunchScreen.storyboard */; };
 		90A8CFE8294BB40300229742 /* AlternativeChessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFE7294BB40300229742 /* AlternativeChessTests.swift */; };
 		90DCD11A2982F5D30026B65D /* PieceMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DCD1192982F5D30026B65D /* PieceMovementTests.swift */; };
+		90F5699C2A1BD77A00D66DE1 /* ParseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 90F5699B2A1BD77A00D66DE1 /* ParseSwift */; };
 		BD1E22E82A1BD12F00E4BA72 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1E22E72A1BD12F00E4BA72 /* NetworkClient.swift */; };
 		BD505F492974270A00890A77 /* ChessEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F482974270A00890A77 /* ChessEngine.swift */; };
 		BD505F4B2974273900890A77 /* ChessPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F4A2974273900890A77 /* ChessPiece.swift */; };
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90F5699C2A1BD77A00D66DE1 /* ParseSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,6 +185,9 @@
 			dependencies = (
 			);
 			name = AlternativeChess;
+			packageProductDependencies = (
+				90F5699B2A1BD77A00D66DE1 /* ParseSwift */,
+			);
 			productName = AlternativeChess;
 			productReference = 90A8CFCD294BB40100229742 /* AlternativeChess.app */;
 			productType = "com.apple.product-type.application";
@@ -233,6 +238,9 @@
 				Base,
 			);
 			mainGroup = 90A8CFC4294BB40100229742;
+			packageReferences = (
+				90F5699A2A1BD77A00D66DE1 /* XCRemoteSwiftPackageReference "Parse-Swift" */,
+			);
 			productRefGroup = 90A8CFCE294BB40100229742 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -571,6 +579,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		90F5699A2A1BD77A00D66DE1 /* XCRemoteSwiftPackageReference "Parse-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/parse-community/Parse-Swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		90F5699B2A1BD77A00D66DE1 /* ParseSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 90F5699A2A1BD77A00D66DE1 /* XCRemoteSwiftPackageReference "Parse-Swift" */;
+			productName = ParseSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 90A8CFC5294BB40100229742 /* Project object */;
 }
