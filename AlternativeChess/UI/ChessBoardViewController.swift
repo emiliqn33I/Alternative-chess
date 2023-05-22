@@ -58,15 +58,10 @@ class ChessBoardViewController: UIViewController {
         super.viewDidLoad()
         boardView.pieces = chessEngine.pieces
         boardView.delegate = self
-        networkClient.delegate = self
     }
 }
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
-    func getMoveFromNotation(_ notation: String) -> Move {
-    
-    }
-    
     func getMoveFromNotation(_ notation: String) -> Move? {
         if let move = chessEngine.makeMove(from: notation) {
             return move
@@ -76,7 +71,6 @@ extension ChessBoardViewController: ChessBoardViewDelegate {
     
     func sendNotation(_ notation: String) {
         // Send notation to server
-        networkClient.sendNotationToServer(notation)
     }
     
     func checkedKing(piece: Piece) -> Move {
