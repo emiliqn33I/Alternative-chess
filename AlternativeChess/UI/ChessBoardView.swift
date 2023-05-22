@@ -15,7 +15,6 @@ protocol ChessBoardViewDelegate: AnyObject {
     func validMoves(for piece: Piece) -> [Position]
     func didMove(piece: Piece, to position: Position) -> Move
     func sendNotation(_ notation: String)
-    func getMoveFromNotation(_ notation: String) -> Move
 }
 
 class ChessBoardView: UIView {
