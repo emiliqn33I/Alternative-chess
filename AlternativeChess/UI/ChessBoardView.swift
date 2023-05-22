@@ -122,9 +122,6 @@ class ChessBoardView: UIView {
         guard let pieceMove = delegate?.didMove(piece: piece, to: position) else {
             return
         }
-        if let notation = pieceMove.makeNotation() {
-            delegate?.sendNotation(notation)
-        }
         switch pieceMove.type {
         case let .take(taken):
             performTake(for: taken, currentSelectedPiece: piece)
@@ -138,9 +135,6 @@ class ChessBoardView: UIView {
     private func performPlacingOnASquareWithoutPiece(for position: Position, currentSelectedPiece: Piece) {
         guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
             return
-        }
-        if let notation = pieceMoveAction.makeNotation() {
-            delegate?.sendNotation(notation)
         }
         switch pieceMoveAction.type {
         case let .castle(rook):

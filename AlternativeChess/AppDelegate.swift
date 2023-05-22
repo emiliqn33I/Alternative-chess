@@ -13,10 +13,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        ParseSwift.initialize(applicationId: "6HuvtKxwWb5dHCxiLpZkpW5s5mCLgq3LxEbK2jgh",
-                              clientKey: "dOMIWcIwfuxi0i6fka4Nk8gBfvZUxyGsA6IqcZt0",
-                              serverURL: URL(string: "https://parseapi.back4app.com")!)
-
+        ParseSwift.initialize(applicationId: "xb5BUyVPFyxvZdWFOdGKPZQ0zov32ZsBhM1Xbqor",
+                              clientKey: "RrfcE3ktaeX61i4Ab1jCIsyiJLwlCTet9yvGl94h",
+                              serverURL: URL(string: "https://alternativechessapi.b4a.io")!)
+//
+//        ParseSwift.initialize(applicationId: "6HuvtKxwWb5dHCxiLpZkpW5s5mCLgq3LxEbK2jgh",
+//                              clientKey: "dOMIWcIwfuxi0i6fka4Nk8gBfvZUxyGsA6IqcZt0",
+//                              serverURL: URL(string: "https://parseapi.back4app.com")!)
         return true
     }
 

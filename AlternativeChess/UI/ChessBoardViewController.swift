@@ -71,7 +71,7 @@ extension ChessBoardViewController: ChessBoardViewDelegate {
     }
     
     func sendNotation(_ notation: String) {
-        // Send notation to server
+        networkClient.send(moveNotation: notation)
     }
     
     func checkedKing(piece: Piece) -> Move {
@@ -91,18 +91,22 @@ extension ChessBoardViewController: ChessBoardViewDelegate {
     }
     
     func didMove(piece: Piece, to position: Position) -> Move {
-        chessEngine.place(piece: piece, at: position)
+        let move = chessEngine.place(piece: piece, at: position)
+        guard let notation = move.makeNotation() else {
+            return move
+        }
+        networkClient.send(moveNotation: notation)
+        return move
     }
 }
 
 extension ChessBoardViewController: NetworkClientDelegate {
-    // implement the delegate method to receive the notation from the server
     func networkClient(_ networkClient: NetworkClient, didReceiveNotation notation: String) {
-        print("Received notation in ViewController: \(notation)")
-        // do something with the notation
-        if let aMove = chessEngine.makeMove(from: notation) {
-            chessEngine.place(piece: aMove.piece, at: aMove.to)
-        }
-        boardView.give(notation: notation)
+        print("Received move: \(notation)")
+        // TODO: Implement reacting to move made by the other player
+//        if let aMove = chessEngine.makeMove(from: notation) {
+//            chessEngine.place(piece: aMove.piece, at: aMove.to)
+//        }
+//        boardView.give(notation: notation)
     }
 }
