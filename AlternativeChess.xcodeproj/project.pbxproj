@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EFCAAB27317A7251713970E /* Pods_AlternativeChess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C959FE1A756E29EE9AE8E80 /* Pods_AlternativeChess.framework */; };
 		90A8CFD1294BB40100229742 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFD0294BB40100229742 /* AppDelegate.swift */; };
 		90A8CFD3294BB40100229742 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFD2294BB40100229742 /* SceneDelegate.swift */; };
 		90A8CFD5294BB40100229742 /* ChessBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFD4294BB40100229742 /* ChessBoardViewController.swift */; };
@@ -15,6 +16,7 @@
 		90A8CFDD294BB40300229742 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A8CFDB294BB40300229742 /* LaunchScreen.storyboard */; };
 		90A8CFE8294BB40300229742 /* AlternativeChessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8CFE7294BB40300229742 /* AlternativeChessTests.swift */; };
 		90DCD11A2982F5D30026B65D /* PieceMovementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DCD1192982F5D30026B65D /* PieceMovementTests.swift */; };
+		BD18F8F22A02402600328F13 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD18F8F12A02402600328F13 /* NetworkClient.swift */; };
 		BD505F492974270A00890A77 /* ChessEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F482974270A00890A77 /* ChessEngine.swift */; };
 		BD505F4B2974273900890A77 /* ChessPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F4A2974273900890A77 /* ChessPiece.swift */; };
 		BD505F4D2974276C00890A77 /* ChessBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD505F4C2974276C00890A77 /* ChessBoard.swift */; };
@@ -31,6 +33,7 @@
 		BDE9DDD429B5D46B004E9986 /* DuckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD329B5D46B004E9986 /* DuckTests.swift */; };
 		BDE9DDD629B734FA004E9986 /* InCheckCantMovePieces.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */; };
 		BDE9DDD829BB396D004E9986 /* ChessNotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE9DDD729BB396D004E9986 /* ChessNotationTests.swift */; };
+		E7D843DB979243DD1FF3AF23 /* Pods_AlternativeChessTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E5066B4CCAD1DC30D7CB75 /* Pods_AlternativeChessTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E317A705478623D341E5112 /* Pods-AlternativeChessTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlternativeChessTests.debug.xcconfig"; path = "Target Support Files/Pods-AlternativeChessTests/Pods-AlternativeChessTests.debug.xcconfig"; sourceTree = "<group>"; };
+		124993F617B3DFFC9744DD6E /* Pods-AlternativeChess.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlternativeChess.debug.xcconfig"; path = "Target Support Files/Pods-AlternativeChess/Pods-AlternativeChess.debug.xcconfig"; sourceTree = "<group>"; };
+		5C959FE1A756E29EE9AE8E80 /* Pods_AlternativeChess.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlternativeChess.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70372B3D02A27447AE47FAC5 /* Pods-AlternativeChessTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlternativeChessTests.release.xcconfig"; path = "Target Support Files/Pods-AlternativeChessTests/Pods-AlternativeChessTests.release.xcconfig"; sourceTree = "<group>"; };
 		90A8CFCD294BB40100229742 /* AlternativeChess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlternativeChess.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A8CFD0294BB40100229742 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90A8CFD2294BB40100229742 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +62,10 @@
 		90A8CFE3294BB40300229742 /* AlternativeChessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlternativeChessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A8CFE7294BB40300229742 /* AlternativeChessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeChessTests.swift; sourceTree = "<group>"; };
 		90DCD1192982F5D30026B65D /* PieceMovementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceMovementTests.swift; sourceTree = "<group>"; };
+		A5E5066B4CCAD1DC30D7CB75 /* Pods_AlternativeChessTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlternativeChessTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD18F8F12A02402600328F13 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		BD18F8F32A02751000328F13 /* ParseLiveQuery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ParseLiveQuery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD18F8F72A0297CA00328F13 /* ParseLiveQuery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ParseLiveQuery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD505F482974270A00890A77 /* ChessEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessEngine.swift; sourceTree = "<group>"; };
 		BD505F4A2974273900890A77 /* ChessPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessPiece.swift; sourceTree = "<group>"; };
 		BD505F4C2974276C00890A77 /* ChessBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessBoard.swift; sourceTree = "<group>"; };
@@ -71,6 +82,7 @@
 		BDE9DDD329B5D46B004E9986 /* DuckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckTests.swift; sourceTree = "<group>"; };
 		BDE9DDD529B734FA004E9986 /* InCheckCantMovePieces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InCheckCantMovePieces.swift; sourceTree = "<group>"; };
 		BDE9DDD729BB396D004E9986 /* ChessNotationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessNotationTests.swift; sourceTree = "<group>"; };
+		DA82C6714CEEF5694C78ED9A /* Pods-AlternativeChess.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlternativeChess.release.xcconfig"; path = "Target Support Files/Pods-AlternativeChess/Pods-AlternativeChess.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EFCAAB27317A7251713970E /* Pods_AlternativeChess.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7D843DB979243DD1FF3AF23 /* Pods_AlternativeChessTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +111,8 @@
 				90A8CFCF294BB40100229742 /* AlternativeChess */,
 				90A8CFE6294BB40300229742 /* AlternativeChessTests */,
 				90A8CFCE294BB40100229742 /* Products */,
+				9512E09D2C9E22F63B7CAA2B /* Pods */,
+				E97F9BBF55BB327BA57E6A02 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,6 +132,7 @@
 				90A8CFD2294BB40100229742 /* SceneDelegate.swift */,
 				BDCF52BB29B10F7800FF5944 /* UI */,
 				BD505F482974270A00890A77 /* ChessEngine.swift */,
+				BD18F8F12A02402600328F13 /* NetworkClient.swift */,
 				BDCF52B5299A957000FF5944 /* Helper.swift */,
 				BDCF52BC29B10FBC00FF5944 /* Model */,
 				90A8CFD6294BB40100229742 /* Main.storyboard */,
@@ -144,6 +161,17 @@
 			path = AlternativeChessTests;
 			sourceTree = "<group>";
 		};
+		9512E09D2C9E22F63B7CAA2B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				124993F617B3DFFC9744DD6E /* Pods-AlternativeChess.debug.xcconfig */,
+				DA82C6714CEEF5694C78ED9A /* Pods-AlternativeChess.release.xcconfig */,
+				0E317A705478623D341E5112 /* Pods-AlternativeChessTests.debug.xcconfig */,
+				70372B3D02A27447AE47FAC5 /* Pods-AlternativeChessTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		BDCF52BB29B10F7800FF5944 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +192,17 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		E97F9BBF55BB327BA57E6A02 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD18F8F72A0297CA00328F13 /* ParseLiveQuery.framework */,
+				BD18F8F32A02751000328F13 /* ParseLiveQuery.framework */,
+				5C959FE1A756E29EE9AE8E80 /* Pods_AlternativeChess.framework */,
+				A5E5066B4CCAD1DC30D7CB75 /* Pods_AlternativeChessTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -171,9 +210,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90A8CFF7294BB40400229742 /* Build configuration list for PBXNativeTarget "AlternativeChess" */;
 			buildPhases = (
+				4BA52B9B9BB89E381F85B116 /* [CP] Check Pods Manifest.lock */,
 				90A8CFC9294BB40100229742 /* Sources */,
 				90A8CFCA294BB40100229742 /* Frameworks */,
 				90A8CFCB294BB40100229742 /* Resources */,
+				F1CDCDC7683C645DC82352B6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -188,6 +229,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90A8CFFA294BB40400229742 /* Build configuration list for PBXNativeTarget "AlternativeChessTests" */;
 			buildPhases = (
+				96B856C7C81CA65EECD540B6 /* [CP] Check Pods Manifest.lock */,
 				90A8CFDF294BB40300229742 /* Sources */,
 				90A8CFE0294BB40300229742 /* Frameworks */,
 				90A8CFE1294BB40300229742 /* Resources */,
@@ -260,6 +302,70 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4BA52B9B9BB89E381F85B116 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AlternativeChess-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		96B856C7C81CA65EECD540B6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AlternativeChessTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F1CDCDC7683C645DC82352B6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AlternativeChess/Pods-AlternativeChess-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AlternativeChess/Pods-AlternativeChess-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AlternativeChess/Pods-AlternativeChess-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		90A8CFC9294BB40100229742 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -268,6 +374,7 @@
 				BDCF52B4299A876D00FF5944 /* Move.swift in Sources */,
 				BD505F492974270A00890A77 /* ChessEngine.swift in Sources */,
 				BDCF52B6299A957000FF5944 /* Helper.swift in Sources */,
+				BD18F8F22A02402600328F13 /* NetworkClient.swift in Sources */,
 				BD505F4D2974276C00890A77 /* ChessBoard.swift in Sources */,
 				90A8CFD5294BB40100229742 /* ChessBoardViewController.swift in Sources */,
 				BDCF52BA29B10ECB00FF5944 /* PieceView.swift in Sources */,
@@ -442,6 +549,7 @@
 		};
 		90A8CFF8294BB40400229742 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 124993F617B3DFFC9744DD6E /* Pods-AlternativeChess.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -470,6 +578,7 @@
 		};
 		90A8CFF9294BB40400229742 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA82C6714CEEF5694C78ED9A /* Pods-AlternativeChess.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -498,6 +607,7 @@
 		};
 		90A8CFFB294BB40400229742 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0E317A705478623D341E5112 /* Pods-AlternativeChessTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -518,6 +628,7 @@
 		};
 		90A8CFFC294BB40400229742 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70372B3D02A27447AE47FAC5 /* Pods-AlternativeChessTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
