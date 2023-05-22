@@ -64,7 +64,7 @@ class ChessBoardViewController: UIViewController {
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
     func getMoveFromNotation(_ notation: String) -> Move {
-        <#code#>
+    
     }
     
     func getMoveFromNotation(_ notation: String) -> Move? {
