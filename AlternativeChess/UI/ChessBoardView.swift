@@ -14,6 +14,8 @@ protocol ChessBoardViewDelegate: AnyObject {
     func turn() -> Piece.Color
     func validMoves(for piece: Piece) -> [Position]
     func didMove(piece: Piece, to position: Position) -> Move
+    func sendNotation(_ notation: String)
+    func getMoveFromNotation(_ notation: String) -> Move
 }
 
 class ChessBoardView: UIView {
@@ -121,6 +123,9 @@ class ChessBoardView: UIView {
         guard let pieceMove = delegate?.didMove(piece: piece, to: position) else {
             return
         }
+        if let notation = pieceMove.makeNotation() {
+            delegate?.sendNotation(notation)
+        }
         switch pieceMove.type {
         case let .take(taken):
             performTake(for: taken, currentSelectedPiece: piece)
@@ -134,6 +139,9 @@ class ChessBoardView: UIView {
     private func performPlacingOnASquareWithoutPiece(for position: Position, currentSelectedPiece: Piece) {
         guard let pieceMoveAction = delegate?.didMove(piece: currentSelectedPiece, to: position) else {
             return
+        }
+        if let notation = pieceMoveAction.makeNotation() {
+            delegate?.sendNotation(notation)
         }
         switch pieceMoveAction.type {
         case let .castle(rook):
@@ -188,6 +196,10 @@ class ChessBoardView: UIView {
         }
         removeValidMoves()
         pieceView(at: piece.position)?.setupViewImage(with: currentSelectedPiece)
+    }
+    
+    func changeViewOfPieceFromServerBasedOn(_ notation: String) {
+        
     }
     
     // MARK: Drawing
@@ -347,5 +359,11 @@ class ChessBoardView: UIView {
             return nil
         }
         return Position(file: file, rank: rank)
+    }
+}
+
+extension ChessBoardView: ChessBoardViewControllerDelegate {
+    func give(notation: String) {
+        changeViewOfPieceFromServerBasedOn(notation)
     }
 }
