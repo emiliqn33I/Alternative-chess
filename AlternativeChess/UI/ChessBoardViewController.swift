@@ -58,6 +58,7 @@ class ChessBoardViewController: UIViewController {
         super.viewDidLoad()
         boardView.pieces = chessEngine.pieces
         boardView.delegate = self
+        networkClient.delegate = self
     }
 }
 

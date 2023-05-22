@@ -12,5 +12,9 @@ protocol NetworkClientDelegate: AnyObject {
 }
 
 class NetworkClient {
+    weak var delegate: NetworkClientDelegate?
 
+    func didReceiveFromBackend(notation: String) {
+        delegate?.networkClient(self, didReceiveNotation: notation)
+    }
 }
