@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol ChessBoardViewControllerDelegate: AnyObject {
+    func give(notation: String)
+}
+
 class ChessBoardViewController: UIViewController {
     @IBOutlet weak var boardView: ChessBoardView!
     let chessEngine: ChessEngine
+    let networkClient = NetworkClient()
     
     required init?(coder aDecoder: NSCoder) {
         let pieces = [Piece(.duck, .yellow, Position(file: .H, rank: .sixth)),
@@ -53,10 +58,27 @@ class ChessBoardViewController: UIViewController {
         super.viewDidLoad()
         boardView.pieces = chessEngine.pieces
         boardView.delegate = self
+        networkClient.delegate = self
     }
 }
 
 extension ChessBoardViewController: ChessBoardViewDelegate {
+    func getMoveFromNotation(_ notation: String) -> Move {
+        <#code#>
+    }
+    
+    func getMoveFromNotation(_ notation: String) -> Move? {
+        if let move = chessEngine.makeMove(from: notation) {
+            return move
+        }
+        return nil
+    }
+    
+    func sendNotation(_ notation: String) {
+        // Send notation to server
+        networkClient.sendNotationToServer(notation)
+    }
+    
     func checkedKing(piece: Piece) -> Move {
         chessEngine.kingInCheck(piece: piece, position: piece.position)
     }
@@ -72,8 +94,20 @@ extension ChessBoardViewController: ChessBoardViewDelegate {
     func validMoves(for piece: Piece) -> [Position] {
         chessEngine.validMoves(for: piece)
     }
-
+    
     func didMove(piece: Piece, to position: Position) -> Move {
         chessEngine.place(piece: piece, at: position)
+    }
+}
+
+extension ChessBoardViewController: NetworkClientDelegate {
+    // implement the delegate method to receive the notation from the server
+    func networkClient(_ networkClient: NetworkClient, didReceiveNotation notation: String) {
+        print("Received notation in ViewController: \(notation)")
+        // do something with the notation
+        if let aMove = chessEngine.makeMove(from: notation) {
+            chessEngine.place(piece: aMove.piece, at: aMove.to)
+        }
+        boardView.give(notation: notation)
     }
 }
