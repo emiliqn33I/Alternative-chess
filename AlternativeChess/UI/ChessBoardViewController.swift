@@ -103,10 +103,5 @@ extension ChessBoardViewController: ChessBoardViewDelegate {
 extension ChessBoardViewController: NetworkClientDelegate {
     func networkClient(_ networkClient: NetworkClient, didReceiveNotation notation: String) {
         print("Received move: \(notation)")
-        // TODO: Implement reacting to move made by the other player
-//        if let aMove = chessEngine.makeMove(from: notation) {
-//            chessEngine.place(piece: aMove.piece, at: aMove.to)
-//        }
-//        boardView.give(notation: notation)
     }
 }
