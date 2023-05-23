@@ -159,7 +159,7 @@ class Piece {
         case .king:
             return colour == .white ? "w_king" : "b_king"
         case .duck:
-            return "fposter,small,wall_texture,product,750x1000"
+            return "duck"
         }
     }
 }
