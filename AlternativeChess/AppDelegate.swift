@@ -16,10 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseSwift.initialize(applicationId: "6HuvtKxwWb5dHCxiLpZkpW5s5mCLgq3LxEbK2jgh",
                               clientKey: "dOMIWcIwfuxi0i6fka4Nk8gBfvZUxyGsA6IqcZt0",
                               serverURL: URL(string: "https://parseapi.back4app.com")!)
-//
-//        ParseSwift.initialize(applicationId: "6HuvtKxwWb5dHCxiLpZkpW5s5mCLgq3LxEbK2jgh",
-//                              clientKey: "dOMIWcIwfuxi0i6fka4Nk8gBfvZUxyGsA6IqcZt0",
-//                              serverURL: URL(string: "https://parseapi.back4app.com")!)
         return true
     }
 
